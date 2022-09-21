@@ -1,0 +1,350 @@
+
+.el-header {
+  box-shadow: 0 0 2rem 0 rgba(41, 48, 66, 0.1);
+  margin-left: 0px;
+  line-height: 60px;
+  position: relative;
+  min-width: 400px;
+  clear: both;
+  .iconfont {
+    cursor: pointer;
+   
+  }
+  .iconfont:hover{
+    color: rgb(64,158,255);
+  }
+  .el-dropdown {
+    position: absolute;
+    line-height: 60px;
+    right: 5%;
+  }
+}
+.el-menu{
+  .iconfont{
+    font-size: 20px;
+  }
+}
+.el-main{
+  .el-image{
+    border-radius: 10px;
+    transition: all .4s;
+  }
+  .el-image:hover{
+    transform: scale(1.02);
+  }
+}
+.el-upload{
+
+  
+  .iconfont{
+    font-size: 100px;
+  }
+}
+#subtitle {
+  margin-top: 20px;
+  position: relative;
+  /* font-size: 20px; */
+  font-weight: 1000;
+  cursor: pointer;
+}
+#subtitle::after {
+  content: "";
+  width: 0px;
+  height: 3px;
+  background: rgb(64,158,255);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  right: 50%;
+  transition: all 0.5s;
+}
+// #subtitle:hover:after {
+//   left: 7%;
+//   right: 7%;
+//   width: 85%;
+// }
+.el-upload-dragger{
+  border: 4px dashed var(--el-border-color);
+  transition: all .5s;
+}
+.el-upload-dragger:hover{
+  transform: scale(1.05);
+}
+.el-image{
+  cursor: pointer;
+}
+#imgPre{
+  height: 500px;
+}
+.el-pagination {
+  text-align: center;
+
+}
+a{
+ text-decoration: none;
+}
+.goweight{
+  font-weight:bold
+}
+.iconfont{
+  cursor: pointer;
+}
+#pre-img{
+  height: 500px;
+}
+.el-dialog{
+  font-family: SimHei sans-serif;
+}
+.el-button{
+  font-family: SimHei sans-serif;
+}
+.el-table{
+  font-family: SimHei sans-serif;
+}
+.el-image{
+  cursor: pointer;
+}
+img{
+  cursor: pointer;
+}
+.el-message{
+  font-family: SimHei sans-serif;
+  font-size: larger;
+  font-weight: 600;
+}
+    //https://css.bqrdh.com/button-animate按钮效果
+.btn-animate {
+  position: relative;
+  width: 80px;
+  height: 35px;
+  line-height: 40px;
+  border: none;
+  border-radius: 5px;
+  background: rgb(64,158,255);
+  color: #fff;
+  text-align: center;
+}
+
+@keyframes shiny-btn {
+  0% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0.5;
+  }
+  21% {
+    transform: scale(4) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(50) rotate(45deg);
+    opacity: 0;
+  }
+}
+.btn-animate__shiny {
+  overflow: hidden;
+}
+.btn-animate__shiny::before {
+  content: '';
+  position: absolute;
+  top: -180px;
+  left: 0;
+  width: 30px;
+  height: 100%;
+  background-color: #fff;
+}
+.btn-animate__shiny:hover::before {
+  animation: shiny-btn 0.6s ease-in-out;
+}
+
+
+
+.btn-animate {
+  position: relative;
+  width: 110px;
+  height: 35px;
+  line-height: 40px;
+  border: none;
+  border-radius: 5px;
+  background: rgb(64,158,255);
+  color: #fff;
+  text-align: center; }
+
+@keyframes vibrate {
+  60% {
+    transform: scale3d(0.8, 0.8, 1); }
+  85% {
+    transform: scale3d(1.1, 1.1, 1); }
+  100% {
+    transform: scale3d(1, 1, 1); } }
+
+@keyframes vibrate2 {
+  to {
+    opacity: 0;
+    transform: scale3d(1, 1, 1); } }
+
+.btn-animate__vibrate::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  bottom: -15px;
+  right: -15px;
+  background: inherit;
+  z-index: -1;
+  opacity: 0.5;
+  transform: scale3d(0.6, 0.4, 1); }
+
+.btn-animate__vibrate:hover {
+  animation: vibrate .3s forwards; }
+  .btn-animate__vibrate:hover::before {
+    animation: vibrate2 .3s .3s forwards; }
+
+    .mylabel {
+      vertical-align: middle;
+      margin-left: 30px;
+      position: relative;
+      .label-words {
+        display: inline-block;
+        line-height: 30px;
+        margin-left: 23px;
+      }
+    }
+    //https://css.bqrdh.com/button-animate多选框效果
+     /* Hide the browser's default checkbox */
+     .container input {
+       position: absolute;
+       opacity: 0;
+       cursor: pointer;
+       height: 0;
+       width: 0;
+     }
+     
+     /* Create a custom checkbox */
+     .checkmark {
+       position: absolute;
+       top: 3px;
+       left: 0;
+       height: 16px;
+       width: 16px;
+       background-color: #ccc;
+        cursor: pointer;
+     }
+     
+     /* When the checkbox is checked, add a blue background */
+     .container input:checked ~ .checkmark {
+       background-color: rgb(64, 158, 255);
+       transition: all .4s;
+     
+     }
+     
+     /* Create the checkmark/indicator (hidden when not checked) */
+     .checkmark:after {
+       content: "";
+       position: absolute;
+       display: none;
+     }
+     
+     /* Show the checkmark when checked */
+     .container input:checked ~ .checkmark:after {
+       display: block;
+     }
+     
+     /* Style the checkmark/indicator */
+     .container .checkmark:after {
+       left: 4.7px;
+       top: 1.6px;
+       width: 4px;
+       height: 8px;
+       border: solid white;
+       border-width: 0 3px 3px 0;
+       transform: rotate(45deg);
+       transition: all .6s;
+     }
+    #file1,
+#file2 {
+  display: none;
+}
+.icon-wenjianshangchuan {
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  transition: all 0.5s;
+  color: rgb(64, 158, 255);
+}
+.icon-wenjianshangchuan:hover {
+  color: rgb(64,158,255);
+  transform: scale(1.2);
+}
+.file1{
+  margin-right: 230px;
+}
+.file2{
+  margin-left: 230px;
+}
+
+
+.btn-animate2 {
+  position: relative;
+  width: 135px;
+  height: 40px;
+  line-height: 40px;
+  border: none;
+  font-size: 17px;
+  border-radius: 5px;
+  background: rgb(236,245,255);
+  color: rgb(64, 158, 255);
+  text-align: center; 
+}
+
+
+.btn-animate__surround::before, .btn-animate__surround::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: rgb(64, 158, 255);
+  transition: all 0.4s ease; }
+
+.btn-animate__surround::before {
+  height: 0%;
+  width: 2px; }
+
+.btn-animate__surround::after {
+  width: 0%;
+  height: 2px; }
+
+.btn-animate__surround:hover {
+  background: transparent; }
+  .btn-animate__surround:hover::before {
+    height: 100%; }
+  .btn-animate__surround:hover::after {
+    width: 100%; }
+
+.btn-animate__surround > span {
+  display: block; }
+  .btn-animate__surround > span:hover {
+    color: rgb(64, 158, 255); }
+    .btn-animate__surround > span:hover::before {
+      height: 100%; }
+    .btn-animate__surround > span:hover::after {
+      width: 100%; }
+  .btn-animate__surround > span::before, .btn-animate__surround > span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: rgb(64, 158, 255);
+    transition: all 0.4s ease; }
+  .btn-animate__surround > span:before {
+    width: 2px;
+    height: 0%; }
+  .btn-animate__surround > span:after {
+    width: 0%;
+    height: 2px; }
+    
+    .icon-dabaoxiazai{
+      color: rgb(64, 158, 255);
+    }

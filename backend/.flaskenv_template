@@ -1,0 +1,24 @@
+# flask配置
+FLASK_APP=app.py
+FLASK_ENV=development
+FLASK_DEBUG=1
+FLASK_RUN_HOST = 127.0.0.1
+FLASK_RUN_PORT = 5008
+
+#flask配置
+SYSTEM_NAME=Hippo
+
+# MySql配置信息
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_DATABASE=paddle_rs
+MYSQL_USERNAME=paddle_rs
+MYSQL_PASSWORD=123456
+
+# 密钥配置(记得改)
+SECRET_KEY='Hippo'
+
+# 邮箱配置
+MAIL_SERVER='smtp.qq.com'
+MAIL_USERNAME='123@qq.com'
+MAIL_PASSWORD='XXXXX' # 生成的授权码

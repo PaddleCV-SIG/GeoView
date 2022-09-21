@@ -1,0 +1,1730 @@
+<template>
+  <div class="changes-box">
+    <Tabinfor>
+      <template v-slot:left>
+        <div id="subtitle" style="font-size: 25px">
+          变化检测<i
+            class="iconfont icon-dianji"
+            style="font-size: 23px; margin-left: 17px; color: blue"
+          ></i></div
+      ></template>
+    </Tabinfor>
+    <el-divider></el-divider>
+    <p>
+      请上传包含<span class="goweight">图片的文件夹</span
+      ><i class="iconfont icon-wenjianjia" style="color: blue"></i>或者<span
+        class="goweight"
+        >图片</span
+      ><i class="iconfont icon-tupiantianjia" style="color: skyblue"></i
+      >，确保上传的文件夹和图片<span class="goweight">格式正确</span
+      >，属于一组的图片<span class="goweight">分别</span>放在两个文件夹里<i
+        class="iconfont icon-duigou"
+        style="color: green"
+      ></i>
+    </p>
+    <p style="text-decoration: underline">
+      <i class="iconfont icon-zhuyi" style="color: rgb(64,158,255); font-size: 18px"></i
+      >注意，请将属于<span class="goweight">同一组</span
+      >的图片设置<span class="goweight">相同</span
+      >的命名，这将成为我们处理一组图片的依据
+    </p>
+    <el-card style="border: 4px dashed var(--el-border-color);position:relative">
+      <div class="clearQ" v-if="this.fileList1.length||this.fileList2.length">   <el-button type=primary class="btn-animate2 btn-animate__surround" @click="clearQue">清空图片</el-button></div>
+      <el-row :gutter="20" justify="space-evenly" >
+
+          <el-upload
+            class="upload-demo"
+            drag
+            action="#"
+            multiple
+            :auto-upload="false"
+            ref="upload1"
+            id="one"
+            v-model:file-list="fileList1"
+            @change="checkFile1"
+          >
+            <i class="iconfont icon-yunduanshangchuan"></i>
+            <div class="el-upload__text">
+              将文件夹或图片拖到此处，或<em>点击上传</em>
+            </div>
+            <div class="el-upload__tip" slot="tip">
+              只能上传一张或多张图片，请在下方上传文件夹
+            </div>
+          </el-upload>
+
+
+
+          <el-upload
+            class="upload-demo"
+            drag
+            action="#"
+            multiple
+            :auto-upload="false"
+            ref="upload2"
+            id="two"
+            v-model:file-list="fileList2"
+             @change="checkFile2"
+          >
+            <i class="iconfont icon-yunduanshangchuan"></i>
+            <div class="el-upload__text">
+              将文件夹或图片拖到此处，或<em>点击上传</em>
+            </div>
+            <div class="el-upload__tip" slot="tip">
+              只能上传一张或多张图片，请在下方上传文件夹
+            </div>
+          </el-upload>
+
+      </el-row>
+      <el-row justify="center">
+                 <el-row class="file1">
+            <input
+              type="file"
+              id="file1"
+              ref="myfile1"
+              webkitdirectory
+              directory
+              multiple
+              @change="uploadFirst"
+            />
+            <i class="iconfont icon-wenjianshangchuan" @click="file1Click"
+              >上传文件夹</i
+            ></el-row
+          >
+          <el-row class="file2">
+            <input
+              id="file2"
+              type="file"
+              ref="myfile2"
+              webkitdirectory
+              directory
+              multiple
+              @change="uploadSecond"
+            />
+            <i class="iconfont icon-wenjianshangchuan" @click="file2Click"
+              >上传文件夹</i
+            ></el-row
+          ></el-row>
+
+      <el-row justify="center" align="middle">
+         <i class="iconfont icon-tuxingtuxiangchuli" style="color:rgb(64,158,255);font-size:20px"></i><p>图像预处理：</p>
+          <p>
+          <label class="mylabel container">
+            <input
+              type="checkbox"
+              class="myinput"
+              ref="histogram"
+              @change="selectHistogram()"
+            />
+            <span class="checkmark"></span>
+            <span class="goweight label-words">直方图匹配</span>
+          </label>
+
+          <label class="container mylabel">
+            <input
+              type="checkbox"
+              class="myinput"
+              ref="sharpen"
+              @change="selectSharpen()"
+            />
+            <span class="checkmark"></span>
+            <span class="goweight label-words">锐化</span>
+          </label>
+          </p>
+      </el-row>
+      <el-row justify="center" align="middle">
+               <i class="iconfont icon-agora_AIjiangzao" style="color:rgb(64,158,255);font-size:35px"></i> <p>降噪处理：</p>
+             <p>
+
+
+      <label class="container mylabel">
+  <input    type="checkbox"
+              class="myinput"
+              ref="smooth"
+              @change="selectSmooth()">
+  <span class="checkmark "></span>
+  <span class="goweight label-words">平滑</span>
+</label>
+
+
+
+      <label class="container mylabel">
+  <input    type="checkbox"
+              class="myinput"
+              @change="selectFilter()"
+              ref="filter">
+  <span class="checkmark "></span>
+  <span class="goweight label-words">滤波</span>
+</label>
+          </p>
+      </el-row>
+
+      <el-row type="flex" justify="center">
+        <div style="margin-top:12px">
+        <el-button type="primary" class=" btn-animate btn-animate__shiny" @click="uploadfile"
+          >开始处理</el-button
+        >    </div>
+      </el-row>
+      <el-divider v-if="!this.upload.prehandle"></el-divider>
+      <div v-if="this.upload.prehandle">
+        <div  v-if="this.upload.prehandle==1">
+
+         <div id="subtitle" style="font-size: 25px">
+          直方图匹配结果预览
+          <i class="iconfont icon-dianji" style="font-size: 23px; margin-left: 17px; color: blue"></i>
+        </div>
+    <el-divider></el-divider>
+    <!-- <el-empty image-size="100" ></el-empty> -->
+    <el-row justify="center" :gutter="20">
+      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img1" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第一时期图</div></div></el-col>
+      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img2"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">匹配后的第一时期图       <span
+                  @click="
+                    downloadimgWithWords(
+                      ++this.hisNum,
+                      item,
+                      `直方图匹配后第一时期图.png`
+                    )
+                  "
+                  ><i class="iconfont icon-xiazai"></i
+                ></span></div></div></el-col>
+      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img3"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第二时期图</div></div></el-col>
+    </el-row>
+    </div>
+        <div v-else-if="this.upload.prehandle == 4">
+         <div id="subtitle" style="font-size: 25px">
+          锐化结果预览<i
+            class="iconfont icon-dianji"
+            style="font-size: 23px; margin-left: 17px; color: blue"
+          ></i></div
+      >
+    <el-divider></el-divider>
+    <el-row justify="center" :gutter="20">
+      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.Img1" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第一时期图</div></div></el-col>
+      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.sharpenImg1"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">锐化后的第一时期图       <span
+                  @click="
+                    downloadimgWithWords(
+                      -1,
+                      item,
+                      `锐化处理后第一时期图.png`
+                    )
+                  "
+                  ><i class="iconfont icon-xiazai"></i
+                ></span></div></div></el-col>
+      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.Img3"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第二时期图</div></div></el-col>
+       <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.sharpenImg2"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">锐化后的第二时期图       <span
+                  @click="
+                    downloadimgWithWords(
+                      -1,
+                      item,
+                      `锐化处理后第二时期图.png`
+                    )
+                  "
+                  ><i class="iconfont icon-xiazai"></i
+                ></span></div></div></el-col>
+    </el-row>
+
+    </div>
+    </div>
+
+    </el-card>
+
+    <Tabinfor >
+      <template v-slot:left>
+        <div id="subtitle" style="font-size: 25px">
+          结果图预览<i
+            class="iconfont icon-dianji"
+            style="font-size: 23px; margin-left: 17px; color: blue"
+          ></i></div
+      ></template>
+    </Tabinfor>
+
+    <el-divider ></el-divider>
+
+    <Tabinfor>
+      <template v-slot:left>
+          <p >
+      对输出的结果图进行<span class="goweight">多种渲染</span
+      ><i class="iconfont icon-xuanran" style="color: red"></i>
+      <span class="goweight">，点击图片</span>即可预览
+      <i class="iconfont icon-duigou" style="color: green"></i>
+    </p>
+      </template>
+           <template v-slot:mid>
+
+        <p v-if="this.isUpload">
+          <label class="mylabel container">
+            <input
+              type="checkbox"
+              class="myinput"
+              @click="dealAfterImg(this.currentIndex)"
+              ref="hole"
+              :checked='this.isHole[this.currentIndex]'
+            />
+            <span class="checkmark"></span>
+            <span class="goweight label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
+          </label>
+
+              <span><i class="iconfont icon-qiehuan" style=" color:rgb(64, 158, 255);margin-left:15px" @click="changePreMode">切换预览模式</i></span>
+        </p>
+
+               <p style="text-align:center" v-else="this.isUpload">
+          <label class="mylabel container">
+            <input
+              type="checkbox"
+              class="myinput"
+              @click="dealExample()"
+              ref="hole1"
+              :checked='true'
+            />
+            <span class="checkmark"> </span>
+            <span class="goweight label-words">开启连通域滤波并填充孔洞处理</span>
+          </label>
+              <span><i class="iconfont icon-qiehuan" style=" color:rgb(64, 158, 255);margin-left:15px" @click="changePreMode">切换预览模式</i></span>
+        </p>
+
+      </template>
+      <template v-slot:right>
+        <p>
+          <span class="goweight"
+            ><i class="iconfont icon-shuaxin" @click="getMore" style="padding-right:73px"
+              ><span class="hidden-sm-and-down">点击刷新</span></i
+            ></span
+          >
+        </p>
+      </template>
+    </Tabinfor>
+
+    <el-card class="render-box">
+      <el-row justify="center" :gutter="20"
+        >
+    <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="10"  v-show="this.preMode==1">
+      <p class="his-words">上传第一时期和第二时期图</p>
+<div id="image-slider" @mousemove="sliderMouseMove" @mousedown="sliderMouseDown" @mouseup="sliderMouseUp" @mouseleave="sliderMouseLeave" v-if="!this.isUpload">
+  <img :src="require('@/assets/image/example/test_50_1.png')">
+  <div class="img-wrapper">
+    <img :src="require('@/assets/image/example/test_50_2.png')">
+  </div>
+  <div class="handle">
+    <div class="handle-line"></div>
+    <div class="handle-circle">
+      &#171 &#187
+    </div>
+    <div class="handle-line"></div>
+  </div>
+</div>
+<div id="image-slider" @mousemove="sliderMouseMove" @mousedown="sliderMouseDown" @mouseup="sliderMouseUp" @mouseleave="sliderMouseLeave" v-else>
+  <img   :src="this.beforeImg[this.currentIndex]">
+  <div class="img-wrapper">
+    <img   :src="this.beforeImg1[this.currentIndex]">
+  </div>
+  <div class="handle">
+    <div class="handle-line"></div>
+    <div class="handle-circle">
+      &#171 &#187
+    </div>
+    <div class="handle-line"></div>
+  </div>
+</div>
+</el-col>
+<el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="10" v-show="this.preMode == 1">
+  <div class="render-img">
+             <p class="his-words">预测结果</p>
+            <el-image
+              v-if="this.afterImg.length != 0"
+              :preview-src-list="[this.showingList[this.currentIndex]]"
+              :preview-teleported="true"
+              :src="src"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            <div v-else>
+            <el-image
+              v-if="this.renderstyle=='原图'"
+              :preview-src-list="[require('@/assets/image/example/normal.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/normal.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+                <el-image
+              v-else-if="this.renderstyle=='森林'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/woods.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='霓虹'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+             :src="require('@/assets/image/example/neon.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='闪电'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/flash.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='极光'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/aurora.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            </div>
+           </div>
+</el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode==2"><div class="render-img" >
+               <p class="his-words">第一时期</p>
+            <el-image
+              v-if="this.afterImg.length != 0"
+              :preview-src-list="[this.beforeImg[this.currentIndex]]"
+              :preview-teleported="true"
+              :src="this.beforeImg[this.currentIndex]"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            <el-image
+              v-else
+              :preview-src-list="[require('@/assets/image/example/test_50_1.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/test_50_1.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            </div></el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode==2"><div class="render-img">
+          <p class="his-words">第二时期</p>
+            <el-image
+              v-if="this.afterImg.length != 0"
+              :preview-src-list="[this.beforeImg1[this.currentIndex]]"
+              :preview-teleported="true"
+              :src="this.beforeImg1[this.currentIndex]"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            <el-image
+              v-else
+              :preview-src-list="[require('@/assets/image/example/test_50_2.png')]"
+              :preview-teleported="true"
+          :src="require('@/assets/image/example/test_50_2.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image></div></el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode == 2"
+          ><div class="render-img">
+             <p class="his-words">预测结果</p>
+            <el-image
+              v-if="this.afterImg.length != 0"
+              :preview-src-list="[this.showingList[this.currentIndex]]"
+              :preview-teleported="true"
+              :src="src"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            <div v-else>
+            <el-image
+              v-if="this.renderstyle=='原图'"
+              :preview-src-list="[require('@/assets/image/example/normal.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/normal.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+                <el-image
+              v-else-if="this.renderstyle=='森林'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/woods.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='霓虹'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+             :src="require('@/assets/image/example/neon.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='闪电'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/flash.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>    <el-image
+              v-else-if="this.renderstyle=='极光'"
+              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+              :preview-teleported="true"
+              :src="require('@/assets/image/example/aurora.png')"
+              fit="cover"
+              style="width: 100%"
+            ></el-image>
+            </div>
+           </div></el-col
+        >
+        <el-col  :xs="24" :sm="24" :md="24" :lg="4" :xl="4"
+          ><div class="rendr-style">
+              <el-divider style="margin-top:0"></el-divider>
+            <div class="style-title">结果图渲染</div>
+
+            <label class="cl-checkbox">
+              <el-row justify="center">
+                <el-col
+                  ><div class="style-words normal" @click="setNormalWay(this.onRender)" :class="{ 'active-normal': this.renderstyle == '原图' }">原图</div>
+                  <div class="style-words woods" @click="setWoods(this.onRender)" :class="{ 'active-woods': this.renderstyle == '森林' }">森林</div>
+                  <div class="style-words neon" @click="setneon(this.onRender)" :class="{ 'active-neon': this.renderstyle == '霓虹' }">霓虹</div>
+                  <div class="style-words flash" @click="setFlash(this.onRender)" :class="{ 'active-flash': this.renderstyle == '闪电' }">闪电</div>
+                    <div class="style-words aurora" @click="setAurora(this.onRender)" :class="{ 'active-aurora': this.renderstyle == '极光' }">极光</div></el-col
+                >
+              </el-row>
+            </label>
+          </div>
+            <el-divider style="margin-top:0"></el-divider>
+          <div class="style-title">选择图片</div>
+
+          <el-empty
+            :image-size="100"
+            v-if="this.showingList.length == 0"
+          ></el-empty>
+          <div
+            v-for="(item, index) in Math.ceil(this.showingList.length / 5)"
+            class="list"
+          >
+
+            <div class="list-number" @click="goRenderThese(index)" >
+              <div @click="setWhichWay">
+              {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+              </div>
+            </div>
+
+          </div>
+          <div v-show="this.showingList.length != 0" style="text-align:center">
+            下载此图片：<el-button
+            v-if="this.isUpload"
+            type='primary'
+            style="width:60px"
+              class="btn-animate btn-animate__shiny"
+              @click="
+                downloadimgWithWords(
+                  this.idList[this.currentIndex],
+                  this.showingList[this.currentIndex],
+                  `变化检测${this.renderstyle}渲染结果图.png`
+                )
+              "
+              >下载</el-button
+            ><el-button
+            v-else
+            type='primary'
+            style="width:60px"
+              class="btn-animate btn-animate__shiny"
+              @click="
+                downloadimgWithWords(
+                  ++this.downnumber,
+                   this.showingList[this.currentIndex],
+                  `变化检测${this.renderstyle}渲染结果图.png`
+                )
+              "
+              >下载</el-button
+            >
+          </div>
+           <p style="text-align:center" v-if="this.isUpload"><span> <i class="iconfont icon-dabaoxiazai" @click="goCompress" >所有结果图打包</i></span></p>
+        </el-col></el-row
+      >
+      <el-row class="swiper-img">
+        <div class="img-box" v-for="(item, index) in 5" >
+          <el-image :src="srcs[index]" @click="goRenderThis(index)" v-if="isExist[index]" :class="{'render-border':this.onRender==index}"></el-image>
+        </div>
+
+      </el-row>
+    </el-card>
+    <el-dialog
+      v-model="dialogVisible"
+      :modal="false"
+      title="图片预览"
+      width="75%"
+      fullscreen
+    >
+      <el-row type="flex" justify="center" style="margin-bottom: 10px">
+        <el-col :span="1">
+          <el-button type="primary" @click="this.dialogVisible = false"
+            >OK</el-button
+          >
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="12">
+          <img :src="previewPic1" id="imgPre" />
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <Bottominfor></Bottominfor>
+
+  </div>
+</template>
+
+
+<script>
+import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
+import {
+  createSrc,
+  detectChangesUpload,
+  holeHandle,
+  histogramUpload,
+} from "@/api/upload";
+import {
+  downloadimgWithWords,
+  getImgArrayBuffer,
+  atchDownload,
+} from "@/utils/download.js";
+import { historyGetPage } from "@/api/history";
+import Tabinfor from "@/components/Tabinfor";
+import Bottominfor from "@/components/Bottominfor";
+import store from "@/store";
+import global from "@/global";
+export default {
+  name: "detectchanges",
+  components: {
+    Tabinfor,
+    Bottominfor,
+  },
+  data() {
+    return {
+      isSliderLocked: false,
+      preMode: 1,
+      pairs: [],
+      hisPairs: [],
+      shaPairs: [],
+      canUpload: true,
+      onRender: 0,
+      onRenderGroup: 0,
+      isHole: [],
+      isUpload: true,
+      idIndex: 0,
+      isExist: [],
+      downnumber: 0,
+      hisNum: 0,
+      value:null,
+      renderstyle: "原图",
+      funtype: "变化检测",
+      feedBackVisible: false,
+      previewPic1: "",
+      dialogVisible: false,
+      form: {
+        content: "",
+        analysis_id: "",
+        type: "变化检测",
+      },
+      scrollTop: "",
+      afterImg: [],
+      afterList: [],
+      woods: [],
+      neon: [],
+      flash: [],
+      aurora: [],
+
+      showingList: [],
+      beforeImg: [],
+      beforeImg1: [],
+      currentQroup: 0,
+      src:
+        global.BASEURL +
+        "/_uploads/photos/res/01b19a165679f676b59242284b1f6f31_b62b1cb9afd6acbccd16e476a9c0b80b_test_50_5.png",
+      srcs: [
+
+      ],
+      example: {
+        outcome: [
+
+        ],
+        first: [
+
+        ],
+        second: [],
+        normal: [
+
+        ],
+        woods: [
+
+        ],
+        neon: [
+
+        ],
+        flash: [
+
+        ],
+        aurora: [
+
+        ],
+      },
+      currentIndex: 0,
+      fileList1: [],
+      fileList2: [],
+
+      uploadSrc1: [],
+      uploadSrc2: [],
+      uploadSrc: [],
+      upload: {
+        list: [
+          {
+            first: "",
+            second: "",
+          },
+        ],
+        prehandle: 0,
+        denoise: 0,
+      },
+
+      //直方图处理
+      uploadSrc3: [],
+      uploadSrc4: [],
+      histogramSrc: [],
+      myhistogram: {
+        list: [
+          {
+            first: "",
+            second: "",
+          },
+        ],
+        prehandle: 0,
+      },
+      Img1: [],
+      Img2: [],
+      Img3: [],
+
+      //锐化处理
+      sharpenSrc1: [],
+      sharpenSrc2: [],
+      sharpenSrc: [],
+      mysharpen: {
+        list: [
+          {
+            first: "",
+            second: "",
+          },
+        ],
+        prehandle: 0,
+      },
+      sharpenImg1: [],
+      sharpenImg2: [],
+
+      preHandle: {
+        list: [
+          {
+            first: "",
+            second: "",
+          },
+        ],
+      },
+
+      idList: [],
+      hole: {
+        id: "",
+      },
+
+      iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
+    };
+  },
+  created() {
+    this.getMore();
+
+  },
+
+  methods: {
+    downloadimgWithWords,
+    historyGetPage,
+    detectChangesUpload,
+    createSrc,
+    getImgArrayBuffer,
+    atchDownload,
+    holeHandle,
+    histogramUpload,
+    clearQue() {
+      this.fileList1 = [];
+      this.fileList2 = [];
+      this.$message.success("清除成功");
+    },
+    checkUpload() {
+      if (this.afterImg.length == 0) {
+        this.isUpload = false;
+      }
+    },
+    checkExist(val) {
+      this.isExist = val.map((item) => {
+        if (typeof item == "undefined") {
+          return false;
+        } else return true;
+      });
+    },
+    goRenderThis(index) {
+      this.currentIndex = this.currentQroup;
+      this.currentIndex += index;
+      if (this.showingList.length != 0) {
+        this.src = this.showingList[this.currentIndex];
+      } else {
+        this.src = this.srcs[index];
+      }
+      this.onRender = index;
+    },
+    goRenderThese(index) {
+      this.xminus = 0;
+      this.onRenderGroup = index;
+      let x = document.querySelectorAll(".img-box");
+      for (let item of x) {
+        item.setAttribute("style", `transform:translateX(0%)`);
+      }
+      this.currentQroup = 5 * index;
+      this.currentIndex = 5 * index;
+      this.srcs = [];
+      this.currentIndex;
+      for (let i = 0; i <= 4; i++) {
+        this.srcs.push(this.showingList[this.currentIndex++]);
+      }
+      this.src = this.srcs[0];
+      this.idIndex = this.currentIndex;
+      this.goRenderThis(0);
+      this.checkExist(this.srcs);
+    },
+
+    setNormalWay(render) {
+      this.renderstyle = "原图";
+      this.showingList.splice(0, this.showingList.length);
+      if (this.isUpload == false) {
+        this.showingList.push(this.example.normal[0]);
+      } else {
+        this.showingList.push(...this.afterList);
+      }
+      this.goRenderThese(this.onRenderGroup);
+      this.goRenderThis(render);
+    },
+    setWoods(render) {
+      this.renderstyle = "森林";
+      this.showingList.splice(0, this.showingList.length);
+      if (this.isUpload == false) {
+        this.showingList.push(this.example.woods[0]);
+      } else {
+        this.showingList.push(...this.woods);
+      }
+      this.goRenderThese(this.onRenderGroup);
+      this.goRenderThis(render);
+    },
+    setneon(render) {
+      this.renderstyle = "霓虹";
+
+      this.showingList.splice(0, this.showingList.length);
+      if (this.isUpload == false) {
+        this.showingList.push(this.example.neon[0]);
+      } else {
+        this.showingList.push(...this.neon);
+      }
+      this.goRenderThese(this.onRenderGroup);
+      this.goRenderThis(render);
+    },
+    setFlash(render) {
+      this.renderstyle = "闪电";
+
+      this.showingList.splice(0, this.showingList.length);
+      if (this.isUpload == false) {
+        this.showingList.push(this.example.flash[0]);
+      } else {
+        this.showingList.push(...this.flash);
+      }
+
+      this.goRenderThese(this.onRenderGroup);
+      this.goRenderThis(render);
+    },
+    setAurora(render) {
+      this.renderstyle = "极光";
+      this.showingList.splice(0, this.showingList.length);
+      if (this.isUpload == false) {
+        this.showingList.push(this.example.aurora[0]);
+      } else {
+        this.showingList.push(...this.aurora);
+      }
+      this.goRenderThese(this.onRenderGroup);
+      this.goRenderThis(render);
+    },
+    uploadfile() {
+      this.uploadSrc = [];
+      if (
+        this.fileList1.length != this.fileList2.length ||
+        this.fileList1.length == 0
+      ) {
+        this.$message.error("请按照要求上传文件夹或图片！");
+      } else {
+        showFullScreenLoading("#load");
+        let formData1 = new FormData();
+        let formData2 = new FormData();
+        for (const item of this.fileList1) {
+          formData1.append("files", item) ||
+            formData1.append("files", item.raw);
+          formData1.append("type", "变化检测");
+        }
+        for (const item of this.fileList2) {
+          formData2.append("files", item) ||
+            formData2.append("files", item.raw);
+          formData2.append("type", "变化检测");
+        }
+        let upload1 = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            this.createSrc(formData1).then((res) => {
+              this.uploadSrc1 = res.data.data;
+
+              resolve();
+            });
+          }, 200);
+        });
+        let upload2 = new Promise((resolve, reject) => {
+          this.createSrc(formData2).then((res) => {
+            this.uploadSrc2 = res.data.data;
+
+            resolve();
+          });
+        });
+        Promise.all([upload1, upload2])
+          .then((val) => {
+            this.uploadSrc = this.uploadSrc1.concat(this.uploadSrc2);
+            this.uploadSrc = this.uploadSrc.map((item) => {
+              return {
+                filename: item.filename.substring(
+                  item.filename.indexOf("/") + 1,
+                  item.length
+                ),
+                src: item.src,
+              };
+            });
+
+            this.pairs = this.uploadSrc.map((item) => {
+              return item.filename.substring(
+                item.filename.indexOf("/") + 1,
+                item.length
+              );
+            });
+
+            this.checkPairs(this.pairs);
+            if (!this.canUpload) {
+              this.$message.error(
+                "检测到命名对应失败的图片，请检查您的文件命名"
+              );
+              hideFullScreenLoading("#load");
+            } else {
+              this.getList(this.uploadSrc);
+              this.detectChangesUpload(this.upload)
+                .then((res) => {
+                  if (res.data.code == 1) {
+                    this.$message.error(res.data.msg);
+                  }
+
+                  this.$refs.upload1.clearFiles();
+                  this.$refs.upload2.clearFiles();
+                  this.fileList1 = [];
+                  this.fileList2 = [];
+                  this.$message.success("上传成功");
+                  this.isUpload = true;
+                  this.getMore();
+                  hideFullScreenLoading("#load");
+                  if (this.afterImg.length >= 20) {
+                    this.$confirm(
+                      "上传图片过多，是否压缩?在此期间不能进行其他操作",
+                      "提示",
+                      {
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        type: "warning",
+                      }
+                    )
+                      .then(() => {
+                        this.goCompress();
+                      })
+                      .catch(() => {});
+                  }
+                })
+                .catch((rej) => {
+                  hideFullScreenLoading("#load");
+                });
+            }
+          })
+          .catch((rej) => {
+            hideFullScreenLoading("#load");
+          });
+      }
+    },
+    getList(beforeData) {
+      //算法参考
+      //https://blog.csdn.net/weixin_45575273/article/details/108321137?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-3-108321137-null-null.pc_agg_new_rank&utm_term=%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E5%AF%B9%E8%B1%A1id%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AF%B9%E8%B1%A1%E7%BB%84%E6%88%90%E4%B8%80%E4%B8%AA%E6%96%B0%E6%95%B0%E7%BB%84&spm=1000.2123.3001.4430
+      let tempArr = [];
+      let afterData = [];
+      for (let i = 0; i < beforeData.length; i++) {
+        if (tempArr.indexOf(beforeData[i].filename) === -1) {
+          afterData.push(beforeData[i]);
+          tempArr.push(beforeData[i].filename);
+        } else {
+          for (let j = 0; j < afterData.length; j++) {
+            Reflect.deleteProperty(afterData[j], "photo_id");
+            // Reflect.deleteProperty(afterData[j], "filename");
+            afterData[j].first = afterData[j].src;
+            afterData[j].second = beforeData[i + j].src;
+            // Reflect.deleteProperty(afterData[j], "src");
+          }
+          break;
+        }
+      }
+
+      this.upload.list = afterData;
+    },
+    goCompress() {
+      this.$message.success("正在将所有图片下载压缩");
+      setTimeout(() => {
+        this.$message("正在压缩，请稍后");
+      }, 2000);
+      this.historyGetPage(1, 9999, "变化检测").then((res) => {
+        this.atchDownload(
+          res.data.data.map((item) => {
+            return { after_img: item.after_img, id: item.id };
+          })
+        );
+      });
+    },
+    getMore() {
+      // showFullScreenLoading(".changes-box");
+      this.historyGetPage(1, 20, "变化检测")
+        .then((res) => {
+          hideFullScreenLoading(".changes-box");
+          this.beforeImg = res.data.data.map((item) => {
+            return global.BASEURL + item.before_img;
+          });
+          this.idList = res.data.data.map((item) => {
+            return item.id;
+          });
+          this.isHole = res.data.data.map((item) => {
+            return item.is_hole;
+          });
+          this.isHole;
+          this.afterImg = res.data.data.map((item) => {
+            return {
+              after_img: global.BASEURL + item.after_img,
+              id: item.id,
+            };
+          });
+
+          this.afterList = res.data.data.map((item) => {
+            return global.BASEURL + item.after_img;
+          });
+          this.showingList = res.data.data.map((item) => {
+            return global.BASEURL + item.after_img;
+          });
+
+          if (this.afterList.length != 0) {
+            this.goRenderThese(0);
+            this.goRenderThis(0);
+          }
+          this.beforeImg1 = res.data.data.map((item) => {
+            return global.BASEURL + item.before_img1;
+          });
+          this.woods = res.data.data.map((item) => {
+            return global.BASEURL + item.data[2];
+          });
+          this.neon = res.data.data.map((item) => {
+            return global.BASEURL + item.data[3];
+          });
+          this.flash = res.data.data.map((item) => {
+            return global.BASEURL + item.data[0];
+          });
+          this.aurora = res.data.data.map((item) => {
+            return global.BASEURL + item.data[1];
+          });
+          this.checkUpload();
+          if (!this.isUpload) {
+            this.setNormalWay(this.onRender);
+          }
+        })
+        .catch((rej) => {
+          hideFullScreenLoading(".changes-box");
+        });
+    },
+    uploadFirst() {
+      this.checkFile1(...this.$refs.myfile1.files);
+      if (this.canUpload) {
+        this.fileList1.push(...this.$refs.myfile1.files);
+      } else {
+        setTimeout(() => {
+          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
+        }, 1000);
+      }
+    },
+    uploadSecond() {
+      this.checkFile2(...this.$refs.myfile2.files);
+      if (this.canUpload) {
+        this.fileList2.push(...this.$refs.myfile2.files);
+      } else {
+        setTimeout(() => {
+          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
+        }, 1000);
+      }
+    },
+    file1Click() {
+      document.querySelector("#file1").click();
+    },
+    file2Click() {
+      document.querySelector("#file2").click();
+    },
+    selectHistogram() {
+      if (this.$refs.histogram.checked == true) {
+        if (
+          this.fileList1.length != this.fileList2.length ||
+          this.fileList1.length == 0
+        ) {
+          if (this.upload.prehandle == 1) {
+            this.$refs.histogram.checked = false;
+            this.upload.prehandle = 0;
+          } else {
+            this.$refs.histogram.checked = false;
+            this.$message.error("请先按要求上传图片");
+          }
+        } else {
+          this.upload.prehandle = 1;
+          this.myhistogram.prehandle = 1;
+          this.$message.success("直方图处理");
+          if (this.$refs.sharpen.checked == true) {
+            this.$refs.sharpen.checked = false;
+          }
+          let formData1 = new FormData();
+          let formData2 = new FormData();
+
+          for (const item of this.fileList1) {
+            formData1.append("files", item) ||
+              formData1.append("files", item.raw);
+            formData1.append("type", "变化检测");
+          }
+
+          for (const item of this.fileList2) {
+            formData2.append("files", item) ||
+              formData2.append("files", item.raw);
+            formData2.append("type", "变化检测");
+          }
+          let upload3 = new Promise((resolve, reject) => {
+            this.createSrc(formData1).then((res) => {
+              this.uploadSrc3 = res.data.data.splice(0, 3);
+              this.Img1 = this.uploadSrc3.map((item) => {
+                return global.BASEURL + item.src;
+              });
+              resolve();
+            });
+          });
+          let upload4 = new Promise((resolve, reject) => {
+            this.createSrc(formData2).then((res) => {
+              this.uploadSrc4 = res.data.data.splice(0, 3);
+              this.Img3 = this.uploadSrc4.map((item) => {
+                return global.BASEURL + item.src;
+              });
+              resolve();
+            });
+          });
+          Promise.all([upload3, upload4]).then((val) => {
+            this.histogramSrc = this.uploadSrc3.concat(this.uploadSrc4);
+            //https://blog.csdn.net/qq_27342239/article/details/118078113去除“/”前的字符
+            this.histogramSrc = this.histogramSrc.map((item) => {
+              return {
+                filename: item.filename.substring(
+                  item.filename.indexOf("/") + 1,
+                  item.length
+                ),
+                src: item.src,
+              };
+            });
+
+            this.hisPairs = this.histogramSrc.map((item) => {
+              return item.filename.substring(
+                item.filename.indexOf("/") + 1,
+                item.length
+              );
+            });
+
+            this.checkPairs(this.hisPairs);
+
+            if (!this.canUpload) {
+              this.$message.error(
+                "检测到命名对应失败的图片，请检查您的文件命名"
+              );
+              hideFullScreenLoading("#load");
+              this.Img1 = [];
+              this.Img3 = [];
+            } else {
+              this.createHandelList(this.histogramSrc);
+              this.histogramUpload(this.myhistogram).then((res) => {
+                this.Img2 = res.data.data.map((item) => {
+                  return global.BASEURL + item;
+                });
+                this.Img2 = this.Img2.splice(0, 3);
+              });
+            }
+          });
+        }
+      } else {
+        this.$message.success("取消直方图处理");
+        this.upload.prehandle = 0;
+        this.myhistogram.prehandle = 0;
+      }
+    },
+    createHandelList(beforeData) {
+      let tempArr = [];
+      let afterData = [];
+      for (let i = 0; i < beforeData.length; i++) {
+        if (tempArr.indexOf(beforeData[i].filename) === -1) {
+          afterData.push(beforeData[i]);
+          tempArr.push(beforeData[i].filename);
+        } else {
+          for (let j = 0; j < afterData.length; j++) {
+            Reflect.deleteProperty(afterData[j], "photo_id");
+            // Reflect.deleteProperty(afterData[j], "filename");
+            afterData[j].first = afterData[j].src;
+            afterData[j].second = beforeData[i + j].src;
+            // Reflect.deleteProperty(afterData[j], "src");
+          }
+          break;
+        }
+      }
+      this.myhistogram.list = afterData;
+    },
+    selectSharpen() {
+      if (
+        this.fileList1.length != this.fileList2.length ||
+        this.fileList1.length == 0
+      ) {
+        if (this.upload.prehandle == 4) {
+          this.$refs.sharpen.checked = false;
+          this.upload.prehandle = 0;
+        } else {
+          this.$refs.sharpen.checked = false;
+          this.$message.error("请先按要求上传图片");
+        }
+      } else {
+        if (this.$refs.histogram.checked == true) {
+          this.$refs.histogram.checked = false;
+        }
+
+        if (this.$refs.sharpen.checked == false) {
+          this.myhistogram.prehandle = 0;
+          this.$message.success("取消锐化处理");
+          this.upload.prehandle = 0;
+        } else {
+          this.$message.success("锐化处理");
+          this.upload.prehandle = 4;
+          this.mysharpen.prehandle = 4;
+          let formData1 = new FormData();
+          let formData2 = new FormData();
+
+          for (const item of this.fileList1) {
+            formData1.append("files", item) ||
+              formData1.append("files", item.raw);
+            formData1.append("type", "变化检测");
+          }
+
+          for (const item of this.fileList2) {
+            formData2.append("files", item) ||
+              formData2.append("files", item.raw);
+            formData2.append("type", "变化检测");
+          }
+          let upload1 = new Promise((resolve, reject) => {
+            this.createSrc(formData1).then((res) => {
+              this.sharpenSrc1 = res.data.data.splice(0, 3);
+              this.Img1 = this.sharpenSrc1.map((item) => {
+                return global.BASEURL + item.src;
+              });
+              resolve();
+            });
+          });
+          let upload2 = new Promise((resolve, reject) => {
+            this.createSrc(formData2).then((res) => {
+              this.sharpenSrc2 = res.data.data.splice(0, 3);
+              this.Img3 = this.sharpenSrc2.map((item) => {
+                return global.BASEURL + item.src;
+              });
+              resolve();
+            });
+          });
+          Promise.all([upload1, upload2]).then((val) => {
+            this.sharpenSrc = this.sharpenSrc1.concat(this.sharpenSrc2);
+            this.sharpenSrc = this.sharpenSrc.map((item) => {
+              return {
+                filename: item.filename.substring(
+                  item.filename.indexOf("/") + 1,
+                  item.length
+                ),
+                src: item.src,
+              };
+            });
+            this.shaPairs = this.sharpenSrc.map((item) => {
+              return item.filename.substring(
+                item.filename.indexOf("/") + 1,
+                item.length
+              );
+            });
+
+            this.checkPairs(this.hisPairs);
+
+            if (!this.canUpload) {
+              this.$message.error(
+                "检测到命名对应失败的图片，请检查您的文件命名"
+              );
+              hideFullScreenLoading("#load");
+              this.Img1 = [];
+              this.Img3 = [];
+            } else {
+              this.createSharpenList(this.sharpenSrc);
+              this.histogramUpload(this.mysharpen).then((res) => {
+                this.sharpenImg1 = res.data.data.map((item) => {
+                  return global.BASEURL + item.first;
+                });
+
+                this.sharpenImg2 = res.data.data.map((item) => {
+                  return global.BASEURL + item.second;
+                });
+              });
+            }
+          });
+        }
+      }
+    },
+    createSharpenList(beforeData) {
+      let tempArr = [];
+      let afterData = [];
+      for (let i = 0; i < beforeData.length; i++) {
+        if (tempArr.indexOf(beforeData[i].filename) === -1) {
+          afterData.push(beforeData[i]);
+          tempArr.push(beforeData[i].filename);
+        } else {
+          for (let j = 0; j < afterData.length; j++) {
+            Reflect.deleteProperty(afterData[j], "photo_id");
+            // Reflect.deleteProperty(afterData[j], "filename");
+            afterData[j].first = afterData[j].src;
+            afterData[j].second = beforeData[i + j].src;
+            // Reflect.deleteProperty(afterData[j], "src");
+          }
+          break;
+        }
+      }
+      this.mysharpen.list = afterData;
+    },
+    selectFilter() {
+      if (this.$refs.smooth.checked == true) {
+        this.$refs.smooth.checked = false;
+      }
+
+      if (this.$refs.filter.checked == false) {
+        this.$message.success("取消高斯滤波处理");
+        this.upload.denoise = 0;
+      } else {
+        this.$message.success("高斯滤波处理");
+        this.upload.denoise = 5;
+      }
+    },
+    selectSmooth() {
+      if (this.$refs.filter.checked == true) {
+        this.$refs.filter.checked = false;
+      }
+
+      if (this.$refs.smooth.checked == false) {
+        this.$message.success("取消平滑处理");
+        this.upload.denoise = 0;
+      } else {
+        this.$message.success("平滑处理");
+        this.upload.denoise = 3;
+      }
+    },
+    dealAfterImg(currentIndex) {
+      if (this.isHole[currentIndex]) {
+        this.$refs.hole.checked = true;
+        this.$message.success("该图已经过处理");
+      } else {
+        this.$message.success("连通域滤波并填充孔洞处理");
+        this.hole.id = this.idList[this.currentIndex];
+        this.holeHandle(this.hole).then((res) => {
+          this.getMore();
+        });
+      }
+    },
+    dealExample() {
+      this.$refs.hole1.checked = true;
+      this.$message.success("该图已经过处理");
+    },
+    checkFile1(file) {
+      const whiteList = ["jpg", "jpeg", "png", "JPG", "JPEG"];
+
+      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+      if (whiteList.indexOf(fileSuffix) === -1) {
+        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+        this.fileList1 = [];
+        this.canUpload = false;
+      } else {
+        this.canUpload = true;
+      }
+    },
+    checkFile2(file) {
+      const whiteList = ["jpg", "jpeg", "png", "JPG", "JPEG"];
+      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
+      if (whiteList.indexOf(fileSuffix) === -1) {
+        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+        this.fileList2 = [];
+        this.canUpload = false;
+      } else {
+        this.canUpload = true;
+      }
+    },
+    checkPairs(list) {
+      var s = list.join(",") + ",";
+      let j = 0;
+      for (var i = 0; i < list.length; i++) {
+        if (s.replace(list[i] + ",", "").indexOf(list[i] + ",") > -1) {
+        } else {
+          j++;
+          break;
+        }
+      }
+      j;
+      if (j != 0) {
+        this.canUpload = false;
+      } else {
+        this.canUpload = true;
+      }
+    },
+    changePreMode() {
+      if (this.preMode == 1) {
+        this.preMode = 2;
+      } else {
+        this.preMode = 1;
+      }
+    },
+    sliderMouseMove(event) {
+      const slider = document.querySelector("#image-slider");
+      const wrapper = document.querySelector(".img-wrapper");
+      const handle = document.querySelector(".handle");
+
+      if (this.isSliderLocked) return;
+
+      const sliderLeftX = slider.offsetLeft;
+
+      const sliderWidth = slider.clientWidth;
+   
+      const sliderHandleWidth = handle.clientWidth;
+   
+      let mouseX = event.clientX - sliderLeftX;
+
+      if (mouseX < 0) mouseX = 0;
+      else if (mouseX > sliderWidth) mouseX = sliderWidth;
+
+      wrapper.style.width = `${((1 - mouseX / sliderWidth) * 100).toFixed(4)}%`;
+    
+      handle.style.left = `calc(${((mouseX / sliderWidth) * 100).toFixed(
+        4
+      )}% - ${sliderHandleWidth / 2}px)`;
+    
+    },
+    sliderMouseDown() {
+      if (this.isSliderLocked) this.isSliderLocked = false;
+      this.sliderMouseMove(event);
+    },
+    sliderMouseUp() {
+      if (!this.isSliderLocked) this.isSliderLocked = true;
+    },
+    sliderMouseLeave() {
+      if (this.isSliderLocked) this.isSliderLocked = true;
+    },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      document.querySelector(".el-main").scrollTop = 0;
+    });
+  },
+};
+</script>
+
+<style scoped lang="less">
+* {
+  font-family: SimHei sans-serif;
+}
+.icon-shuaxin:hover {
+  color: rgb(64, 158, 255);
+}
+.icon-shuaxin {
+  transition: all 0.3s;
+}
+.list {
+  text-align: center;
+  cursor: pointer;
+  width: auto;
+  height: 20px;
+  background-color: rgb(236, 244, 255);
+  position: relative;
+  margin-bottom: 10px;
+}
+.list-number:hover::after {
+  width: 100%;
+  background: rgb(64, 158, 255);
+}
+.list-number::after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 2px 2px 0 0;
+  transition: 0.4s;
+  z-index: -1;
+}
+.list:hover * {
+  color: #ecf4ff !important;
+}
+.list-number {
+  z-index: 1;
+}
+.list-number {
+  overflow: hidden;
+  margin: 0 auto;
+  width: auto;
+  height: 20px;
+  position: relative !important;
+  border-radius: 2px !important;
+}
+.swiper-img {
+  width: 100%;
+  margin-top: 30px;
+  overflow: hidden;
+  position: relative;
+  max-height: 280px;
+  min-height: 240px;
+  .swiper-lbtn {
+    opacity: 0.6;
+    left: 0;
+    height: 100%;
+    z-index: 100;
+    position: absolute;
+  }
+
+  .img-box {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    opacity: 0.7;
+    transition: all 0.6s;
+    margin-right: 10px;
+    justify-content: space-between;
+  }
+}
+.el-upload-dragger {
+  border: 3px dashed var(--el-border-color);
+  height: 180px;
+  margin-top: 10px;
+}
+.result {
+  width: 100%;
+  height: auto;
+}
+#subtitle:hover:after {
+  left: 0%;
+  right: 0%;
+  width: 220px;
+}
+.render-box {
+  .render-img {
+    // width: 100%;
+    max-height: 600px;
+    overflow: hidden;
+    
+  }
+  .render-style {
+    height: auto;
+  }
+}
+.cl-checkbox {
+  display: block;
+  height: auto;
+  text-align: center;
+}
+.style-words {
+  line-height: 30px;
+  height: 30px;
+  transition: all 0.4s;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+.style-words:hover {
+  color: white;
+}
+.normal:hover {
+  background-color: rgb(64, 158, 255);
+}
+.woods:hover {
+  background-image: linear-gradient(#9be15d, #00e3ae 100%);
+}
+.neon:hover {
+  background-image: linear-gradient(135deg, #f761a1 15%, #8c1bab 100%);
+}
+.flash:hover {
+  background-image: linear-gradient(135deg, #c2ffd8 10%, #465efb 100%);
+}
+.aurora:hover {
+  background-image: linear-gradient(#011142, #00bbc9 100%);
+}
+.active-normal {
+  background-color: rgb(64, 158, 255);
+}
+.active-woods {
+  background-image: linear-gradient(#9be15d, #00e3ae 100%);
+}
+.active-neon {
+  background-image: linear-gradient(135deg, #f761a1 15%, #8c1bab 100%);
+}
+.active-flash {
+  background-image: linear-gradient(135deg, #c2ffd8 10%, #465efb 100%);
+}
+.active-aurora {
+  background-image: linear-gradient(#011142, #00bbc9 100%);
+}
+.style-title {
+  text-align: center;
+  font-size: 22px;
+  font-family: "幼圆", sans-serif;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.feed-back {
+  border: 3px solid #0f2d2d;
+  width: 880px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+}
+.img-index {
+  text-align: center;
+  height: 428px;
+  align-content: center;
+  line-height: 428px;
+}
+.index-number {
+  font-family: Yu Gothic Medium;
+  font-style: oblique;
+  font-size: 30px;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+.img-infor {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.icon-xiazai {
+  margin-left: 5px;
+  font-size: 24px;
+}
+.icon-fankui {
+  margin-left: 15px;
+  font-size: 24px;
+  color: skyblue;
+}
+.his-words {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 600;
+  font-family: Microsoft JhengHei UI, sans-serif;
+}
+.clearQ {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  z-index: 100;
+}
+.render-border {
+  border: rgb(64, 158, 255) 0.5rem solid;
+}
+
+
+#image-slider {
+  position: relative;
+  max-width:100%;
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 1em;
+  // box-shadow: -4px 5px 10px 1px gray;
+  cursor: col-resize;
+  display: inline-block;
+}
+
+#image-slider img {
+  display: block;
+  height: 100%;
+  max-width:550px;
+ max-height: 550px;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+#image-slider .img-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#image-slider .img-wrapper img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+
+  transform: scale(1.2);
+}
+
+#image-slider .handle {
+  border: 0 solid red;
+  position: absolute;
+  top: 0;
+  left: calc(50% - var(--image-slider-handle-width) / 2);
+  width: var(--image-slider-handle-width);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  z-index: 2;
+}
+
+#image-slider .handle-circle {
+
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#image-slider .handle-line {
+  width: 2px;
+  flex-grow: 1;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --image-slider-width: 90vw;
+  }
+}
+.el-row{
+  position: inherit;
+}
+</style>
