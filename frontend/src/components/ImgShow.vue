@@ -15,6 +15,7 @@
               v-for="index in beforeList.length"
               class="img-index hidden-sm-and-down"
               :style="{ height: indexHeight + 'rem' }"
+              :key="index"
             >
               第<span class="index-number">{{ index }}</span>组
             </div>
@@ -29,6 +30,7 @@
             <div
               v-for="(item, index) in beforeList"
               style="position: relative;"
+              :key="index"
             >
               <el-image
                 ref="tableTab"
@@ -62,6 +64,7 @@
             <div
               v-for="(item, index) in afterList"
               style="position: relative"
+              :key="index"
             >
               <el-image
                 ref="tableTab"
@@ -98,9 +101,24 @@ import { downloadimgWithWords } from "@/utils/download.js";
 export default {
   name: "Imgshow",
   props: {
-    beforeImg: {},
-    afterImg: {},
-    funtype: "",
+    beforeImg: {
+      type:Array,
+      default() {
+        return [];
+      }
+    },
+    afterImg: {
+      type:Array,
+      default() {
+        return [];
+      }
+    },
+    funtype: {
+      type:String,
+      default() {
+        return '';
+      }
+    },
   },
   data() {
     return {

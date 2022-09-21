@@ -138,7 +138,15 @@ import {
   goOnlineMap
 } from "@/utils/gosomewhere.js";
 export default {
-  props: ["isCollapse", "activeIndex"],
+  props:{
+    isCollapse:{
+      type:Boolean,
+      default:false
+    },
+    activeIndex:{
+      type:String
+    }
+  },
   data() {
     return {};
   },

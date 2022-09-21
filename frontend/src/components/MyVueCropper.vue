@@ -28,8 +28,6 @@
                 :auto-crop-width="option.autoCropWidth"
                 :auto-crop-height="option.autoCropHeight"
                 :fixed-box="option.fixedBox"
-                @realTime="realTime"
-                @imgLoad="imgLoad"
               />
             </div>
           </div>
@@ -100,17 +98,25 @@ export default {
     VueCropper,
   },
   props: {
-    prehandle:'',
-    denoise:'',
+    prehandle:{
+      type:Number
+    },
+    denoise:{
+      type:Number
+    },
     fileimg: {
       type: String,
       default: () => "",
     },
-    funtype: "",
+    funtype: {
+      type:String
+    },
     file: {
       type: Object,
     },
-    length: "",
+    length: {
+      type:Number
+    },
   },
   emits: ["finish", "cutChanged"],
   data() {
@@ -256,13 +262,6 @@ export default {
           this.$emit("cutChanged", false);
         });
       });
-    },
-    // 实时预览函数
-    realTime(data) {
-      this.previews = data;
-    },
-    imgLoad(msg) {
- 
     },
     base64toFile(dataurl, filename) {
       let arr = dataurl.split(",");

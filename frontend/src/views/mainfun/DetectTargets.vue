@@ -183,7 +183,7 @@
           </div>
           <el-divider v-if="!uploadSrc.prehandle" />
           <div v-if="uploadSrc.prehandle">
-            <p v-if="uploadSrc.prehandle==2" /><div
+            <p v-if="uploadSrc.prehandle==2" ><div
               id="subtitle"
               style="font-size: 25px"
             >
@@ -193,7 +193,7 @@
               />
             </div>   
             </p>
-            <p v-else-if="uploadSrc.prehandle==4" /><div
+            <p v-else-if="uploadSrc.prehandle==4" ><div
               id="subtitle"
               style="font-size: 25px"
             >

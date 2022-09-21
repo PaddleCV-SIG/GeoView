@@ -1,6 +1,6 @@
 {
   "name": "pp-geoview",
-  "version": "develop",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

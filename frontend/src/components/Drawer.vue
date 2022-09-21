@@ -83,7 +83,15 @@ import {
 } from "@/utils/gosomewhere.js";
 export default {
   name: "Drawer",
-  props: ["activeIndex", "isCollapse"],
+  props:{
+    isCollapse:{
+      type:Boolean,
+      default:false
+    },
+    activeIndex:{
+      type:String
+    }
+  },
   data() {
     return {
       drawer: false,
