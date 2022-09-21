@@ -28,8 +28,6 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "eslint": "^8.23.1",
-    "eslint-plugin-vue": "^9.5.1",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
     "vue-particles": "^1.0.9"
