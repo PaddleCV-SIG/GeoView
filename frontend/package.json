@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "eslint --ext .js,.vue --fix --cached ./src"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@vueuse/core": "^8.5.0",
@@ -33,7 +32,6 @@
     "eslint-plugin-vue": "^9.5.1",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
-    "pre-commit": "^1.2.2",
     "vue-particles": "^1.0.9"
   },
   "browserslist": [
@@ -41,8 +39,5 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ],
-  "pre-commit": [
-    "lint"
   ]
 }
