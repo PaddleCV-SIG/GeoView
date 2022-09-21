@@ -17,8 +17,3 @@ MYSQL_PASSWORD=123456
 
 # 密钥配置(记得改)
 SECRET_KEY='Hippo'
-
-# 邮箱配置
-MAIL_SERVER='smtp.qq.com'
-MAIL_USERNAME='123@qq.com'
-MAIL_PASSWORD='XXXXX' # 生成的授权码
