@@ -183,26 +183,28 @@
           </div>
           <el-divider v-if="!uploadSrc.prehandle" />
           <div v-if="uploadSrc.prehandle">
-            <p v-if="uploadSrc.prehandle===2" ><div
-              id="subtitle"
-              style="font-size: 25px"
-            >
-              CLAHE处理结果预览<i
-                class="iconfont icon-dianji"
-                style="font-size: 23px; margin-left: 17px; color: blue"
-              />
-            </div>   
-            </p>
-            <p v-else-if="uploadSrc.prehandle===4" ><div
-              id="subtitle"
-              style="font-size: 25px"
-            >
-              锐化处理结果预览<i
-                class="iconfont icon-dianji"
-                style="font-size: 23px; margin-left: 17px; color: blue"
-              />
-            </div>   
-            </p>
+            <template v-if="uploadSrc.prehandle===2">
+              <div
+                id="subtitle"
+                style="font-size: 25px"
+              >
+                CLAHE处理结果预览<i
+                  class="iconfont icon-dianji"
+                  style="font-size: 23px; margin-left: 17px; color: blue"
+                />
+              </div>   
+            </template>
+            <tempalte v-else-if="uploadSrc.prehandle===4">
+              <div
+                id="subtitle"
+                style="font-size: 25px"
+              >
+                锐化处理结果预览<i
+                  class="iconfont icon-dianji"
+                  style="font-size: 23px; margin-left: 17px; color: blue"
+                />
+              </div>   
+            </tempalte>
             <el-divider />
             <el-row
               justify="center"
