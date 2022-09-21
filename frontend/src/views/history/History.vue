@@ -1,12 +1,12 @@
 <template>
   <div class="his-box">
     <div class="hint">
-      当前浏览功能区：<span v-if="type != ''">{{ type }}</span><span v-else>全部</span><i
+      当前浏览功能区：<span v-if="type !== ''">{{ type }}</span><span v-else>全部</span><i
         style="margin-left: 8px; font-size: 20px"
         :class="{
-          'iconfont icon-bianhuajiance': type == '变化检测',
-          'iconfont icon-mubiaojiance': type == '目标检测',
-          'iconfont icon-erfenleibianhuajiance16px': type == '地物分类',
+          'iconfont icon-bianhuajiance': type === '变化检测',
+          'iconfont icon-mubiaojiance': type === '目标检测',
+          'iconfont icon-erfenleibianhuajiance16px': type === '地物分类',
         }"
       />
     </div>
@@ -28,10 +28,10 @@
           <span id="bigtitle"><i
             style="font-size: 18px; margin-right: 6px"
             :class="{
-              'iconfont icon-bianhuajiance': scope.row.type == '变化检测',
-              'iconfont icon-mubiaojiance': scope.row.type == '目标检测',
+              'iconfont icon-bianhuajiance': scope.row.type === '变化检测',
+              'iconfont icon-mubiaojiance': scope.row.type === '目标检测',
               'iconfont icon-erfenleibianhuajiance16px':
-                scope.row.type == '地物分类',
+                scope.row.type === '地物分类',
             }"
           />{{ scope.row.type }}
           </span>
@@ -44,16 +44,18 @@
             min-width="70"
             height="70"
             class="goup"
+            alt="原图"
             @click="previewOnePic(scope.row.before_img)"
           >
 
           <img
-            v-if="scope.row.type == '变化检测'"
+            v-if="scope.row.type === '变化检测'"
             :src="global.BASEURL + scope.row.before_img1"
             min-width="70"
             height="70"
             class="goup"
             style="margin-left: 20px"
+            alt="原图"
             @click="previewOnePic(scope.row.before_img1)"
           >
         </template>
@@ -65,6 +67,7 @@
             min-width="70"
             height="70"
             class="goup"
+            alt="结果图"
             @click="previewOnePic(scope.row.after_img)"
           >
         </template>
@@ -80,7 +83,7 @@
             删除
           </el-button>
           <el-button
-            v-if="scope.row.type != '变化检测'"
+            v-if="scope.row.type !== '变化检测'"
             size="default"
             type="primary"
             @click="previewTwoPic(scope.row.before_img, scope.row.after_img)"
@@ -187,7 +190,7 @@
       </el-menu>
     </el-drawer>
     <div
-      v-show="tableData.length != 0"
+      v-show="tableData.length !== 0"
       style="margin-top: 20px"
     >
       <el-button @click="toggleSelection(tableData)">
@@ -240,42 +243,48 @@
       fullscreen
       center
     >
-      <div v-if="flag == 2">
+      <div v-if="flag === 2">
         <el-row justify="space-evenly">
           <img
             id="pre-img"
             :src="previewPic1"
+            alt="预览"
           >
 
           <img
             id="pre-img"
             :src="previewPic2"
+            alt="预览"
           >
         </el-row>
       </div>
-      <div v-else-if="flag == 1">
+      <div v-else-if="flag === 1">
         <el-row justify="space-evenly">
           <img
             id="pre-img"
             :src="previewPic1"
+            alt="预览"
           >
         </el-row>
       </div>
-      <div v-else-if="flag == 3">
+      <div v-else-if="flag === 3">
         <el-row justify="space-evenly">
           <img
             id="pre-img"
             :src="previewPic1"
+            alt="预览"
           >
 
           <img
             id="pre-img"
             :src="previewPic3"
+            alt="预览"
           >
 
           <img
             id="pre-img"
             :src="previewPic2"
+            alt="预览"
           >
         </el-row>
         <el-row />
@@ -376,7 +385,7 @@ export default {
         });
     },
     deleteAll() {
-      if (this.multipleSelection.length == 0) {
+      if (this.multipleSelection.length === 0) {
         this.$message.warning("请选择要删除的记录哦");
       } else {
         this.$confirm("此操作将永久删除, 是否继续?", "提示", {
@@ -394,7 +403,7 @@ export default {
               this.getTabelInfo();
               this.tableData = this.tableData.filter((item) => {
                 return this.multipleSelection.every((item2) => {
-                  return item.id != item2.id;
+                  return item.id !== item2.id;
                 });
               });
               hideFullScreenLoading(".his-box");
@@ -413,7 +422,7 @@ export default {
       }
     },
     downLoadAll() {
-      if (this.multipleSelection.length == 0) {
+      if (this.multipleSelection.length === 0) {
         this.$message.warning("请选择要下载的历史记录的图片哦");
       } else {
         for (let item of this.multipleSelection) {
@@ -530,7 +539,7 @@ export default {
   padding: 0.5rem;
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem;
-  box-shadow: -5px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: -5px 0 10px 0 rgba(0, 0, 0, 0.1);
   transition: all 0.1s ease-in-out;
   cursor: pointer;
   font-family: SimHei sans-serif;

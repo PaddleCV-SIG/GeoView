@@ -89,7 +89,8 @@ export default {
       default:false
     },
     activeIndex:{
-      type:String
+      type:String,
+      default: '/detectchanges'
     }
   },
   data() {
@@ -120,7 +121,7 @@ export default {
   padding: 0.5rem;
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem;
-  box-shadow: -5px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: -5px 0 10px 0 rgba(0, 0, 0, 0.1);
   transition: all 0.1s ease-in-out;
   cursor: pointer;
   font-family: Microsoft JhengHei UI, sans-serif;

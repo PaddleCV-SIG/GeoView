@@ -65,7 +65,7 @@
               将文件拖到此处，或<em>点击上传</em>
             </div>
             <div
-              slot="tip"
+           
               class="el-upload__tip"
             >
               只能上传一张或多张图片，请在下方上传文件夹
@@ -183,7 +183,7 @@
           </div>
           <el-divider v-if="!uploadSrc.prehandle" />
           <div v-if="uploadSrc.prehandle">
-            <p v-if="uploadSrc.prehandle==2" ><div
+            <p v-if="uploadSrc.prehandle===2" ><div
               id="subtitle"
               style="font-size: 25px"
             >
@@ -193,7 +193,7 @@
               />
             </div>   
             </p>
-            <p v-else-if="uploadSrc.prehandle==4" ><div
+            <p v-else-if="uploadSrc.prehandle===4" ><div
               id="subtitle"
               style="font-size: 25px"
             >
@@ -215,7 +215,10 @@
                 :lg="6"
                 :xl="6"
               >
-                <div v-for="(item) in before">
+                <div
+                  v-for="(index,item) in before"
+                  :key="index"
+                >
                   <el-image
                     :src="item"
                     :preview-src-list="[item]"
@@ -231,14 +234,17 @@
                 :xl="2"
               />
               <el-col
-                v-if="uploadSrc.prehandle==2"
+                v-if="uploadSrc.prehandle===2"
                 :xs="24"
                 :sm="24"
                 :md="6"
                 :lg="6"
                 :xl="6"
               >
-                <div v-for="(item) in claheImg">
+                <div
+                  v-for="(index,item) in claheImg"
+                  :key="index"
+                >
                   <el-image
                     :src="item"
                     :preview-src-list="[item]"
@@ -257,14 +263,17 @@
                 </div>
               </el-col>
               <el-col
-                v-if="uploadSrc.prehandle==4"
+                v-if="uploadSrc.prehandle===4"
                 :xs="24"
                 :sm="24"
                 :md="6"
                 :lg="6"
                 :xl="6"
               >
-                <div v-for="(item) in sharpenImg">
+                <div
+                  v-for="(index,item) in sharpenImg"
+                  :key="index"
+                >
                   <el-image
                     :src="item"
                     :preview-src-list="[item]"
@@ -440,7 +449,7 @@ export default {
     selectSmooth,
     selectClahe,
     checkUpload() {
-      if (this.afterImg.length == 0) {
+      if (this.afterImg.length === 0) {
         this.isUpload = false;
       }else{
         this.isUpload = true

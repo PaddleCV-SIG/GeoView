@@ -12,6 +12,7 @@
       <img
         :src="require('@/assets/image/logo/80.png')"
         style="width:45px;color:rgb(64,158,255);"
+        alt="logo"
         @click="goRemoteSense"
       >
       <div
@@ -144,7 +145,8 @@ export default {
       default:false
     },
     activeIndex:{
-      type:String
+      type:String,
+      default: '/detectchanges'
     }
   },
   data() {
@@ -278,7 +280,7 @@ export default {
 }
 #bigtitle::after {
   content: "";
-  width: 0px;
+  width: 0;
   height: 3px;
   background:rgb(64,158,255);
   position: absolute;

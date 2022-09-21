@@ -1,8 +1,8 @@
 import {createSrc,prePhotoHandle} from '@/api/upload'
 import global from '@/global'
 function selectSharpen(type) {
-  if(this.fileList.length  == 0){
-    if( this.uploadSrc.prehandle == 4){
+  if(this.fileList.length  === 0){
+    if( this.uploadSrc.prehandle === 4){
       this.$refs.sharpen.checked = false;
       this.uploadSrc.prehandle = 0
     }
@@ -12,11 +12,11 @@ function selectSharpen(type) {
     }
 
   }else{
-    if (this.$refs.clahe.checked == true) {
+    if (this.$refs.clahe.checked === true) {
       this.$refs.clahe.checked = false;
     }
 
-    if (this.$refs.sharpen.checked == false) {
+    if (this.$refs.sharpen.checked === false) {
       this.$message.success("取消锐化处理");
       this.uploadSrc.prehandle=0
     } else {
@@ -48,8 +48,8 @@ function selectSharpen(type) {
   }
   }
   function selectClahe(type) {
-    if(this.fileList.length == 0){
-      if( this.uploadSrc.prehandle == 2){
+    if(this.fileList.length === 0){
+      if( this.uploadSrc.prehandle === 2){
         this.$refs.clahe.checked = false;
         this.uploadSrc.prehandle = 0
       }
@@ -58,10 +58,10 @@ function selectSharpen(type) {
         this.$message.error('请先上传图片')
       }
     }else{
-      if (this.$refs.sharpen.checked == true) {
+      if (this.$refs.sharpen.checked === true) {
         this.$refs.sharpen.checked = false;
       }
-      if (this.$refs.clahe.checked == false) {
+      if (this.$refs.clahe.checked === false) {
         this.$message.success("取消CLAHE处理");
         this.uploadSrc.prehandle = 0
       } else {
@@ -93,11 +93,11 @@ function selectSharpen(type) {
     }
   }
  function selectFilter() {
-    if (this.$refs.smooth.checked == true) {
+    if (this.$refs.smooth.checked === true) {
       this.$refs.smooth.checked = false;
     }
 
-    if (this.$refs.filter.checked == false) {
+    if (this.$refs.filter.checked === false) {
       this.$message.success("取消高斯滤波处理");
       this.uploadSrc.denoise = 0
     } else {
@@ -106,11 +106,11 @@ function selectSharpen(type) {
     }
   }
   function selectSmooth() {
-    if (this.$refs.filter.checked == true) {
+    if (this.$refs.filter.checked === true) {
       this.$refs.filter.checked = false;
     }
 
-    if (this.$refs.smooth.checked == false) {
+    if (this.$refs.smooth.checked === false) {
       this.$message.success("取消平滑处理");
       this.uploadSrc.denoise = 0
     } else {

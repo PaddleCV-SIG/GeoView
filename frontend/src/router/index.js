@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const Home = () => import('@/views/Home.vue')
 const DetectChanges = () => import('@/views/mainfun/DetectChanges.vue')

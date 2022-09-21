@@ -78,7 +78,6 @@
     </div>
   </div>
 </template>
-
 <script>
 //https://blog.csdn.net/HH18700418030/article/details/120976087裁剪参考
 import "vue-cropper/dist/index.css";
@@ -113,9 +112,11 @@ export default {
     },
     file: {
       type: Object,
+
     },
     length: {
-      type:Number
+      type:Number,
+      default:0
     },
   },
   emits: ["finish", "cutChanged"],
@@ -151,8 +152,10 @@ export default {
     data(){
        this.prehandle = this.setprehandle
       this.denoise = this.setdenoise
+
     }
   },
+
   methods: {
     createSrc,
     classifyUpload,
@@ -168,7 +171,7 @@ export default {
     checkUpload(){},
     setNormalWay(){},
     submitUpload(funtype) {
-      this.finish(funtype);
+      // this.finish(funtype);
     },
     handleRemove(file, fileList) {},
     handlePreview(file) {
@@ -240,8 +243,8 @@ export default {
             
               });
           }
-      
-          if (funtype == "地物分类") {
+
+          if (funtype === "地物分类") {
             this.classifyUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
@@ -251,7 +254,7 @@ export default {
               }, 200);
          
             });
-          } else if (funtype == "目标检测") {
+          } else if (funtype === "目标检测") {
             this.detectTargetsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");

@@ -60,6 +60,7 @@ import BackTop from "@/components/BackTop";
 export default {
   name: "Home",
   components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
     Aside,
     Tablogin,
     Drawer,

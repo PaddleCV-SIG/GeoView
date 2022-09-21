@@ -3,7 +3,7 @@
     <el-col>
       <el-card style="margin-bottom: 10px">
         <el-empty
-          v-if="beforeImg.length == 0"
+          v-if="beforeImg.length === 0"
           :image-size="200"
         />
         <el-row :gutter="10">
@@ -13,9 +13,9 @@
           >
             <div
               v-for="index in beforeList.length"
+              :key="index"
               class="img-index hidden-sm-and-down"
               :style="{ height: indexHeight + 'rem' }"
-              :key="index"
             >
               第<span class="index-number">{{ index }}</span>组
             </div>
@@ -29,8 +29,8 @@
           >
             <div
               v-for="(item, index) in beforeList"
-              style="position: relative;"
               :key="index"
+              style="position: relative;"
             >
               <el-image
                 ref="tableTab"
@@ -63,8 +63,8 @@
           >
             <div
               v-for="(item, index) in afterList"
-              style="position: relative"
               :key="index"
+              style="position: relative"
             >
               <el-image
                 ref="tableTab"
@@ -147,10 +147,10 @@ export default {
     },
   },
   created() {
-        if(this.funtype == '地物分类'){
+        if(this.funtype === '地物分类'){
       this.indexHeight = 19
     }
-    if(this.funtype == '目标检测'){
+    if(this.funtype === '目标检测'){
       this.indexHeight = 23.4375
     }
   },
