@@ -4,10 +4,8 @@ from flask import Flask, request
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy, BaseQuery
 from marshmallow import fields
-from marshmallow.validate import (
-    URL, Email, Range, Length, Equal, Regexp,
-    Predicate, NoneOf, OneOf, ContainsOnly
-)
+from marshmallow.validate import (URL, Email, Range, Length, Equal, Regexp,
+                                  Predicate, NoneOf, OneOf, ContainsOnly)
 
 URL.default_message = '无效的链接'
 Email.default_message = '无效的邮箱地址'
@@ -31,21 +29,13 @@ fields.Field.default_error_messages = {
     "validator_failed": "非法数据",
 }
 
-fields.Str.default_error_messages = {
-    'invalid': "不是合法文本"
-}
+fields.Str.default_error_messages = {'invalid': "不是合法文本"}
 
-fields.Int.default_error_messages = {
-    "invalid": "不是合法整数"
-}
+fields.Int.default_error_messages = {"invalid": "不是合法整数"}
 
-fields.Number.default_error_messages = {
-    "invalid": "不是合法数字"
-}
+fields.Number.default_error_messages = {"invalid": "不是合法数字"}
 
-fields.Boolean.default_error_messages = {
-    "invalid": "不是合法布尔值"
-}
+fields.Boolean.default_error_messages = {"invalid": "不是合法布尔值"}
 
 
 class Query(BaseQuery):
@@ -61,9 +51,7 @@ class Query(BaseQuery):
     def layui_paginate(self):
         limit = request.args.get('limit', type=int)
         page = request.args.get('page', type=int)
-        return self.paginate(page=page,
-                             per_page=limit,
-                             error_out=False)
+        return self.paginate(page=page, per_page=limit, error_out=False)
 
     def layui_paginate_json(self, schema: Marshmallow().Schema):
         """
@@ -72,17 +60,18 @@ class Query(BaseQuery):
         _res = self.paginate(
             page=request.args.get('page', type=int),
             per_page=request.args.get('limit', type=int),
-            error_out=False
-        )
-        return schema(many=True).dump(_res.items), _res.total, _res.page, _res.per_page
+            error_out=False)
+        return schema(
+            many=True).dump(_res.items), _res.total, _res.page, _res.per_page
 
     def layui_paginate_db_json(self):
         """
         db.query(A.name).layui_paginate_db_json()
         """
-        _res = self.paginate(page=request.args.get('page', type=int),
-                             per_page=request.args.get('limit', type=int),
-                             error_out=False)
+        _res = self.paginate(
+            page=request.args.get('page', type=int),
+            per_page=request.args.get('limit', type=int),
+            error_out=False)
         return [dict(i) for i in _res.items], _res.total
 
 

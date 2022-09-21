@@ -19,7 +19,13 @@ from applications.interface import change_detection as CD
 from applications.models.analysis import Analysis
 
 
-def save_analysis(type_, pic1, retPic, pic2="", data="{}", is_hole=False, checked="0,0"):
+def save_analysis(type_,
+                  pic1,
+                  retPic,
+                  pic2="",
+                  data="{}",
+                  is_hole=False,
+                  checked="0,0"):
     analysis = Analysis()
 
     analysis.type = type_
@@ -33,7 +39,8 @@ def save_analysis(type_, pic1, retPic, pic2="", data="{}", is_hole=False, checke
     db.session.commit()
 
 
-def change_detection(model_path, data_path, out_dir, names, step1, step2, type_):
+def change_detection(model_path, data_path, out_dir, names, step1, step2,
+                     type_):
     """
     变化检测
     :param model_path: 静态图模型路径
@@ -83,7 +90,13 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2, type_)
         second_ = pair['second']
         retPic = retPics[i]
         data = json.dumps(res[i])
-        save_analysis(type_, first_, retPic, pic2=second_, data=data, checked=str(step1) + "," + str(step2))
+        save_analysis(
+            type_,
+            first_,
+            retPic,
+            pic2=second_,
+            data=data,
+            checked=str(step1) + "," + str(step2))
         i += 1
         pass
     print("变化检测----------------->end")
@@ -107,7 +120,8 @@ def url_handle(imgs):
     pass
 
 
-def object_detection(model_path, data_path, out_dir, names, step1, step2, type_):
+def object_detection(model_path, data_path, out_dir, names, step1, step2,
+                     type_):
     """
     目标检测
     :param model_path:
@@ -140,12 +154,19 @@ def object_detection(model_path, data_path, out_dir, names, step1, step2, type_)
     for i, pair in enumerate(resizes):
         first_ = up_url + pair
         retPic = retPics[i]
-        save_analysis(type_, first_, retPic, pic2="", data="", checked=str(step1) + "," + str(step2))
+        save_analysis(
+            type_,
+            first_,
+            retPic,
+            pic2="",
+            data="",
+            checked=str(step1) + "," + str(step2))
         pass
     print("目标检测----------------->end")
 
 
-def terrain_classification(model_path, data_path, out_dir, names, step1, step2, type_):
+def terrain_classification(model_path, data_path, out_dir, names, step1, step2,
+                           type_):
     """
     地物分类
     :param model_path:
@@ -177,7 +198,13 @@ def terrain_classification(model_path, data_path, out_dir, names, step1, step2, 
     for i, pair in enumerate(resizes):
         first_ = up_url + pair
         retPic = retPics[i]
-        save_analysis(type_, first_, retPic, pic2="", data="", checked=str(step1) + "," + str(step2))
+        save_analysis(
+            type_,
+            first_,
+            retPic,
+            pic2="",
+            data="",
+            checked=str(step1) + "," + str(step2))
         pass
     print("地物分类----------------->end")
 

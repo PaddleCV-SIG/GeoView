@@ -11,7 +11,9 @@ from skimage.io import imread
 from applications.common.path_global import md5_name, generate_url
 
 
-def show_images_in_row(im_paths, fig, title='', colormap=0):  # impaths为文件夹路径，colormap为渲染风格，可通过改变colormap的值来改变渲染风格
+def show_images_in_row(
+        im_paths, fig, title='',
+        colormap=0):  # impaths为文件夹路径，colormap为渲染风格，可通过改变colormap的值来改变渲染风格
     if colormap == 0:
         map = plt.cm.plasma  # 闪电
     if colormap == 1:
@@ -35,18 +37,22 @@ def show_images_in_row(im_paths, fig, title='', colormap=0):  # impaths为文件
     axs.imshow(im, cmap=map)
 
 
-def render(name, data_dir, save_dir, colormap):  # 实现渲染的函数，考虑到我们的需要一次只能渲染一张，pic_source一样为图片位置
+def render(name, data_dir, save_dir,
+           colormap):  # 实现渲染的函数，考虑到我们的需要一次只能渲染一张，pic_source一样为图片位置
     # 参考 https://stackoverflow.com/a/68209152
     fig = plt.figure(constrained_layout=True)
     # fig.suptitle("")   设置标题用的，我们不用设置标题，因为下面已经设置了
     subfigs = fig.subfigures(nrows=1, ncols=1)
     # 读入变化图
     pic_source = osp.join(data_dir, name)
-    show_images_in_row(pic_source, subfigs, title='Change Map', colormap=colormap)  # title为changemap，换成中文会乱码，勿换
+    show_images_in_row(
+        pic_source, subfigs, title='Change Map',
+        colormap=colormap)  # title为changemap，换成中文会乱码，勿换
 
     # 渲染结果
     fig.canvas.draw()
-    Image.frombytes('RGB', fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
+    Image.frombytes('RGB',
+                    fig.canvas.get_width_height(), fig.canvas.tostring_rgb())
     # plt.show()
     new_name = md5_name(str(colormap) + "_" + name)
     plt.savefig(osp.join(save_dir, new_name), bbox_inches='tight')

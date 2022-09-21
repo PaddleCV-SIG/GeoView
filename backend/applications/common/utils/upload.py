@@ -13,19 +13,21 @@ from applications.schemas import PhotoOutSchema
 
 
 def get_photo(page, limit):
-    photo = Photo.query.order_by(desc(Photo.create_time)).paginate(page=page, per_page=limit, error_out=False)
+    photo = Photo.query.order_by(desc(Photo.create_time)).paginate(
+        page=page, per_page=limit, error_out=False)
     count = Photo.query.count()
     data = model_to_dicts(schema=PhotoOutSchema, data=photo.items)
     return data, count
 
 
 def upload_one(photo, mime, type_=0):
-    filename = photos.save(photo,name=str(uuid.uuid4())+".")
+    filename = photos.save(photo, name=str(uuid.uuid4()) + ".")
     file_url = '/_uploads/photos/' + filename
     # file_url = photos.url(filename)
     upload_url = current_app.config.get("UPLOADED_PHOTOS_DEST")
     size = os.path.getsize(upload_url + '/' + filename)
-    photo = Photo(name=filename, href=file_url, mime=mime, size=size, type=type_)
+    photo = Photo(
+        name=filename, href=file_url, mime=mime, size=size, type=type_)
     db.session.add(photo)
     db.session.commit()
     return file_url, photo.id

@@ -18,7 +18,6 @@ from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
 
 analysis_api = Blueprint('analysis_api', __name__, url_prefix='/api/analysis')
-
 """
     结果展示
 """
@@ -29,11 +28,14 @@ def show_result(type):
     # orm查询
     # 使用分页获取data需要.items
     to_type = type_utils.str_to_type(type)
-    log = Analysis.query.filter_by(type=to_type).order_by(desc(Analysis.create_time)).layui_paginate()
+    log = Analysis.query.filter_by(
+        type=to_type).order_by(desc(Analysis.create_time)).layui_paginate()
     log_items = log.items
     items_handle(log_items)
     count = log.total
-    return table_api(data=model_to_dicts(schema=AnalysisSchema, data=log_items), count=count)
+    return table_api(
+        data=model_to_dicts(
+            schema=AnalysisSchema, data=log_items), count=count)
 
 
 """
@@ -47,18 +49,21 @@ def change_detection_api():
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
-    if step1_ is None or step1_ is None or step1_ not in (0, fun_type_1, fun_type_4) or step2_ not in (
-            0, fun_type_3, fun_type_5):
+    if step1_ is None or step1_ is None or step1_ not in (
+            0, fun_type_1, fun_type_4) or step2_ not in (0, fun_type_3,
+                                                         fun_type_5):
         return fail_api("参数异常")
     if list_ is None:
         return fail_api("请上传图片")
 
     for pair in list_:
-        if "first" not in pair or "second" not in pair or pair["first"] == "" or pair["second"] == "":
+        if "first" not in pair or "second" not in pair or pair[
+                "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
-    change_detection("model/change_detector/bit_256x256", up_dir, generate_dir, list_, step1_, step2_, type_)
+    change_detection("model/change_detector/bit_256x256", up_dir, generate_dir,
+                     list_, step1_, step2_, type_)
     return success_api()
 
 
@@ -73,13 +78,15 @@ def object_detection_api():
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
-    if step1_ is None or step1_ is None or step1_ not in (0, fun_type_2, fun_type_4) or step2_ not in (
-            0, fun_type_3, fun_type_5):
+    if step1_ is None or step1_ is None or step1_ not in (
+            0, fun_type_2, fun_type_4) or step2_ not in (0, fun_type_3,
+                                                         fun_type_5):
         return fail_api("参数异常")
     if list_ is None:
         return fail_api("请上传图片")
     type_ = 2
-    object_detection("model/object_detector/ppyolo_608x608", up_dir, generate_dir, list_, step1_, step2_, type_)
+    object_detection("model/object_detector/ppyolo_608x608", up_dir,
+                     generate_dir, list_, step1_, step2_, type_)
 
     return success_api()
 
@@ -95,14 +102,15 @@ def semantic_segmentation_api():
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
-    if step1_ is None or step1_ is None or step1_ not in (0, fun_type_2, fun_type_4) or step2_ not in (
-            0, fun_type_3, fun_type_5):
+    if step1_ is None or step1_ is None or step1_ not in (
+            0, fun_type_2, fun_type_4) or step2_ not in (0, fun_type_3,
+                                                         fun_type_5):
         return fail_api("参数异常")
     if list_ is None:
         return fail_api("请上传图片")
     type_ = 3
-    terrain_classification("model/semantic_segmentation/deeplabv3p_512x512", up_dir, generate_dir, list_, step1_, step2_,
-                           type_)
+    terrain_classification("model/semantic_segmentation/deeplabv3p_512x512",
+                           up_dir, generate_dir, list_, step1_, step2_, type_)
     return success_api()
 
 
@@ -121,7 +129,8 @@ def pre_handle():
     if step1_ not in (1, 4):
         return fail_api("请求参数异常")
     for pair in list_:
-        if "first" not in pair or "second" not in pair or pair["first"] == "" or pair["second"] == "":
+        if "first" not in pair or "second" not in pair or pair[
+                "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
         pair["first"] = img_url_handle(pair["first"])
         pair['second'] = img_url_handle(pair['second'])
@@ -132,7 +141,10 @@ def pre_handle():
         for pair in list_:
             temps = [pair["first"], pair["second"]]
             imgs1 = handle(fun_type_4, temps, up_dir, generate_dir)
-            match.append({"first": generate_url + imgs1[0], "second": generate_url + imgs1[1]})
+            match.append({
+                "first": generate_url + imgs1[0],
+                "second": generate_url + imgs1[1]
+            })
     return success_api(data=match)
 
 
@@ -149,12 +161,20 @@ def image_pre():
     imgs = list()
     if type == 1:
         for pair in list_:
-            if "first" not in pair or "second" not in pair or pair["first"] == "" or pair["second"] == "":
+            if "first" not in pair or "second" not in pair or pair[
+                    "first"] == "" or pair["second"] == "":
                 return fail_api("请求参数异常")
         for pair in list_:
-            temps = [img_url_handle(pair["first"]), img_url_handle(pair["second"])]
+            temps = [
+                img_url_handle(pair["first"]), img_url_handle(pair["second"])
+            ]
             imgs1 = handle(fun_type_4, temps, up_dir, generate_dir)
-            imgs.append({"first": pair["first"], "first1": imgs1[0], "second": pair["second"], "second1": imgs1[1]})
+            imgs.append({
+                "first": pair["first"],
+                "first1": imgs1[0],
+                "second": pair["second"],
+                "second1": imgs1[1]
+            })
     else:
         temps = list()
         for pair in list_:
@@ -187,6 +207,10 @@ def hole_handle1():
     temps = list()
     temps.append(analysis.after_img)
     after_img, data = hole_handle(generate_dir, generate_dir, temps)
-    Analysis.query.filter_by(id=analysis_id).update({"after_img": after_img, "data": data, "is_hole": True})
+    Analysis.query.filter_by(id=analysis_id).update({
+        "after_img": after_img,
+        "data": data,
+        "is_hole": True
+    })
     db.session.commit()
     return success_api()

@@ -5,7 +5,8 @@ import cv2
 from applications.common.path_global import md5_name
 
 
-def gaussian_blur(src_dir, save_dir, names):  # src_dir为原图文件夹，save_dir为保存结果的文件夹路径
+def gaussian_blur(src_dir, save_dir,
+                  names):  # src_dir为原图文件夹，save_dir为保存结果的文件夹路径
     temps = list()
     for name in names:
         Gn = cv2.imread(osp.join(src_dir, name))

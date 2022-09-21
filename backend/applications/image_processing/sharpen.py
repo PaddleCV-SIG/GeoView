@@ -17,6 +17,7 @@ def sharpen(src_dir, save_dir, names):  # src_dir为原图文件夹，save_dir�
         temps.append(new_name)
     return temps
 
+
 # # 4邻域模板与8邻域模板
 # kernel_4 = np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]], dtype=int)
 # kernel_8 = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]], dtype=int)

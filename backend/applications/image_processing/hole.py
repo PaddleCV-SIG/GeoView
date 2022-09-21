@@ -17,9 +17,11 @@ def hole_fill(src_dir, save_dir, names):  # src_dir为待处理文件夹名称�
         # 转换为布尔值
         thresh1 = thresh1 > 1
         # 去除外部噪点
-        stage1 = morphology.remove_small_objects(thresh1, min_size=256, connectivity=2)
+        stage1 = morphology.remove_small_objects(
+            thresh1, min_size=256, connectivity=2)
         # 去除内部孔洞，注意到第二个参数为area_threshold,而不是min_size
-        stage2 = morphology.remove_small_holes(stage1, area_threshold=5000, connectivity=1)
+        stage2 = morphology.remove_small_holes(
+            stage1, area_threshold=5000, connectivity=1)
         stage2 = stage2.astype('uint8')
         stage2 = cv2.cvtColor(stage2 * 255, cv2.COLOR_GRAY2RGB)
         new_name = md5_name(name)

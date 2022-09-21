@@ -12,7 +12,6 @@ from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
 
 history_api = Blueprint('history_api', __name__, url_prefix='/api/history')
-
 """
     查询我的历史记录
 """
@@ -24,7 +23,8 @@ def history_list():
     # 使用分页获取data需要.items
     _type = request.args.get('type', type=str)
     if _type is None or _type == '""' or _type == "":
-        log = Analysis.query.order_by(desc(Analysis.create_time)).layui_paginate()
+        log = Analysis.query.order_by(desc(
+            Analysis.create_time)).layui_paginate()
         count = log.total
         items = log.items
         analysis_handle(items)
@@ -33,8 +33,8 @@ def history_list():
         return table_api(data=dicts, count=count)
     else:
         to_type = type_utils.str_to_type(_type)
-        log = Analysis.query.filter_by(type=to_type).order_by(
-            desc(Analysis.create_time)).layui_paginate()
+        log = Analysis.query.filter_by(
+            type=to_type).order_by(desc(Analysis.create_time)).layui_paginate()
         count = log.total
         items = log.items
         analysis_handle(items)

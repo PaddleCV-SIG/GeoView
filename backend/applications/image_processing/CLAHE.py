@@ -10,7 +10,8 @@ def CLAHE(src_dir, save_dir, names):
     for name in names:
         Gn = cv2.imread(osp.join(src_dir, name))
         B, G, R = cv2.split(Gn)
-        clahe = cv2.createCLAHE(clipLimit=2, tileGridSize=(8, 8))  # 调节第二个参数可以控制力度大小
+        clahe = cv2.createCLAHE(
+            clipLimit=2, tileGridSize=(8, 8))  # 调节第二个参数可以控制力度大小
         clahe_B = clahe.apply(B)
         clahe_G = clahe.apply(G)
         clahe_R = clahe.apply(R)

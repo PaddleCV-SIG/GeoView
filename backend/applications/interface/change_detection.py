@@ -17,12 +17,10 @@ def write_rel_paths(phase, names, out_dir):
     """将文件相对路径存储在txt格式文件中"""
     with open(osp.join(out_dir, phase + '.txt'), 'w') as f:
         for name in names:
-            f.write(
-                ' '.join([
-                    osp.join('A', name),
-                    osp.join('B', name),
-                ])
-            )
+            f.write(' '.join([
+                osp.join('A', name),
+                osp.join('B', name),
+            ]))
             f.write('\n')
 
 
@@ -33,16 +31,14 @@ def execute(model_path, data_path, out_dir, names_):
         # 注意，测试阶段使用的归一化方式需与训练时相同
         model_path,
         data_path,
-        names_
-    )
+        names_)
     test_dataloader = paddle.io.DataLoader(
         test_dataset,
         batch_size=1,
         shuffle=False,
         num_workers=0,
         drop_last=False,
-        return_list=True
-    )
+        return_list=True)
     # 设置滑窗大小与滑动步长
     WINDOW_SIZE = 256
     STRIDE = 128
@@ -51,12 +47,8 @@ def execute(model_path, data_path, out_dir, names_):
 
     # 把滑窗中的内容全部取出，存在一个列表中
 
-    test_patches = crop_patches(
-        test_dataloader,
-        ORIGINAL_SIZE,
-        WINDOW_SIZE,
-        STRIDE
-    )
+    test_patches = crop_patches(test_dataloader, ORIGINAL_SIZE, WINDOW_SIZE,
+                                STRIDE)
 
     # 构建预测器并执行推理
     predictor = pdrs.deploy.Predictor(model_path, use_gpu=True)
@@ -64,13 +56,18 @@ def execute(model_path, data_path, out_dir, names_):
     temps = list()
     temps1 = list()
     for name, (t1, t2) in tqdm(test_patches, total=len_test):
-        patch_pairs = list(zip(np.transpose(t1.numpy(), (0, 2, 3, 1)), np.transpose(t2.numpy(), (0, 2, 3, 1))))
+        patch_pairs = list(
+            zip(
+                np.transpose(t1.numpy(), (0, 2, 3, 1)),
+                np.transpose(t2.numpy(), (0, 2, 3, 1))))
         # 导出输入尺寸为滑窗大小的模型，--fixed_input_shape中的batch_size等于len(patch_pairs)
         res = predictor.predict(patch_pairs)
 
         # 取出所有的概率图patch并重建
-        prob_patches = map(itemgetter((..., 1)), map(itemgetter('score_map'), res))
-        prob_map = recons_prob_map(prob_patches, ORIGINAL_SIZE, WINDOW_SIZE, STRIDE)
+        prob_patches = map(
+            itemgetter((..., 1)), map(itemgetter('score_map'), res))
+        prob_map = recons_prob_map(prob_patches, ORIGINAL_SIZE, WINDOW_SIZE,
+                                   STRIDE)
 
         # 对概率图进行阈值分割，得到二值变化图
         cm_slide = (prob_map > 0.5).astype('int32')
@@ -83,6 +80,7 @@ def execute(model_path, data_path, out_dir, names_):
 
 # 定义推理阶段使用的数据集
 
+
 class InferDataset(paddle.io.Dataset):
     """
     变化检测推理数据集。
@@ -92,12 +90,7 @@ class InferDataset(paddle.io.Dataset):
         model_dir 模型目录
     """
 
-    def __init__(
-            self,
-            model_dir,
-            data_dir,
-            names_
-    ):
+    def __init__(self, model_dir, data_dir, names_):
         super().__init__()
         # self.data_dir = data_dir
         # self.transforms = load_model(model_dir, with_net=False).test_transforms
@@ -129,6 +122,7 @@ class InferDataset(paddle.io.Dataset):
 
 
 # 考虑到原始影像尺寸较大，以下类和函数与影像裁块-拼接有关。
+
 
 class WindowGenerator:
     def __init__(self, h, w, ch, cw, si=1, sj=1):
@@ -190,13 +184,17 @@ def crop_patches(dataloader, ori_size, window_size, stride):
     for name, *ims in dataloader:
         ims = list(ims)  # 两张图片,每张为shape=[1, 3, 1024, 1024]
         h, w = ori_size
-        win_gen = WindowGenerator(h, w, window_size, window_size, stride, stride)  # (256，256)
+        win_gen = WindowGenerator(h, w, window_size, window_size, stride,
+                                  stride)  # (256，256)
         all_patches = []  # 两张图片的全部裁块 len=169
         for rows, cols in win_gen:
             # NOTE: 此处不能使用生成器，否则因为lazy evaluation的缘故会导致结果不是预期的
-            patches = [im[..., rows, cols] for im in ims]  # Tensor shape=[1, 3, 256, 256], dtype=float32
+            patches = [im[..., rows, cols] for im in ims
+                       ]  # Tensor shape=[1, 3, 256, 256], dtype=float32
             all_patches.append(patches)
-        yield name[0], tuple(map(partial(paddle.concat, axis=0), zip(*all_patches)))
+        yield name[0], tuple(
+            map(partial(
+                paddle.concat, axis=0), zip(*all_patches)))
 
 
 def recons_prob_map(patches, ori_size, window_size, stride):

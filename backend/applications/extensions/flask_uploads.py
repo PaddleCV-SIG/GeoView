@@ -29,7 +29,7 @@ from flask import Blueprint
 # Extension presets
 
 #: This just contains plain text files (.txt).
-TEXT = ('txt',)
+TEXT = ('txt', )
 
 #: This contains various office document formats (.rtf, .odf, .ods, .gnumeric,
 #: .abw, .doc, .docx, .xls, .xlsx and .pdf). Note that the macro-enabled versions
@@ -62,19 +62,20 @@ ARCHIVES = tuple('gz bz2 zip tar tgz txz 7z'.split())
 #: assembled, linked, or executed. Supports C, C++, Ada, Rust, Go (Golang),
 #: FORTRAN, D, Java, C Sharp, F Sharp (compiled only), COBOL, Haskell, and
 #: assembly.
-SOURCE = tuple(('c cpp c++ h hpp h++ cxx hxx hdl '  # C/C++
-                + 'ada '  # Ada
-                + 'interface '  # Rust
-                + 'go '  # Go
-                + 'f for f90 f95 f03 '  # FORTRAN
-                + 'd dd di '  # D
-                + 'java '  # Java
-                + 'hs '  # Haskell
-                + 'cs '  # C Sharp
-                + 'fs '  # F Sharp compiled source (NOT .fsx, which is interactive-ready)
-                + 'cbl cob '  # COBOL
-                + 'asm s '  # Assembly
-                ).split())
+SOURCE = tuple((
+    'c cpp c++ h hpp h++ cxx hxx hdl '  # C/C++
+    + 'ada '  # Ada
+    + 'interface '  # Rust
+    + 'go '  # Go
+    + 'f for f90 f95 f03 '  # FORTRAN
+    + 'd dd di '  # D
+    + 'java '  # Java
+    + 'hs '  # Haskell
+    + 'cs '  # C Sharp
+    + 'fs '  # F Sharp compiled source (NOT .fsx, which is interactive-ready)
+    + 'cbl cob '  # COBOL
+    + 'asm s '  # Assembly
+).split())
 
 #: This contains shared libraries and executable files (.so, .exe and .dll).
 #: Most of the time, you will not want to allow this - it's better suited for
@@ -159,7 +160,7 @@ def patch_request_class(app, size=64 * 1024 * 1024):
             return
         size = app.config.get('MAX_CONTENT_LENGTH')
     reqclass = app.request_class
-    patched = type(reqclass.__name__, (reqclass,),
+    patched = type(reqclass.__name__, (reqclass, ),
                    {'max_content_length': size})
     app.request_class = patched
 
@@ -217,13 +218,14 @@ def configure_uploads(app, upload_sets):
     :param upload_sets: The `UploadSet` instances to configure.
     """
     if isinstance(upload_sets, UploadSet):
-        upload_sets = (upload_sets,)
+        upload_sets = (upload_sets, )
 
     if not hasattr(app, 'upload_set_config'):
         app.upload_set_config = {}
     set_config = app.upload_set_config
-    defaults = dict(dest=app.config.get('UPLOADS_DEFAULT_DEST'),
-                    url=app.config.get('UPLOADS_DEFAULT_URL'))
+    defaults = dict(
+        dest=app.config.get('UPLOADS_DEFAULT_DEST'),
+        url=app.config.get('UPLOADS_DEFAULT_URL'))
 
     for uset in upload_sets:
         config = config_for_set(uset, app, defaults)
@@ -347,8 +349,11 @@ class UploadSet(object):
         """
         base = self.config.base_url
         if base is None:
-            return url_for('_uploads.uploaded_file', setname=self.name,
-                           filename=filename, _external=True)
+            return url_for(
+                '_uploads.uploaded_file',
+                setname=self.name,
+                filename=filename,
+                _external=True)
         else:
             return base + filename
 
@@ -486,12 +491,21 @@ class TestingFileStorage(FileStorage):
                     `None`.
     """
 
-    def __init__(self, stream=None, filename=None, name=None,
-                 content_type='application/octet-stream', content_length=-1,
+    def __init__(self,
+                 stream=None,
+                 filename=None,
+                 name=None,
+                 content_type='application/octet-stream',
+                 content_length=-1,
                  headers=None):
-        FileStorage.__init__(self, stream, filename, name=name,
-                             content_type=content_type, content_length=content_length,
-                             headers=None)
+        FileStorage.__init__(
+            self,
+            stream,
+            filename,
+            name=name,
+            content_type=content_type,
+            content_length=content_length,
+            headers=None)
         self.saved = None
 
     def save(self, dst, buffer_size=16384):

@@ -15,9 +15,13 @@ class LogicalDeleteMixin(object):
     Test.query.filter_by(id=1).soft_delete()
     Test.query.logic_all()
     """
-    create_at = db.Column(db.DateTime, default=datetime.datetime.now, comment='创建时间')
-    update_at = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now,
-                          comment='创建时间')
+    create_at = db.Column(
+        db.DateTime, default=datetime.datetime.now, comment='创建时间')
+    update_at = db.Column(
+        db.DateTime,
+        default=datetime.datetime.now,
+        onupdate=datetime.datetime.now,
+        comment='创建时间')
     delete_at = db.Column(db.DateTime, comment='删除时间')
 
 

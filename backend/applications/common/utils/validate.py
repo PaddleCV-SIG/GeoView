@@ -6,8 +6,8 @@ def xss_escape(s: str):
     if s is None:
         return None
     else:
-        return s.replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;").replace("'", "&#39;").replace('"',
-                                                                                                               "&#34;")
+        return s.replace("&", "&amp;").replace(">", "&gt;").replace(
+            "<", "&lt;").replace("'", "&#39;").replace('"', "&#34;")
 
 
 def check_data(schema, data):

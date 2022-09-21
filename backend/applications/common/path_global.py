@@ -13,7 +13,8 @@ up_url = "/_uploads/photos/"
 def md5_name(name):
     nname = hashlib.md5(str(random.random()).encode()).hexdigest() + "_" + name
     if len(nname) > 100:
-        nname = hashlib.md5(str(random.random()).encode()).hexdigest() + "." + name.split(".")[1]
+        nname = hashlib.md5(str(random.random()).encode()).hexdigest(
+        ) + "." + name.split(".")[1]
     return nname
 
 
