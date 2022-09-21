@@ -1,0 +1,3 @@
+[submodule "PaddleRS"]
+	path = PaddleRS
+	url = https://github.com/PaddlePaddle/PaddleRS.git

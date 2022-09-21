@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import Flask
 from flask_cors import CORS
@@ -7,6 +8,10 @@ from applications.api import system_api
 from applications.common.scripts import init_script
 from applications.configs import config
 from applications.extensions import init_plugs
+
+# 将项目附带的PaddleRS路径添加到sys.path
+_curr_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.normpath(os.path.join(_curr_dir, '../../PaddleRS')))
 
 
 def create_app(config_name=None):
