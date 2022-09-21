@@ -9,87 +9,123 @@
     active-text-color="#FFFFFF"
   >
     <div class="ourtitle">
-      <img :src="require('@/assets/image/logo/80.png')" style="width:45px;color:rgb(64,158,255);"  @click="goRemoteSense">
-      <div v-if="!isCollapse" id="bigtitle">
-        <a @click="goShow" class="platform"
-          >Hippo智能遥感解译平台</a
-        >
+      <img
+        :src="require('@/assets/image/logo/80.png')"
+        style="width:45px;color:rgb(64,158,255);"
+        @click="goRemoteSense"
+      >
+      <div
+        v-if="!isCollapse"
+        id="bigtitle"
+      >
+        <a
+          class="platform"
+          @click="goShow"
+        >Hippo智能遥感解译平台</a>
       </div>
     </div>
     <el-divider content-position="center">
-      <span v-show="!isCollapse" class="funtitle" style="color: rgb(140, 157, 182)"
-        >功能区</span
-      >
+      <span
+        v-show="!isCollapse"
+        class="funtitle"
+        style="color: rgb(140, 157, 182)"
+      >功能区</span>
     </el-divider>
     <div class="item-group">
-      <el-menu-item index="/detectchanges" @click="goDetectChanges"
-        ><i class="iconfont icon-bianhuajiance" v-show="isCollapse"></i>
-        <h3 v-show="!isCollapse" >
-          <i class="iconfont icon-bianhuajiance"></i>变化检测
-        </h3></el-menu-item
+      <el-menu-item
+        index="/detectchanges"
+        @click="goDetectChanges"
       >
-    </div>
-    <div class="item-group">
-      <el-menu-item index="/detecttargets" @click="goDetectTargets"
-        ><i
-          class="iconfont icon-mubiaojiance"
+        <i
           v-show="isCollapse"
-          style="font-size: 22px"
-        ></i>
+          class="iconfont icon-bianhuajiance"
+        />
         <h3 v-show="!isCollapse">
-          <i class="iconfont icon-mubiaojiance" style="font-size: 22px"></i
-          >目标检测
-        </h3></el-menu-item
-      >
+          <i class="iconfont icon-bianhuajiance" />变化检测
+        </h3>
+      </el-menu-item>
     </div>
     <div class="item-group">
-      <el-menu-item index="/classify" @click="goClassify"
-        ><i
-          class="iconfont icon-erfenleibianhuajiance16px"
+      <el-menu-item
+        index="/detecttargets"
+        @click="goDetectTargets"
+      >
+        <i
           v-show="isCollapse"
+          class="iconfont icon-mubiaojiance"
+          style="font-size: 22px"
+        />
+        <h3 v-show="!isCollapse">
+          <i
+            class="iconfont icon-mubiaojiance"
+            style="font-size: 22px"
+          />目标检测
+        </h3>
+      </el-menu-item>
+    </div>
+    <div class="item-group">
+      <el-menu-item
+        index="/classify"
+        @click="goClassify"
+      >
+        <i
+          v-show="isCollapse"
+          class="iconfont icon-erfenleibianhuajiance16px"
           style="font-size: 14px"
-        ></i>
+        />
         <h3 v-show="!isCollapse">
           <i
 
             class="iconfont icon-erfenleibianhuajiance16px"
             style="font-size: 14px"
-          ></i
-          >地物分类
-        </h3></el-menu-item
-      >
+          />地物分类
+        </h3>
+      </el-menu-item>
     </div>
-        <div class="item-group">
-      <el-menu-item index="/onlinemap" @click="goOnlineMap"
-        ><i
-          class="iconfont icon-zaixianditu"
+    <div class="item-group">
+      <el-menu-item
+        index="/onlinemap"
+        @click="goOnlineMap"
+      >
+        <i
           v-show="isCollapse"
+          class="iconfont icon-zaixianditu"
           style="font-size: 20px"
-        ></i>
+        />
         <h3 v-show="!isCollapse">
           <i
             class="iconfont icon-zaixianditu"
             style="font-size: 20px"
-          ></i
-          >在线地图
-        </h3></el-menu-item
-      >
+          />在线地图
+        </h3>
+      </el-menu-item>
     </div>
     <el-divider content-position="center">
-      <span v-show="!isCollapse" class="title">历史记录</span>
+      <span
+        v-show="!isCollapse"
+        class="title"
+      >历史记录</span>
     </el-divider>
     <div class="item-group">
-      <el-menu-item index="/history" @click="goHistory"
-        ><i class="iconfont icon-history" v-show="isCollapse"></i>
-        <h3 v-show="!isCollapse">
-          <i class="iconfont icon-history"></i>我的历史记录
-        </h3></el-menu-item
+      <el-menu-item
+        index="/history"
+        @click="goHistory"
       >
+        <i
+          v-show="isCollapse"
+          class="iconfont icon-history"
+        />
+        <h3 v-show="!isCollapse">
+          <i class="iconfont icon-history" />我的历史记录
+        </h3>
+      </el-menu-item>
     </div>
     <el-divider content-position="center">
-      <span v-show="!isCollapse" class="title"></span>
+      <span
+        v-show="!isCollapse"
+        class="title"
+      />
     </el-divider>
-
   </el-menu>
 </template>
 
@@ -120,7 +156,7 @@ export default {
 </script>
 
 
-<style lang="less" >
+<style lang="less">
 .el-menu {
   position: relative;
   top: 0;

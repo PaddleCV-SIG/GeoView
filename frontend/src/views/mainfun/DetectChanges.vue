@@ -1,392 +1,624 @@
 <template>
   <div class="changes-box">
     <Tabinfor>
-      <template v-slot:left>
-        <div id="subtitle" style="font-size: 25px">
+      <template #left>
+        <div
+          id="subtitle"
+          style="font-size: 25px"
+        >
           变化检测<i
             class="iconfont icon-dianji"
             style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      ></template>
+          />
+        </div>
+      </template>
     </Tabinfor>
-    <el-divider></el-divider>
+    <el-divider />
     <p>
-      请上传包含<span class="goweight">图片的文件夹</span
-      ><i class="iconfont icon-wenjianjia" style="color: blue"></i>或者<span
+      请上传包含<span class="goweight">图片的文件夹</span><i
+        class="iconfont icon-wenjianjia"
+        style="color: blue"
+      />或者<span
         class="goweight"
-        >图片</span
-      ><i class="iconfont icon-tupiantianjia" style="color: skyblue"></i
-      >，确保上传的文件夹和图片<span class="goweight">格式正确</span
-      >，属于一组的图片<span class="goweight">分别</span>放在两个文件夹里<i
+      >图片</span><i
+        class="iconfont icon-tupiantianjia"
+        style="color: skyblue"
+      />，确保上传的文件夹和图片<span class="goweight">格式正确</span>，属于一组的图片<span class="goweight">分别</span>放在两个文件夹里<i
         class="iconfont icon-duigou"
         style="color: green"
-      ></i>
+      />
     </p>
     <p style="text-decoration: underline">
-      <i class="iconfont icon-zhuyi" style="color: rgb(64,158,255); font-size: 18px"></i
-      >注意，请将属于<span class="goweight">同一组</span
-      >的图片设置<span class="goweight">相同</span
-      >的命名，这将成为我们处理一组图片的依据
+      <i
+        class="iconfont icon-zhuyi"
+        style="color: rgb(64,158,255); font-size: 18px"
+      />注意，请将属于<span class="goweight">同一组</span>的图片设置<span class="goweight">相同</span>的命名，这将成为我们处理一组图片的依据
     </p>
     <el-card style="border: 4px dashed var(--el-border-color);position:relative">
-      <div class="clearQ" v-if="this.fileList1.length||this.fileList2.length">   <el-button type=primary class="btn-animate2 btn-animate__surround" @click="clearQue">清空图片</el-button></div>
-      <el-row :gutter="20" justify="space-evenly" >
-
-          <el-upload
-            class="upload-demo"
-            drag
-            action="#"
-            multiple
-            :auto-upload="false"
-            ref="upload1"
-            id="one"
-            v-model:file-list="fileList1"
-            @change="checkFile1"
+      <div
+        v-if="fileList1.length||fileList2.length"
+        class="clearQ"
+      >
+        <el-button
+          type="primary"
+          class="btn-animate2 btn-animate__surround"
+          @click="clearQue"
+        >
+          清空图片
+        </el-button>
+      </div>
+      <el-row
+        :gutter="20"
+        justify="space-evenly"
+      >
+        <el-upload
+          id="one"
+          ref="upload1"
+          v-model:file-list="fileList1"
+          class="upload-demo"
+          drag
+          action="#"
+          multiple
+          :auto-upload="false"
+          @change="checkFile1"
+        >
+          <i class="iconfont icon-yunduanshangchuan" />
+          <div class="el-upload__text">
+            将文件夹或图片拖到此处，或<em>点击上传</em>
+          </div>
+          <div
+            slot="tip"
+            class="el-upload__tip"
           >
-            <i class="iconfont icon-yunduanshangchuan"></i>
-            <div class="el-upload__text">
-              将文件夹或图片拖到此处，或<em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">
-              只能上传一张或多张图片，请在下方上传文件夹
-            </div>
-          </el-upload>
+            只能上传一张或多张图片，请在下方上传文件夹
+          </div>
+        </el-upload>
 
 
 
-          <el-upload
-            class="upload-demo"
-            drag
-            action="#"
-            multiple
-            :auto-upload="false"
-            ref="upload2"
-            id="two"
-            v-model:file-list="fileList2"
-             @change="checkFile2"
+        <el-upload
+          id="two"
+          ref="upload2"
+          v-model:file-list="fileList2"
+          class="upload-demo"
+          drag
+          action="#"
+          multiple
+          :auto-upload="false"
+          @change="checkFile2"
+        >
+          <i class="iconfont icon-yunduanshangchuan" />
+          <div class="el-upload__text">
+            将文件夹或图片拖到此处，或<em>点击上传</em>
+          </div>
+          <div
+            slot="tip"
+            class="el-upload__tip"
           >
-            <i class="iconfont icon-yunduanshangchuan"></i>
-            <div class="el-upload__text">
-              将文件夹或图片拖到此处，或<em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">
-              只能上传一张或多张图片，请在下方上传文件夹
-            </div>
-          </el-upload>
-
+            只能上传一张或多张图片，请在下方上传文件夹
+          </div>
+        </el-upload>
       </el-row>
       <el-row justify="center">
-                 <el-row class="file1">
-            <input
-              type="file"
-              id="file1"
-              ref="myfile1"
-              webkitdirectory
-              directory
-              multiple
-              @change="uploadFirst"
-            />
-            <i class="iconfont icon-wenjianshangchuan" @click="file1Click"
-              >上传文件夹</i
-            ></el-row
+        <el-row class="file1">
+          <input
+            id="file1"
+            ref="myfile1"
+            type="file"
+            webkitdirectory
+            directory
+            multiple
+            @change="uploadFirst"
           >
-          <el-row class="file2">
-            <input
-              id="file2"
-              type="file"
-              ref="myfile2"
-              webkitdirectory
-              directory
-              multiple
-              @change="uploadSecond"
-            />
-            <i class="iconfont icon-wenjianshangchuan" @click="file2Click"
-              >上传文件夹</i
-            ></el-row
-          ></el-row>
+          <i
+            class="iconfont icon-wenjianshangchuan"
+            @click="file1Click"
+          >上传文件夹</i>
+        </el-row>
+        <el-row class="file2">
+          <input
+            id="file2"
+            ref="myfile2"
+            type="file"
+            webkitdirectory
+            directory
+            multiple
+            @change="uploadSecond"
+          >
+          <i
+            class="iconfont icon-wenjianshangchuan"
+            @click="file2Click"
+          >上传文件夹</i>
+        </el-row>
+      </el-row>
 
-      <el-row justify="center" align="middle">
-         <i class="iconfont icon-tuxingtuxiangchuli" style="color:rgb(64,158,255);font-size:20px"></i><p>图像预处理：</p>
-          <p>
+      <el-row
+        justify="center"
+        align="middle"
+      >
+        <i
+          class="iconfont icon-tuxingtuxiangchuli"
+          style="color:rgb(64,158,255);font-size:20px"
+        /><p>图像预处理：</p>
+        <p>
           <label class="mylabel container">
             <input
+              ref="histogram"
               type="checkbox"
               class="myinput"
-              ref="histogram"
               @change="selectHistogram()"
-            />
-            <span class="checkmark"></span>
+            >
+            <span class="checkmark" />
             <span class="goweight label-words">直方图匹配</span>
           </label>
 
           <label class="container mylabel">
             <input
+              ref="sharpen"
               type="checkbox"
               class="myinput"
-              ref="sharpen"
               @change="selectSharpen()"
-            />
-            <span class="checkmark"></span>
+            >
+            <span class="checkmark" />
             <span class="goweight label-words">锐化</span>
           </label>
-          </p>
+        </p>
       </el-row>
-      <el-row justify="center" align="middle">
-               <i class="iconfont icon-agora_AIjiangzao" style="color:rgb(64,158,255);font-size:35px"></i> <p>降噪处理：</p>
-             <p>
-
-
-      <label class="container mylabel">
-  <input    type="checkbox"
-              class="myinput"
+      <el-row
+        justify="center"
+        align="middle"
+      >
+        <i
+          class="iconfont icon-agora_AIjiangzao"
+          style="color:rgb(64,158,255);font-size:35px"
+        /> <p>降噪处理：</p>
+        <p>
+          <label class="container mylabel">
+            <input
               ref="smooth"
-              @change="selectSmooth()">
-  <span class="checkmark "></span>
-  <span class="goweight label-words">平滑</span>
-</label>
+              type="checkbox"
+              class="myinput"
+              @change="selectSmooth()"
+            >
+            <span class="checkmark " />
+            <span class="goweight label-words">平滑</span>
+          </label>
 
 
 
-      <label class="container mylabel">
-  <input    type="checkbox"
+          <label class="container mylabel">
+            <input
+              ref="filter"
+              type="checkbox"
               class="myinput"
               @change="selectFilter()"
-              ref="filter">
-  <span class="checkmark "></span>
-  <span class="goweight label-words">滤波</span>
-</label>
-          </p>
+            >
+            <span class="checkmark " />
+            <span class="goweight label-words">滤波</span>
+          </label>
+        </p>
       </el-row>
 
-      <el-row type="flex" justify="center">
-        <div style="margin-top:12px">
-        <el-button type="primary" class=" btn-animate btn-animate__shiny" @click="uploadfile"
-          >开始处理</el-button
-        >    </div>
-      </el-row>
-      <el-divider v-if="!this.upload.prehandle"></el-divider>
-      <div v-if="this.upload.prehandle">
-        <div  v-if="this.upload.prehandle==1">
-
-         <div id="subtitle" style="font-size: 25px">
-          直方图匹配结果预览
-          <i class="iconfont icon-dianji" style="font-size: 23px; margin-left: 17px; color: blue"></i>
-        </div>
-    <el-divider></el-divider>
-    <!-- <el-empty image-size="100" ></el-empty> -->
-    <el-row justify="center" :gutter="20">
-      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img1" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第一时期图</div></div></el-col>
-      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img2"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">匹配后的第一时期图       <span
-                  @click="
-                    downloadimgWithWords(
-                      ++this.hisNum,
-                      item,
-                      `直方图匹配后第一时期图.png`
-                    )
-                  "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span></div></div></el-col>
-      <el-col :xs="24" :sm="24" :md="7" :lg="7" :xl="7"><div v-for="(item) in this.Img3"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第二时期图</div></div></el-col>
-    </el-row>
-    </div>
-        <div v-else-if="this.upload.prehandle == 4">
-         <div id="subtitle" style="font-size: 25px">
-          锐化结果预览<i
-            class="iconfont icon-dianji"
-            style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
+      <el-row
+        type="flex"
+        justify="center"
       >
-    <el-divider></el-divider>
-    <el-row justify="center" :gutter="20">
-      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.Img1" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第一时期图</div></div></el-col>
-      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.sharpenImg1"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">锐化后的第一时期图       <span
-                  @click="
-                    downloadimgWithWords(
-                      -1,
-                      item,
-                      `锐化处理后第一时期图.png`
-                    )
-                  "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span></div></div></el-col>
-      <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.Img3"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">第二时期图</div></div></el-col>
-       <el-col :xs="10" :sm="10" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.sharpenImg2"><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">锐化后的第二时期图       <span
-                  @click="
-                    downloadimgWithWords(
-                      -1,
-                      item,
-                      `锐化处理后第二时期图.png`
-                    )
-                  "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span></div></div></el-col>
-    </el-row>
-
-    </div>
-    </div>
-
+        <div style="margin-top:12px">
+          <el-button
+            type="primary"
+            class=" btn-animate btn-animate__shiny"
+            @click="uploadfile"
+          >
+            开始处理
+          </el-button>
+        </div>
+      </el-row>
+      <el-divider v-if="!upload.prehandle" />
+      <div v-if="upload.prehandle">
+        <div v-if="upload.prehandle==1">
+          <div
+            id="subtitle"
+            style="font-size: 25px"
+          >
+            直方图匹配结果预览
+            <i
+              class="iconfont icon-dianji"
+              style="font-size: 23px; margin-left: 17px; color: blue"
+            />
+          </div>
+          <el-divider />
+          <!-- <el-empty image-size="100" ></el-empty> -->
+          <el-row
+            justify="center"
+            :gutter="20"
+          >
+            <el-col
+              :xs="24"
+              :sm="24"
+              :md="7"
+              :lg="7"
+              :xl="7"
+            >
+              <div v-for="(item) in Img1">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  第一时期图
+                </div>
+              </div>
+            </el-col>
+            <el-col
+              :xs="24"
+              :sm="24"
+              :md="7"
+              :lg="7"
+              :xl="7"
+            >
+              <div v-for="(item) in Img2">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  匹配后的第一时期图       <span
+                    @click="
+                      downloadimgWithWords(
+                        ++hisNum,
+                        item,
+                        `直方图匹配后第一时期图.png`
+                      )
+                    "
+                  ><i class="iconfont icon-xiazai" /></span>
+                </div>
+              </div>
+            </el-col>
+            <el-col
+              :xs="24"
+              :sm="24"
+              :md="7"
+              :lg="7"
+              :xl="7"
+            >
+              <div v-for="(item) in Img3">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  第二时期图
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else-if="upload.prehandle == 4">
+          <div
+            id="subtitle"
+            style="font-size: 25px"
+          >
+            锐化结果预览<i
+              class="iconfont icon-dianji"
+              style="font-size: 23px; margin-left: 17px; color: blue"
+            />
+          </div>
+          <el-divider />
+          <el-row
+            justify="center"
+            :gutter="20"
+          >
+            <el-col
+              :xs="10"
+              :sm="10"
+              :md="6"
+              :lg="6"
+              :xl="6"
+            >
+              <div v-for="(item) in Img1">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  第一时期图
+                </div>
+              </div>
+            </el-col>
+            <el-col
+              :xs="10"
+              :sm="10"
+              :md="6"
+              :lg="6"
+              :xl="6"
+            >
+              <div v-for="(item) in sharpenImg1">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  锐化后的第一时期图       <span
+                    @click="
+                      downloadimgWithWords(
+                        -1,
+                        item,
+                        `锐化处理后第一时期图.png`
+                      )
+                    "
+                  ><i class="iconfont icon-xiazai" /></span>
+                </div>
+              </div>
+            </el-col>
+            <el-col
+              :xs="10"
+              :sm="10"
+              :md="6"
+              :lg="6"
+              :xl="6"
+            >
+              <div v-for="(item) in Img3">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  第二时期图
+                </div>
+              </div>
+            </el-col>
+            <el-col
+              :xs="10"
+              :sm="10"
+              :md="6"
+              :lg="6"
+              :xl="6"
+            >
+              <div v-for="(item) in sharpenImg2">
+                <el-image
+                  :src="item"
+                  :preview-src-list="[item]"
+                  :preview-teleported="true"
+                /><div class="his-words">
+                  锐化后的第二时期图       <span
+                    @click="
+                      downloadimgWithWords(
+                        -1,
+                        item,
+                        `锐化处理后第二时期图.png`
+                      )
+                    "
+                  ><i class="iconfont icon-xiazai" /></span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
     </el-card>
 
-    <Tabinfor >
-      <template v-slot:left>
-        <div id="subtitle" style="font-size: 25px">
+    <Tabinfor>
+      <template #left>
+        <div
+          id="subtitle"
+          style="font-size: 25px"
+        >
           结果图预览<i
             class="iconfont icon-dianji"
             style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      ></template>
+          />
+        </div>
+      </template>
     </Tabinfor>
 
-    <el-divider ></el-divider>
+    <el-divider />
 
     <Tabinfor>
-      <template v-slot:left>
-          <p >
-      对输出的结果图进行<span class="goweight">多种渲染</span
-      ><i class="iconfont icon-xuanran" style="color: red"></i>
-      <span class="goweight">，点击图片</span>即可预览
-      <i class="iconfont icon-duigou" style="color: green"></i>
-    </p>
+      <template #left>
+        <p>
+          对输出的结果图进行<span class="goweight">多种渲染</span><i
+            class="iconfont icon-xuanran"
+            style="color: red"
+          />
+          <span class="goweight">，点击图片</span>即可预览
+          <i
+            class="iconfont icon-duigou"
+            style="color: green"
+          />
+        </p>
       </template>
-           <template v-slot:mid>
-
-        <p v-if="this.isUpload">
+      <template #mid>
+        <p v-if="isUpload">
           <label class="mylabel container">
             <input
+              ref="hole"
               type="checkbox"
               class="myinput"
-              @click="dealAfterImg(this.currentIndex)"
-              ref="hole"
-              :checked='this.isHole[this.currentIndex]'
-            />
-            <span class="checkmark"></span>
+              :checked="isHole[currentIndex]"
+              @click="dealAfterImg(currentIndex)"
+            >
+            <span class="checkmark" />
             <span class="goweight label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
           </label>
 
-              <span><i class="iconfont icon-qiehuan" style=" color:rgb(64, 158, 255);margin-left:15px" @click="changePreMode">切换预览模式</i></span>
+          <span><i
+            class="iconfont icon-qiehuan"
+            style=" color:rgb(64, 158, 255);margin-left:15px"
+            @click="changePreMode"
+          >切换预览模式</i></span>
         </p>
 
-               <p style="text-align:center" v-else="this.isUpload">
+        <p
+          v-else="isUpload"
+          style="text-align:center"
+        >
           <label class="mylabel container">
             <input
+              ref="hole1"
               type="checkbox"
               class="myinput"
+              :checked="true"
               @click="dealExample()"
-              ref="hole1"
-              :checked='true'
-            />
-            <span class="checkmark"> </span>
+            >
+            <span class="checkmark" />
             <span class="goweight label-words">开启连通域滤波并填充孔洞处理</span>
           </label>
-              <span><i class="iconfont icon-qiehuan" style=" color:rgb(64, 158, 255);margin-left:15px" @click="changePreMode">切换预览模式</i></span>
+          <span><i
+            class="iconfont icon-qiehuan"
+            style=" color:rgb(64, 158, 255);margin-left:15px"
+            @click="changePreMode"
+          >切换预览模式</i></span>
         </p>
-
       </template>
-      <template v-slot:right>
+      <template #right>
         <p>
-          <span class="goweight"
-            ><i class="iconfont icon-shuaxin" @click="getMore" style="padding-right:73px"
-              ><span class="hidden-sm-and-down">点击刷新</span></i
-            ></span
-          >
+          <span class="goweight"><i
+            class="iconfont icon-shuaxin"
+            style="padding-right:73px"
+            @click="getMore"
+          ><span class="hidden-sm-and-down">点击刷新</span></i></span>
         </p>
       </template>
     </Tabinfor>
 
     <el-card class="render-box">
-      <el-row justify="center" :gutter="20"
+      <el-row
+        justify="center"
+        :gutter="20"
+      >
+        <el-col
+          v-show="preMode==1"
+          :xs="12"
+          :sm="12"
+          :md="12"
+          :lg="10"
+          :xl="10"
         >
-    <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="10"  v-show="this.preMode==1">
-      <p class="his-words">上传第一时期和第二时期图</p>
-<div id="image-slider" @mousemove="sliderMouseMove" @mousedown="sliderMouseDown" @mouseup="sliderMouseUp" @mouseleave="sliderMouseLeave" v-if="!this.isUpload">
-  <img :src="require('@/assets/image/example/test_50_1.png')">
-  <div class="img-wrapper">
-    <img :src="require('@/assets/image/example/test_50_2.png')">
-  </div>
-  <div class="handle">
-    <div class="handle-line"></div>
-    <div class="handle-circle">
-      &#171 &#187
-    </div>
-    <div class="handle-line"></div>
-  </div>
-</div>
-<div id="image-slider" @mousemove="sliderMouseMove" @mousedown="sliderMouseDown" @mouseup="sliderMouseUp" @mouseleave="sliderMouseLeave" v-else>
-  <img   :src="this.beforeImg[this.currentIndex]">
-  <div class="img-wrapper">
-    <img   :src="this.beforeImg1[this.currentIndex]">
-  </div>
-  <div class="handle">
-    <div class="handle-line"></div>
-    <div class="handle-circle">
-      &#171 &#187
-    </div>
-    <div class="handle-line"></div>
-  </div>
-</div>
-</el-col>
-<el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="10" v-show="this.preMode == 1">
-  <div class="render-img">
-             <p class="his-words">预测结果</p>
+          <p class="his-words">
+            上传第一时期和第二时期图
+          </p>
+          <div
+            v-if="!isUpload"
+            id="image-slider"
+            @mousemove="sliderMouseMove"
+            @mousedown="sliderMouseDown"
+            @mouseup="sliderMouseUp"
+            @mouseleave="sliderMouseLeave"
+          >
+            <img :src="require('@/assets/image/example/test_50_1.png')">
+            <div class="img-wrapper">
+              <img :src="require('@/assets/image/example/test_50_2.png')">
+            </div>
+            <div class="handle">
+              <div class="handle-line" />
+              <div class="handle-circle">
+                &#171 &#187
+              </div>
+              <div class="handle-line" />
+            </div>
+          </div>
+          <div
+            v-else
+            id="image-slider"
+            @mousemove="sliderMouseMove"
+            @mousedown="sliderMouseDown"
+            @mouseup="sliderMouseUp"
+            @mouseleave="sliderMouseLeave"
+          >
+            <img :src="beforeImg[currentIndex]">
+            <div class="img-wrapper">
+              <img :src="beforeImg1[currentIndex]">
+            </div>
+            <div class="handle">
+              <div class="handle-line" />
+              <div class="handle-circle">
+                &#171 &#187
+              </div>
+              <div class="handle-line" />
+            </div>
+          </div>
+        </el-col>
+        <el-col
+          v-show="preMode == 1"
+          :xs="12"
+          :sm="12"
+          :md="12"
+          :lg="10"
+          :xl="10"
+        >
+          <div class="render-img">
+            <p class="his-words">
+              预测结果
+            </p>
             <el-image
-              v-if="this.afterImg.length != 0"
-              :preview-src-list="[this.showingList[this.currentIndex]]"
+              v-if="afterImg.length != 0"
+              :preview-src-list="[showingList[currentIndex]]"
               :preview-teleported="true"
               :src="src"
               fit="cover"
               style="width: 100%"
-            ></el-image>
+            />
             <div v-else>
-            <el-image
-              v-if="this.renderstyle=='原图'"
-              :preview-src-list="[require('@/assets/image/example/normal.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/normal.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>
-                <el-image
-              v-else-if="this.renderstyle=='森林'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/woods.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='霓虹'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-             :src="require('@/assets/image/example/neon.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='闪电'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/flash.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='极光'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/aurora.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>
+              <el-image
+                v-if="renderstyle=='原图'"
+                :preview-src-list="[require('@/assets/image/example/normal.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/normal.png')"
+                fit="cover"
+                style="width: 100%"
+              />
+              <el-image
+                v-else-if="renderstyle=='森林'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/woods.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='霓虹'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/neon.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='闪电'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/flash.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='极光'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/aurora.png')"
+                fit="cover"
+                style="width: 100%"
+              />
             </div>
-           </div>
-</el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode==2"><div class="render-img" >
-               <p class="his-words">第一时期</p>
+          </div>
+        </el-col>
+        <el-col
+          v-show="preMode==2"
+          :xs="8"
+          :sm="8"
+          :md="8"
+          :lg="6"
+          :xl="6"
+        >
+          <div class="render-img">
+            <p class="his-words">
+              第一时期
+            </p>
             <el-image
-              v-if="this.afterImg.length != 0"
-              :preview-src-list="[this.beforeImg[this.currentIndex]]"
+              v-if="afterImg.length != 0"
+              :preview-src-list="[beforeImg[currentIndex]]"
               :preview-teleported="true"
-              :src="this.beforeImg[this.currentIndex]"
+              :src="beforeImg[currentIndex]"
               fit="cover"
               style="width: 100%"
-            ></el-image>
+            />
             <el-image
               v-else
               :preview-src-list="[require('@/assets/image/example/test_50_1.png')]"
@@ -394,151 +626,222 @@
               :src="require('@/assets/image/example/test_50_1.png')"
               fit="cover"
               style="width: 100%"
-            ></el-image>
-            </div></el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode==2"><div class="render-img">
-          <p class="his-words">第二时期</p>
+            />
+          </div>
+        </el-col>
+        <el-col
+          v-show="preMode==2"
+          :xs="8"
+          :sm="8"
+          :md="8"
+          :lg="6"
+          :xl="6"
+        >
+          <div class="render-img">
+            <p class="his-words">
+              第二时期
+            </p>
             <el-image
-              v-if="this.afterImg.length != 0"
-              :preview-src-list="[this.beforeImg1[this.currentIndex]]"
+              v-if="afterImg.length != 0"
+              :preview-src-list="[beforeImg1[currentIndex]]"
               :preview-teleported="true"
-              :src="this.beforeImg1[this.currentIndex]"
+              :src="beforeImg1[currentIndex]"
               fit="cover"
               style="width: 100%"
-            ></el-image>
+            />
             <el-image
               v-else
               :preview-src-list="[require('@/assets/image/example/test_50_2.png')]"
               :preview-teleported="true"
-          :src="require('@/assets/image/example/test_50_2.png')"
+              :src="require('@/assets/image/example/test_50_2.png')"
               fit="cover"
               style="width: 100%"
-            ></el-image></div></el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="6" :xl="6" v-show="this.preMode == 2"
-          ><div class="render-img">
-             <p class="his-words">预测结果</p>
+            />
+          </div>
+        </el-col>
+        <el-col
+          v-show="preMode == 2"
+          :xs="8"
+          :sm="8"
+          :md="8"
+          :lg="6"
+          :xl="6"
+        >
+          <div class="render-img">
+            <p class="his-words">
+              预测结果
+            </p>
             <el-image
-              v-if="this.afterImg.length != 0"
-              :preview-src-list="[this.showingList[this.currentIndex]]"
+              v-if="afterImg.length != 0"
+              :preview-src-list="[showingList[currentIndex]]"
               :preview-teleported="true"
               :src="src"
               fit="cover"
               style="width: 100%"
-            ></el-image>
+            />
             <div v-else>
-            <el-image
-              v-if="this.renderstyle=='原图'"
-              :preview-src-list="[require('@/assets/image/example/normal.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/normal.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>
-                <el-image
-              v-else-if="this.renderstyle=='森林'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/woods.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='霓虹'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-             :src="require('@/assets/image/example/neon.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='闪电'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/flash.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>    <el-image
-              v-else-if="this.renderstyle=='极光'"
-              :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-              :preview-teleported="true"
-              :src="require('@/assets/image/example/aurora.png')"
-              fit="cover"
-              style="width: 100%"
-            ></el-image>
+              <el-image
+                v-if="renderstyle=='原图'"
+                :preview-src-list="[require('@/assets/image/example/normal.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/normal.png')"
+                fit="cover"
+                style="width: 100%"
+              />
+              <el-image
+                v-else-if="renderstyle=='森林'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/woods.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='霓虹'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/neon.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='闪电'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/flash.png')"
+                fit="cover"
+                style="width: 100%"
+              />    <el-image
+                v-else-if="renderstyle=='极光'"
+                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
+                :preview-teleported="true"
+                :src="require('@/assets/image/example/aurora.png')"
+                fit="cover"
+                style="width: 100%"
+              />
             </div>
-           </div></el-col
+          </div>
+        </el-col>
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="4"
+          :xl="4"
         >
-        <el-col  :xs="24" :sm="24" :md="24" :lg="4" :xl="4"
-          ><div class="rendr-style">
-              <el-divider style="margin-top:0"></el-divider>
-            <div class="style-title">结果图渲染</div>
+          <div class="rendr-style">
+            <el-divider style="margin-top:0" />
+            <div class="style-title">
+              结果图渲染
+            </div>
 
             <label class="cl-checkbox">
               <el-row justify="center">
-                <el-col
-                  ><div class="style-words normal" @click="setNormalWay(this.onRender)" :class="{ 'active-normal': this.renderstyle == '原图' }">原图</div>
-                  <div class="style-words woods" @click="setWoods(this.onRender)" :class="{ 'active-woods': this.renderstyle == '森林' }">森林</div>
-                  <div class="style-words neon" @click="setneon(this.onRender)" :class="{ 'active-neon': this.renderstyle == '霓虹' }">霓虹</div>
-                  <div class="style-words flash" @click="setFlash(this.onRender)" :class="{ 'active-flash': this.renderstyle == '闪电' }">闪电</div>
-                    <div class="style-words aurora" @click="setAurora(this.onRender)" :class="{ 'active-aurora': this.renderstyle == '极光' }">极光</div></el-col
-                >
+                <el-col><div
+                          class="style-words normal"
+                          :class="{ 'active-normal': renderstyle == '原图' }"
+                          @click="setNormalWay(onRender)"
+                        >原图</div>
+                  <div
+                    class="style-words woods"
+                    :class="{ 'active-woods': renderstyle == '森林' }"
+                    @click="setWoods(onRender)"
+                  >森林</div>
+                  <div
+                    class="style-words neon"
+                    :class="{ 'active-neon': renderstyle == '霓虹' }"
+                    @click="setneon(onRender)"
+                  >霓虹</div>
+                  <div
+                    class="style-words flash"
+                    :class="{ 'active-flash': renderstyle == '闪电' }"
+                    @click="setFlash(onRender)"
+                  >闪电</div>
+                  <div
+                    class="style-words aurora"
+                    :class="{ 'active-aurora': renderstyle == '极光' }"
+                    @click="setAurora(onRender)"
+                  >极光</div></el-col>
               </el-row>
             </label>
           </div>
-            <el-divider style="margin-top:0"></el-divider>
-          <div class="style-title">选择图片</div>
+          <el-divider style="margin-top:0" />
+          <div class="style-title">
+            选择图片
+          </div>
 
           <el-empty
+            v-if="showingList.length == 0"
             :image-size="100"
-            v-if="this.showingList.length == 0"
-          ></el-empty>
+          />
           <div
-            v-for="(item, index) in Math.ceil(this.showingList.length / 5)"
+            v-for="(item, index) in Math.ceil(showingList.length / 5)"
             class="list"
           >
-
-            <div class="list-number" @click="goRenderThese(index)" >
+            <div
+              class="list-number"
+              @click="goRenderThese(index)"
+            >
               <div @click="setWhichWay">
-              {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+                {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
               </div>
             </div>
-
           </div>
-          <div v-show="this.showingList.length != 0" style="text-align:center">
+          <div
+            v-show="showingList.length != 0"
+            style="text-align:center"
+          >
             下载此图片：<el-button
-            v-if="this.isUpload"
-            type='primary'
-            style="width:60px"
+              v-if="isUpload"
+              type="primary"
+              style="width:60px"
               class="btn-animate btn-animate__shiny"
               @click="
                 downloadimgWithWords(
-                  this.idList[this.currentIndex],
-                  this.showingList[this.currentIndex],
-                  `变化检测${this.renderstyle}渲染结果图.png`
+                  idList[currentIndex],
+                  showingList[currentIndex],
+                  `变化检测${renderstyle}渲染结果图.png`
                 )
               "
-              >下载</el-button
-            ><el-button
-            v-else
-            type='primary'
-            style="width:60px"
-              class="btn-animate btn-animate__shiny"
-              @click="
-                downloadimgWithWords(
-                  ++this.downnumber,
-                   this.showingList[this.currentIndex],
-                  `变化检测${this.renderstyle}渲染结果图.png`
-                )
-              "
-              >下载</el-button
             >
+              下载
+            </el-button><el-button
+              v-else
+              type="primary"
+              style="width:60px"
+              class="btn-animate btn-animate__shiny"
+              @click="
+                downloadimgWithWords(
+                  ++downnumber,
+                  showingList[currentIndex],
+                  `变化检测${renderstyle}渲染结果图.png`
+                )
+              "
+            >
+              下载
+            </el-button>
           </div>
-           <p style="text-align:center" v-if="this.isUpload"><span> <i class="iconfont icon-dabaoxiazai" @click="goCompress" >所有结果图打包</i></span></p>
-        </el-col></el-row
-      >
+          <p
+            v-if="isUpload"
+            style="text-align:center"
+          >
+            <span> <i
+              class="iconfont icon-dabaoxiazai"
+              @click="goCompress"
+            >所有结果图打包</i></span>
+          </p>
+        </el-col>
+      </el-row>
       <el-row class="swiper-img">
-        <div class="img-box" v-for="(item, index) in 5" >
-          <el-image :src="srcs[index]" @click="goRenderThis(index)" v-if="isExist[index]" :class="{'render-border':this.onRender==index}"></el-image>
+        <div
+          v-for="(item, index) in 5"
+          class="img-box"
+        >
+          <el-image
+            v-if="isExist[index]"
+            :src="srcs[index]"
+            :class="{'render-border':onRender==index}"
+            @click="goRenderThis(index)"
+          />
         </div>
-
       </el-row>
     </el-card>
     <el-dialog
@@ -548,21 +851,33 @@
       width="75%"
       fullscreen
     >
-      <el-row type="flex" justify="center" style="margin-bottom: 10px">
+      <el-row
+        type="flex"
+        justify="center"
+        style="margin-bottom: 10px"
+      >
         <el-col :span="1">
-          <el-button type="primary" @click="this.dialogVisible = false"
-            >OK</el-button
+          <el-button
+            type="primary"
+            @click="dialogVisible = false"
+          >
+            OK
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-row
+        type="flex"
+        justify="center"
+      >
+        <el-col :span="12">
+          <img
+            id="imgPre"
+            :src="previewPic1"
           >
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center">
-        <el-col :span="12">
-          <img :src="previewPic1" id="imgPre" />
-        </el-col>
-      </el-row>
     </el-dialog>
-    <Bottominfor></Bottominfor>
-
+    <Bottominfor />
   </div>
 </template>
 
@@ -586,10 +901,15 @@ import Bottominfor from "@/components/Bottominfor";
 import store from "@/store";
 import global from "@/global";
 export default {
-  name: "detectchanges",
+  name: "Detectchanges",
   components: {
     Tabinfor,
     Bottominfor,
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      document.querySelector(".el-main").scrollTop = 0;
+    });
   },
   data() {
     return {
@@ -1433,11 +1753,6 @@ export default {
     sliderMouseLeave() {
       if (this.isSliderLocked) this.isSliderLocked = true;
     },
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      document.querySelector(".el-main").scrollTop = 0;
-    });
   },
 };
 </script>

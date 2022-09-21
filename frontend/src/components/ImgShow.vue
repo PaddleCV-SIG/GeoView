@@ -1,68 +1,88 @@
 <template>
   <el-row>
-    <el-col >
-      <el-card  style="margin-bottom: 10px">
+    <el-col>
+      <el-card style="margin-bottom: 10px">
         <el-empty
+          v-if="beforeImg.length == 0"
           :image-size="200"
-          v-if="this.beforeImg.length == 0"
-        ></el-empty>
+        />
         <el-row :gutter="10">
-          <el-col  :lg="5" :xl="5"
-            ><div
-              v-for="index in beforeList.length"
-              class="img-index hidden-sm-and-down"  :style="{ height:  this.indexHeight + 'rem' }"
-            >
-              第<span class="index-number">{{ index }}</span
-              >组
-            </div></el-col
+          <el-col
+            :lg="5"
+            :xl="5"
           >
-          <el-col :xs="20" :sm="10" :md="6" :lg="6" :xl="6" >
-            <div v-for="(item, index) in beforeList" style="position: relative;">
+            <div
+              v-for="index in beforeList.length"
+              class="img-index hidden-sm-and-down"
+              :style="{ height: indexHeight + 'rem' }"
+            >
+              第<span class="index-number">{{ index }}</span>组
+            </div>
+          </el-col>
+          <el-col
+            :xs="20"
+            :sm="10"
+            :md="6"
+            :lg="6"
+            :xl="6"
+          >
+            <div
+              v-for="(item, index) in beforeList"
+              style="position: relative;"
+            >
               <el-image
+                ref="tableTab"
                 :src="beforeList[index]"
                 :fit="fit"
                 :lazy="true"
-                ref="tableTab"
                 class="gobig"
                 :preview-src-list="[beforeList[index]]"
                 :preview-teleported="true"
-              ></el-image>
+              />
          
               <div class="img-infor">
-                <span
-                  >原图</span
-                >
-  
+                <span>原图</span>
               </div>
             </div>
           </el-col>
-          <el-col :xs="1" :sm="1" :md="2" :lg="2" :xl="2"></el-col>
-          <el-col :xs="20" :sm="10" :md="6" :lg="6" :xl="6" >
-            <div v-for="(item, index) in afterList" style="position: relative">
+          <el-col
+            :xs="1"
+            :sm="1"
+            :md="2"
+            :lg="2"
+            :xl="2"
+          />
+          <el-col
+            :xs="20"
+            :sm="10"
+            :md="6"
+            :lg="6"
+            :xl="6"
+          >
+            <div
+              v-for="(item, index) in afterList"
+              style="position: relative"
+            >
               <el-image
+                ref="tableTab"
                 :src="afterList[index]"
                 :fit="fit"
-                 :lazy="true"
-                ref="tableTab"
+                :lazy="true"
                 class="gobig"
                 :preview-src-list="[afterList[index]]"
                 :preview-teleported="true"
-           
-              ></el-image>
+              />
               <div class="img-infor">
-                <span
-                  >预测结果</span
-                >
+                <span>预测结果</span>
                 <span
                   @click="
                     downloadimgWithWords(
                       index + 1,
                       afterList[index],
-                      `${this.funtype}结果图.png`
+                      `${funtype}结果图.png`
                     )
                   "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span>
+                ><i class="iconfont icon-xiazai" /></span>
               </div>
             </div>
           </el-col>
@@ -76,7 +96,7 @@
 import { downloadimgWithWords } from "@/utils/download.js";
 
 export default {
-  name: "imgshow",
+  name: "Imgshow",
   props: {
     beforeImg: {},
     afterImg: {},

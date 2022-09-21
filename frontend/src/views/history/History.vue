@@ -1,87 +1,84 @@
 <template>
   <div class="his-box">
     <div class="hint">
-      当前浏览功能区：<span v-if="type != ''">{{ this.type }}</span
-      ><span v-else>全部</span
-      ><i
+      当前浏览功能区：<span v-if="type != ''">{{ type }}</span><span v-else>全部</span><i
         style="margin-left: 8px; font-size: 20px"
         :class="{
           'iconfont icon-bianhuajiance': type == '变化检测',
           'iconfont icon-mubiaojiance': type == '目标检测',
           'iconfont icon-erfenleibianhuajiance16px': type == '地物分类',
         }"
-      ></i>
+      />
     </div>
     <el-table
+      ref="multipleTable"
       :data="tableData"
       style="width: 100%"
-      ref="multipleTable"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection"> </el-table-column>
+      <el-table-column type="selection" />
       <el-table-column label="日期">
-        <template v-slot="scope">
-          <i class="el-icon-time"></i>
+        <template #default="scope">
+          <i class="el-icon-time" />
           <span>{{ scope.row.create_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="功能区">
-        <template v-slot="scope">
-          <span id="bigtitle"
-            ><i
-              style="font-size: 18px; margin-right: 6px"
-              :class="{
-                'iconfont icon-bianhuajiance': scope.row.type == '变化检测',
-                'iconfont icon-mubiaojiance': scope.row.type == '目标检测',
-                'iconfont icon-erfenleibianhuajiance16px':
-                  scope.row.type == '地物分类',
-              }"
-            ></i
-            >{{ scope.row.type }}
+        <template #default="scope">
+          <span id="bigtitle"><i
+            style="font-size: 18px; margin-right: 6px"
+            :class="{
+              'iconfont icon-bianhuajiance': scope.row.type == '变化检测',
+              'iconfont icon-mubiaojiance': scope.row.type == '目标检测',
+              'iconfont icon-erfenleibianhuajiance16px':
+                scope.row.type == '地物分类',
+            }"
+          />{{ scope.row.type }}
           </span>
         </template>
       </el-table-column>
       <el-table-column label="原图">
-        <template v-slot="scope">
+        <template #default="scope">
           <img
             :src="global.BASEURL + scope.row.before_img"
             min-width="70"
             height="70"
-            @click="previewOnePic(scope.row.before_img)"
             class="goup"
-          />
+            @click="previewOnePic(scope.row.before_img)"
+          >
 
           <img
             v-if="scope.row.type == '变化检测'"
             :src="global.BASEURL + scope.row.before_img1"
             min-width="70"
             height="70"
-            @click="previewOnePic(scope.row.before_img1)"
             class="goup"
             style="margin-left: 20px"
-          />
+            @click="previewOnePic(scope.row.before_img1)"
+          >
         </template>
       </el-table-column>
       <el-table-column label="结果图">
-        <template v-slot="scope">
+        <template #default="scope">
           <img
             :src="global.BASEURL + scope.row.after_img"
             min-width="70"
             height="70"
-            @click="previewOnePic(scope.row.after_img)"
             class="goup"
-          />
+            @click="previewOnePic(scope.row.after_img)"
+          >
         </template>
       </el-table-column>
 
       <el-table-column label="操作">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button
             size="default"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)"
-            >删除</el-button
           >
+            删除
+          </el-button>
           <el-button
             v-if="scope.row.type != '变化检测'"
             size="default"
@@ -122,24 +119,25 @@
     </el-table>
 
     <div
-      @click="fundrawer = true"
       type="primary"
       style="margin-left: 16px"
       class="fundrawer hidden-md-and-down"
+      @click="fundrawer = true"
     >
       <div class="drawer2">
-        <span style="color: red; font-family: Microsoft JhengHei UI, sans-serif"
-          >功能筛选</span
-        >
+        <span style="color: red; font-family: Microsoft JhengHei UI, sans-serif">功能筛选</span>
       </div>
       <div class="drawer3">
-        <i class="iconfont icon-shaixuan" style="color: red"></i>
+        <i
+          class="iconfont icon-shaixuan"
+          style="color: red"
+        />
       </div>
     </div>
 
     <el-drawer
-      title="功能区筛选"
       v-model="fundrawer"
+      title="功能区筛选"
       :direction="direction"
       :size="size"
     >
@@ -149,37 +147,67 @@
         background-color="white"
       >
         <el-menu-item-group>
-          <el-menu-item index="1" @click="onlyDetectChanges"
-            ><h3>
-              <i class="iconfont icon-bianhuajiance"></i>变化检测
-            </h3></el-menu-item
+          <el-menu-item
+            index="1"
+            @click="onlyDetectChanges"
           >
-          <el-menu-item index="2" @click="onlyDetectTargets">
             <h3>
-              <i class="iconfont icon-mubiaojiance" style="font-size: 25px"></i
-              >目标检测
-            </h3></el-menu-item
+              <i class="iconfont icon-bianhuajiance" />变化检测
+            </h3>
+          </el-menu-item>
+          <el-menu-item
+            index="2"
+            @click="onlyDetectTargets"
           >
-          <el-menu-item index="3" @click="onlyClassify"
-            ><h3>
+            <h3>
+              <i
+                class="iconfont icon-mubiaojiance"
+                style="font-size: 25px"
+              />目标检测
+            </h3>
+          </el-menu-item>
+          <el-menu-item
+            index="3"
+            @click="onlyClassify"
+          >
+            <h3>
               <i
                 class="iconfont icon-erfenleibianhuajiance16px"
                 style="font-size: 13px"
-              ></i
-              >地物分类
-            </h3></el-menu-item
+              />地物分类
+            </h3>
+          </el-menu-item>
+          <el-menu-item
+            index="5"
+            @click="goBackData"
           >
-          <el-menu-item index="5" @click="goBackData"
-            ><h3><i class="iconfont icon-fuyuan"></i>列表复原</h3></el-menu-item
-          >
+            <h3><i class="iconfont icon-fuyuan" />列表复原</h3>
+          </el-menu-item>
         </el-menu-item-group>
       </el-menu>
     </el-drawer>
-    <div style="margin-top: 20px" v-show="this.tableData.length != 0">
-      <el-button @click="toggleSelection(tableData)">全选</el-button>
-      <el-button @click="toggleSelection()">取消选择</el-button>
-      <el-button @click="deleteAll()" type="danger">删除</el-button>
-      <el-button @click="downLoadAll()" type="primary">下载</el-button>
+    <div
+      v-show="tableData.length != 0"
+      style="margin-top: 20px"
+    >
+      <el-button @click="toggleSelection(tableData)">
+        全选
+      </el-button>
+      <el-button @click="toggleSelection()">
+        取消选择
+      </el-button>
+      <el-button
+        type="danger"
+        @click="deleteAll()"
+      >
+        删除
+      </el-button>
+      <el-button
+        type="primary"
+        @click="downLoadAll()"
+      >
+        下载
+      </el-button>
     </div>
     <el-row justify="center">
       <el-col
@@ -192,16 +220,15 @@
       >
         <el-pagination
           background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
           :page-size="pageSize"
           layout="prev, pager, next, jumper"
           :total="total"
           :current-page="currentPage"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
           @next-click="goNextPage"
           @prev-click="goPrePage"
-        >
-        </el-pagination>
+        />
       </el-col>
     </el-row>
 
@@ -215,31 +242,55 @@
     >
       <div v-if="flag == 2">
         <el-row justify="space-evenly">
-          <img :src="previewPic1" id="pre-img" />
+          <img
+            id="pre-img"
+            :src="previewPic1"
+          >
 
-          <img :src="previewPic2" id="pre-img" />
+          <img
+            id="pre-img"
+            :src="previewPic2"
+          >
         </el-row>
       </div>
       <div v-else-if="flag == 1">
         <el-row justify="space-evenly">
-          <img :src="previewPic1" id="pre-img" />
+          <img
+            id="pre-img"
+            :src="previewPic1"
+          >
         </el-row>
       </div>
       <div v-else-if="flag == 3">
         <el-row justify="space-evenly">
-          <img :src="previewPic1" id="pre-img" />
-
-          <img :src="previewPic3" id="pre-img" />
-
-          <img :src="previewPic2" id="pre-img" />
-        </el-row>
-        <el-row> </el-row>
-      </div>
-      <el-row type="flex" justify="center">
-        <el-col :span="1">
-          <el-button type="primary" @click="dialogVisible = false"
-            >OK</el-button
+          <img
+            id="pre-img"
+            :src="previewPic1"
           >
+
+          <img
+            id="pre-img"
+            :src="previewPic3"
+          >
+
+          <img
+            id="pre-img"
+            :src="previewPic2"
+          >
+        </el-row>
+        <el-row />
+      </div>
+      <el-row
+        type="flex"
+        justify="center"
+      >
+        <el-col :span="1">
+          <el-button
+            type="primary"
+            @click="dialogVisible = false"
+          >
+            OK
+          </el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -258,7 +309,12 @@ import { downloadimgWithWords } from "@/utils/download.js";
 import store from "@/store";
 import global from "@/global.vue";
 export default {
-  name: "history",
+  name: "History",
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      document.querySelector(".el-main").scrollTop = 0;
+    });
+  },
   data() {
     return {
       delete: {
@@ -427,11 +483,6 @@ export default {
       this.getTabelInfo();
       this.fundrawer = false;
     },
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      document.querySelector(".el-main").scrollTop = 0;
-    });
   },
 };
 </script>

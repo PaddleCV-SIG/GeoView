@@ -1,38 +1,53 @@
 <template>
-  <Drawer :activeIndex="activeIndex"></Drawer>
-  <div class="common-layout" v-show="isLogin">
+  <Drawer :active-index="activeIndex" />
+  <div
+    v-show="isLogin"
+    class="common-layout"
+  >
     <el-container>
-      <el-aside width="auto"
-        ><Aside :isCollapse="isCollapse" :activeIndex="activeIndex"></Aside
-      ></el-aside>
+      <el-aside width="auto">
+        <Aside
+          :is-collapse="isCollapse"
+          :active-index="activeIndex"
+        />
+      </el-aside>
       <el-container>
-        <el-main class="gotop" style="overflow-x:hidden">
-           <el-header class="theheader"
-          ><el-row align="middle"><i class="iconfont icon-caidan" @click="goCollapse" style="margin-right:30px;font-size:32px"></i
-          ><Tablogin></Tablogin
-        ></el-row></el-header>
-        <!-- https://segmentfault.com/a/1190000040935668界面渐入渐出效果 -->
+        <el-main
+          class="gotop"
+          style="overflow-x:hidden"
+        >
+          <el-header class="theheader">
+            <el-row align="middle">
+              <i
+                class="iconfont icon-caidan"
+                style="margin-right:30px;font-size:32px"
+                @click="goCollapse"
+              /><Tablogin />
+            </el-row>
+          </el-header>
+          <!-- https://segmentfault.com/a/1190000040935668界面渐入渐出效果 -->
           <router-view v-slot="{ Component }">
-                <transition name="fade" mode="out-in">
-            <keep-alive
-              include="detecttargets,detectchanges,classify,onlinemap"
+            <transition
+              name="fade"
+              mode="out-in"
             >
+              <keep-alive
+                include="detecttargets,detectchanges,classify,onlinemap"
+              >
                 <component :is="Component" />
-            </keep-alive>
-                </transition>
+              </keep-alive>
+            </transition>
           </router-view>
           <el-backtop
             target=".gotop"
             :bottom="40"
             :visibility-height="50"
             :right="27"
-          >
-          </el-backtop>
+          />
         </el-main>
       </el-container>
     </el-container>
   </div>
-  
 </template>
 
 <script>
@@ -43,7 +58,7 @@ import Drawer from "@/components/Drawer.vue";
 import BackTop from "@/components/BackTop";
 
 export default {
-  name: "home",
+  name: "Home",
   components: {
     Aside,
     Tablogin,
@@ -58,12 +73,6 @@ export default {
       activeIndex: this.$route.path,
     };
   },
-
-  methods: {
-    goCollapse() {
-      this.isCollapse = !this.isCollapse;
-    },
-  },
   mounted() {
     window.onresize = () => {
     
@@ -77,6 +86,12 @@ export default {
   },
   updated(){
     this.activeIndex=this.$route.path
+  },
+
+  methods: {
+    goCollapse() {
+      this.isCollapse = !this.isCollapse;
+    },
   }
 };
 </script>

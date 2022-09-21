@@ -1,11 +1,13 @@
 <template>
-    <el-backtop target=".common-layout" :bottom="100">
-  </el-backtop>
+  <el-backtop
+    target=".common-layout"
+    :bottom="100"
+  />
 </template>
 
 <script>
 export default {
-    name:'backtop'
+    name:'Backtop'
 }
 </script>
 

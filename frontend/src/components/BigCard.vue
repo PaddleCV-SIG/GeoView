@@ -1,25 +1,59 @@
 <template>
-  <el-row :gutter="60" justify="center" style="margin-bottom: 40px">
-    <el-col :xs="20" :sm="10" :md="10" :lg="7" :xl="7" id="go-big1"
-      ><div class="singlecard">
-        <div class="cardinfor"><slot name="left"></slot></div></div
-    ></el-col>
+  <el-row
+    :gutter="60"
+    justify="center"
+    style="margin-bottom: 40px"
+  >
+    <el-col
+      id="go-big1"
+      :xs="20"
+      :sm="10"
+      :md="10"
+      :lg="7"
+      :xl="7"
+    >
+      <div class="singlecard">
+        <div class="cardinfor">
+          <slot name="left" />
+        </div>
+      </div>
+    </el-col>
 
-    <el-col :xs="20" :sm="10" :md="10" :lg="7" :xl="7" id="go-big2"
-      ><div class="singlecard">
-        <div class="cardinfor"><slot name="middle"></slot></div></div
-    ></el-col>
+    <el-col
+      id="go-big2"
+      :xs="20"
+      :sm="10"
+      :md="10"
+      :lg="7"
+      :xl="7"
+    >
+      <div class="singlecard">
+        <div class="cardinfor">
+          <slot name="middle" />
+        </div>
+      </div>
+    </el-col>
 
-    <el-col :xs="20" :sm="10" :md="10" :lg="7" :xl="7" id="go-big3"
-      ><div class="singlecard">
-        <div class="cardinfor"><slot name="right"></slot></div></div
-    ></el-col>
+    <el-col
+      id="go-big3"
+      :xs="20"
+      :sm="10"
+      :md="10"
+      :lg="7"
+      :xl="7"
+    >
+      <div class="singlecard">
+        <div class="cardinfor">
+          <slot name="right" />
+        </div>
+      </div>
+    </el-col>
   </el-row>
 </template>
 
 <script>
 export default {
-  name: "bigcard",
+  name: "Bigcard",
 }
 </script>
 

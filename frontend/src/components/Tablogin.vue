@@ -1,20 +1,23 @@
 <template>
-  <span class="date hidden-sm-and-down"
-    ><i class="iconfont icon-shijian" style="font-size:20px"></i><span class="hms"
-      >{{ this.currenthour }}:{{ this.currentminute }}:{{
-        this.currentsecond
-      }}</span
-    ><span class="ymd"
-      >[{{ this.currentyear }}-{{ this.currentmonth }}-{{
-        this.currentday
-      }}]</span
-    ></span
-  >
+  <span class="date hidden-sm-and-down"><i
+    class="iconfont icon-shijian"
+    style="font-size:20px"
+  /><span class="hms">{{ currenthour }}:{{ currentminute }}:{{
+    currentsecond
+  }}</span><span class="ymd">[{{ currentyear }}-{{ currentmonth }}-{{
+    currentday
+  }}]</span></span>
 
-  <div style="margin-left:15px"><i class="iconfont icon-github" style="font-size:28px" @click="goGithub"></i></div>
+  <div style="margin-left:15px">
+    <i
+      class="iconfont icon-github"
+      style="font-size:28px"
+      @click="goGithub"
+    />
+  </div>
 </template>
 
-<script >
+<script>
 import {getCurrentTime} from "@/utils/gettime.js"
 export default {
   data() {
@@ -29,17 +32,17 @@ export default {
       imgurl: "https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg"
     };
   },
+  mounted() {
+    this.getCurrentTime();
+  },
+  unmounted() {
+    clearTimeout(this.getDate);
+  },
   methods: {
     getCurrentTime,
     goGithub(){
       window.open('https://github.com/terayco/Intelligent-RS-System');
     },
-  },
-  mounted() {
-    this.getCurrentTime();
-  },
-  destroyed() {
-    clearTimeout(this.getDate);
   },
 };
 </script>

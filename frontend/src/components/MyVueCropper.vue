@@ -1,65 +1,81 @@
 <template>
   <div>
     <div class="cropper">
-      <el-row align="middle" justify="center" >
-        <el-col :xs="10" :sm="20" :md="20" :lg="19" :xl="19">
+      <el-row
+        align="middle"
+        justify="center"
+      >
+        <el-col
+          :xs="10"
+          :sm="20"
+          :md="20"
+          :lg="19"
+          :xl="19"
+        >
           <div class="cropper-content">
             <div class="cropper">
               <vueCropper
                 ref="cropper"
                 :img="fileimg"
-                :outputSize="option.size"
-                :outputType="option.outputType"
+                :output-size="option.size"
+                :output-type="option.outputType"
                 :info="true"
                 :full="option.full"
-                :canMove="option.canMove"
-                :canMoveBox="option.canMoveBox"
+                :can-move="option.canMove"
+                :can-move-box="option.canMoveBox"
                 :original="option.original"
-                :autoCrop="option.autoCrop"
-                :autoCropWidth="option.autoCropWidth"
-                :autoCropHeight="option.autoCropHeight"
-                :fixedBox="option.fixedBox"
+                :auto-crop="option.autoCrop"
+                :auto-crop-width="option.autoCropWidth"
+                :auto-crop-height="option.autoCropHeight"
+                :fixed-box="option.fixedBox"
                 @realTime="realTime"
                 @imgLoad="imgLoad"
-              ></vueCropper>
+              />
             </div>
           </div>
         </el-col>
-        <el-col :xs="20" :sm="20" :md="20" :lg="5" :xl="5">
+        <el-col
+          :xs="20"
+          :sm="20"
+          :md="20"
+          :lg="5"
+          :xl="5"
+        >
           <div>
-            <br />
+            <br>
             <el-button
               type="primary"
               class="iconfont icon-xiangyouxuanzhuan"
               circle
               @click="rotateRight"
-            ></el-button>
+            />
             <el-button
               type="success"
               class="iconfont icon-xiangzuoxuanzhuan"
               circle
               @click="rotateLeft"
-            ></el-button>
+            />
             <el-button
               type="danger"
               class="iconfont icon-max"
               circle
               @click="changeScale(1)"
-            ></el-button>
+            />
             <el-button
               type="warning"
               class="iconfont icon-fangxiaojing"
               circle
               @click="changeScale(-1)"
-            ></el-button>
+            />
           </div>
           <el-button
             style="margin-top: 20px; margin-left: 40px"
             type="success"
             @click="submitUpload(funtype, false)"
-            >编辑并上传</el-button
-          ></el-col
-        >
+          >
+            编辑并上传
+          </el-button>
+        </el-col>
       </el-row>
     </div>
   </div>

@@ -1,17 +1,21 @@
 <template>
   <div
-    @click="drawer = true"
     type="primary"
     style="margin-left: 16px"
     class="alldrawer hidden-md-and-down"
+    @click="drawer = true"
   >
-    <div class="drawer2"><span>快速导航</span></div>
-    <div class="drawer3"><i class="iconfont icon-feiji"></i></div>
+    <div class="drawer2">
+      <span>快速导航</span>
+    </div>
+    <div class="drawer3">
+      <i class="iconfont icon-feiji" />
+    </div>
   </div>
 
   <el-drawer
-    title="快速导航"
     v-model="drawer"
+    title="快速导航"
     :direction="direction"
     :size="size"
   >
@@ -24,35 +28,47 @@
       active-text-color="#FFFFFF"
     >
       <el-menu-item-group>
-        <el-menu-item index="/detectchanges" @click="goDetectChanges"
-          ><h3>
-            <i class="iconfont icon-bianhuajiance"></i>变化检测
-          </h3></el-menu-item
+        <el-menu-item
+          index="/detectchanges"
+          @click="goDetectChanges"
         >
-        <el-menu-item index="/detecttargets" @click="goDetectTargets">
           <h3>
-            <i class="iconfont icon-mubiaojiance" style="font-size: 25px"></i
-            >目标检测
-          </h3></el-menu-item
+            <i class="iconfont icon-bianhuajiance" />变化检测
+          </h3>
+        </el-menu-item>
+        <el-menu-item
+          index="/detecttargets"
+          @click="goDetectTargets"
         >
-        <el-menu-item index="/classify" @click="goClassify"
-          ><h3>
+          <h3>
+            <i
+              class="iconfont icon-mubiaojiance"
+              style="font-size: 25px"
+            />目标检测
+          </h3>
+        </el-menu-item>
+        <el-menu-item
+          index="/classify"
+          @click="goClassify"
+        >
+          <h3>
             <i
               class="iconfont icon-erfenleibianhuajiance16px"
               style="font-size: 13px"
-            ></i
-            >地物分类
-          </h3></el-menu-item
+            />地物分类
+          </h3>
+        </el-menu-item>
+        <el-menu-item
+          index="/onlinemap"
+          @click="goOnlineMap"
         >
-           <el-menu-item index="/onlinemap" @click="goOnlineMap"
-          ><h3>
+          <h3>
             <i
               class="iconfont icon-zaixianditu"
               style="font-size: 19px"
-            ></i
-            >在线地图
-          </h3></el-menu-item
-        >
+            />在线地图
+          </h3>
+        </el-menu-item>
       </el-menu-item-group>
     </el-menu>
   </el-drawer>
@@ -66,7 +82,7 @@ import {
   goOnlineMap
 } from "@/utils/gosomewhere.js";
 export default {
-  name: "drawer",
+  name: "Drawer",
   props: ["activeIndex", "isCollapse"],
   data() {
     return {

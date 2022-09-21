@@ -1,147 +1,171 @@
- <template>
+<template>
   <div class="bigbox">
-    <Tabinfor >
-      <template v-slot:left>
-        <div id="subtitle" style="font-size: 25px">
+    <Tabinfor>
+      <template #left>
+        <div
+          id="subtitle"
+          style="font-size: 25px"
+        >
           目标检测<i
             class="iconfont icon-dianji"
             style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      ></template>
-      <template v-slot:mid> </template>
-      <template v-slot:right> </template>
+          />
+        </div>
+      </template>
+      <template #mid />
+      <template #right />
     </Tabinfor>
-    <el-divider></el-divider>
-    <Tabinfor >
-      <template v-slot:left>
-        <p >
-          请上传包含<span class="goweight">图片的文件夹</span
-          ><i class="iconfont icon-wenjianjia" style="color: blue"></i>或者<span
+    <el-divider />
+    <Tabinfor>
+      <template #left>
+        <p>
+          请上传包含<span class="goweight">图片的文件夹</span><i
+            class="iconfont icon-wenjianjia"
+            style="color: blue"
+          />或者<span
             class="goweight"
-            >图片</span
-          ><i class="iconfont icon-tupiantianjia" style="color: skyblue"></i>
+          >图片</span><i
+            class="iconfont icon-tupiantianjia"
+            style="color: skyblue"
+          />
         </p>
       </template>
     </Tabinfor>
-    <el-row type="flex" justify="center">
+    <el-row
+      type="flex"
+      justify="center"
+    >
       <el-col :span="24">
         <el-card style="border: 4px dashed var(--el-border-color)">
-          <div class="clearQ" v-if="fileList.length">
+          <div
+            v-if="fileList.length"
+            class="clearQ"
+          >
             <el-button
               type="primary"
               class="btn-animate2 btn-animate__surround"
               @click="clearQue"
-              >清空图片</el-button
             >
+              清空图片
+            </el-button>
           </div>
           <el-upload
+            id="one "
+            ref="upload"
+            v-model:file-list="fileList"
             class="upload-demo imgcard"
             drag
             action="#"
             multiple
             :auto-upload="false"
-            ref="upload"
-            id="one "
-            v-model:file-list="fileList"
             @change="beforeUpload(fileList[fileList.length - 1].raw)"
           >
-            <i class="iconfont icon-yunduanshangchuan"></i>
+            <i class="iconfont icon-yunduanshangchuan" />
             <div class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
-            <div class="el-upload__tip" slot="tip">
+            <div
+              slot="tip"
+              class="el-upload__tip"
+            >
               只能上传一张或多张图片，请在下方上传文件夹
             </div>
           </el-upload>
           <el-row justify="center">
             <input
-              type="file"
               id="ctrl"
               ref="myfile"
+              type="file"
               webkitdirectory
               directory
               multiple
               @change="uploadMore()"
-            />
-            <i class="iconfont icon-wenjianshangchuan" @click="fileClick"
-              >上传文件夹</i
             >
+            <i
+              class="iconfont icon-wenjianshangchuan"
+              @click="fileClick"
+            >上传文件夹</i>
           </el-row>
 
           <el-row justify="center">
             <p>
               <label class="mylabel container">
                 <input
+                  ref="cut"
                   type="checkbox"
                   class="myinput"
-                  ref="cut"
                   @change="select()"
-                />
-                <span class="checkmark"></span>
-                <span class="goweight label-words">上传时编辑图片</span
-                ><i
+                >
+                <span class="checkmark" />
+                <span class="goweight label-words">上传时编辑图片</span><i
                   class="iconfont icon-crop-full"
                   style="margin-left: 10px; color: rgb(64, 158, 255)"
-                ></i>
+                />
               </label>
             </p>
           </el-row>
-          <el-row justify="center" align="middle">
+          <el-row
+            justify="center"
+            align="middle"
+          >
             <i
               class="iconfont icon-tuxingtuxiangchuli"
               style="color: rgb(64, 158, 255); font-size: 20px"
-            ></i>
+            />
             <p>图像预处理：</p>
             <p>
               <label class="mylabel container">
                 <input
+                  ref="clahe"
                   type="checkbox"
                   class="myinput"
-                  ref="clahe"
                   @change="selectClahe(2)"
-                />
-                <span class="checkmark"></span>
+                >
+                <span class="checkmark" />
                 <span class="goweight label-words">CLAHE</span>
               </label>
             </p>
             <p>
               <label class="mylabel container">
                 <input
+                  ref="sharpen"
                   type="checkbox"
                   class="myinput"
-                  ref="sharpen"
                   @change="selectSharpen(2)"
-                />
-                <span class="checkmark"></span>
+                >
+                <span class="checkmark" />
                 <span class="goweight label-words">锐化</span>
               </label>
             </p>
           </el-row>
-          <el-row justify="center" align="middle">
+          <el-row
+            justify="center"
+            align="middle"
+          >
             <i
               class="iconfont icon-agora_AIjiangzao"
               style="color: rgb(64, 158, 255); font-size: 35px"
-            ></i>
+            />
             <p>降噪处理：</p>
             <p>
               <label class="mylabel container">
                 <input
+                  ref="smooth"
                   type="checkbox"
                   class="myinput"
-                  ref="smooth"
                   @change="selectSmooth()"
-                />
-                <span class="checkmark"></span>
+                >
+                <span class="checkmark" />
                 <span class="goweight label-words">平滑</span>
               </label>
               <label class="mylabel container">
                 <input
+                  ref="filter"
                   type="checkbox"
                   class="myinput"
                   @change="selectFilter()"
-                  ref="filter"
-                />
-                <span class="checkmark"></span>
+                >
+                <span class="checkmark" />
                 <span class="goweight label-words">滤波</span>
               </label>
             </p>
@@ -153,86 +177,155 @@
               class="btn-animate btn-animate__shiny"
               style="margin: 0 auto"
               @click="upload('目标检测')"
-              >开始处理</el-button
             >
+              开始处理
+            </el-button>
           </div>
-            <el-divider v-if="!this.uploadSrc.prehandle"></el-divider>
-    <div v-if="this.uploadSrc.prehandle">
-        <p  v-if="this.uploadSrc.prehandle==2">
-         <div id="subtitle" style="font-size: 25px">
-          CLAHE处理结果预览<i
-            class="iconfont icon-dianji"
-            style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      >   
-    </p>
-     <p v-else-if="this.uploadSrc.prehandle==4">
-         <div id="subtitle" style="font-size: 25px">
-          锐化处理结果预览<i
-            class="iconfont icon-dianji"
-            style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      >   
-    </p>
-    <el-divider></el-divider>
-    <el-row justify="center" :gutter="20">
-      <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6"><div v-for="(item) in this.before" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">原图</div></div></el-col>
-      <el-col  :md="2" :lg="2" :xl="2"></el-col>
-      <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" v-if="this.uploadSrc.prehandle==2"><div v-for="(item) in this.claheImg" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">CLAHE处理后       <span
-                  @click="
-                    downloadimgWithWords(
-                      -1,
-                      item,
-                      `CLAHE处理图.png`
-                    )
-                  "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span></div></div></el-col>
-    <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" v-if="this.uploadSrc.prehandle==4"><div v-for="(item) in this.sharpenImg" ><el-image :src="item" :preview-src-list='[item]' :preview-teleported="true"></el-image><div class="his-words">锐化处理后      <span
-                  @click="
-                    downloadimgWithWords(
-                      -1,
-                      item,
-                      `锐化处理图.png`
-                    )
-                  "
-                  ><i class="iconfont icon-xiazai"></i
-                ></span></div></div></el-col>
-    </el-row>
-   </div>
+          <el-divider v-if="!uploadSrc.prehandle" />
+          <div v-if="uploadSrc.prehandle">
+            <p v-if="uploadSrc.prehandle==2" /><div
+              id="subtitle"
+              style="font-size: 25px"
+            >
+              CLAHE处理结果预览<i
+                class="iconfont icon-dianji"
+                style="font-size: 23px; margin-left: 17px; color: blue"
+              />
+            </div>   
+            </p>
+            <p v-else-if="uploadSrc.prehandle==4" /><div
+              id="subtitle"
+              style="font-size: 25px"
+            >
+              锐化处理结果预览<i
+                class="iconfont icon-dianji"
+                style="font-size: 23px; margin-left: 17px; color: blue"
+              />
+            </div>   
+            </p>
+            <el-divider />
+            <el-row
+              justify="center"
+              :gutter="20"
+            >
+              <el-col
+                :xs="24"
+                :sm="24"
+                :md="6"
+                :lg="6"
+                :xl="6"
+              >
+                <div v-for="(item) in before">
+                  <el-image
+                    :src="item"
+                    :preview-src-list="[item]"
+                    :preview-teleported="true"
+                  /><div class="his-words">
+                    原图
+                  </div>
+                </div>
+              </el-col>
+              <el-col
+                :md="2"
+                :lg="2"
+                :xl="2"
+              />
+              <el-col
+                v-if="uploadSrc.prehandle==2"
+                :xs="24"
+                :sm="24"
+                :md="6"
+                :lg="6"
+                :xl="6"
+              >
+                <div v-for="(item) in claheImg">
+                  <el-image
+                    :src="item"
+                    :preview-src-list="[item]"
+                    :preview-teleported="true"
+                  /><div class="his-words">
+                    CLAHE处理后       <span
+                      @click="
+                        downloadimgWithWords(
+                          -1,
+                          item,
+                          `CLAHE处理图.png`
+                        )
+                      "
+                    ><i class="iconfont icon-xiazai" /></span>
+                  </div>
+                </div>
+              </el-col>
+              <el-col
+                v-if="uploadSrc.prehandle==4"
+                :xs="24"
+                :sm="24"
+                :md="6"
+                :lg="6"
+                :xl="6"
+              >
+                <div v-for="(item) in sharpenImg">
+                  <el-image
+                    :src="item"
+                    :preview-src-list="[item]"
+                    :preview-teleported="true"
+                  /><div class="his-words">
+                    锐化处理后      <span
+                      @click="
+                        downloadimgWithWords(
+                          -1,
+                          item,
+                          `锐化处理图.png`
+                        )
+                      "
+                    ><i class="iconfont icon-xiazai" /></span>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
         </el-card>
       </el-col>
     </el-row>
-    <Tabinfor >
-      <template v-slot:left>
-        <div id="subtitle" style="font-size: 25px">
+    <Tabinfor>
+      <template #left>
+        <div
+          id="subtitle"
+          style="font-size: 25px"
+        >
           结果图预览<i
             class="iconfont icon-dianji"
             style="font-size: 23px; margin-left: 17px; color: blue"
-          ></i></div
-      ></template>
- 
+          />
+        </div>
+      </template>
     </Tabinfor>
-    <el-divider ></el-divider>
-    <Tabinfor >
-      <template v-slot:left>
-        <p >
+    <el-divider />
+    <Tabinfor>
+      <template #left>
+        <p>
           <span class="goweight">点击图片</span>即可预览
           <i
             class="iconfont icon-duigou"
             style="color: green; margin-right: 20px"
-          ></i>
+          />
           <span><span class="goweight">滑轮滚动</span>即可放大缩小</span>
         </p>
       </template>
-           <template v-slot:mid>
-       <p v-if="this.isUpload"><i class="iconfont icon-dabaoxiazai" @click="goCompress('目标检测')">结果图打包</i>
-            </p>
+      <template #mid>
+        <p v-if="isUpload">
+          <i
+            class="iconfont icon-dabaoxiazai"
+            @click="goCompress('目标检测')"
+          >结果图打包</i>
+        </p>
       </template>
-      <template v-slot:right>
-        <span class="goweight"
-          ><i class="iconfont icon-shuaxin" @click="getMore" style="padding-right:55px"><span class="hidden-sm-and-down">点击刷新</span></i></span
-        >
+      <template #right>
+        <span class="goweight"><i
+          class="iconfont icon-shuaxin"
+          style="padding-right:55px"
+          @click="getMore"
+        ><span class="hidden-sm-and-down">点击刷新</span></i></span>
       </template>
     </Tabinfor>
     <el-dialog
@@ -241,22 +334,23 @@
       title="编辑"
       width="75%"
       top="0"
-      ><MyVueCropper
+    >
+      <MyVueCropper
         :fileimg="fileimg"
         :funtype="funtype"
         :file="file"
         :length="afterImg.length"
-        @cutChanged="notvisible"
         :prehandle="uploadSrc.prehandle"
         :denoise="uploadSrc.denoise"
-      ></MyVueCropper
-    ></el-dialog>
+        @cutChanged="notvisible"
+      />
+    </el-dialog>
     <ImgShow
-      :beforeImg="beforeImg"
-      :afterImg="afterImg"
+      :before-img="beforeImg"
+      :after-img="afterImg"
       :funtype="funtype"
-    ></ImgShow>
-    <Bottominfor></Bottominfor>
+    />
+    <Bottominfor />
   </div>
 </template>
 <script>
@@ -277,12 +371,17 @@ import Bottominfor from "@/components/Bottominfor";
 import MyVueCropper from "@/components/MyVueCropper";
 
 export default {
-  name: "detecttargets",
+  name: "Detecttargets",
   components: {
     ImgShow,
     Tabinfor,
     Bottominfor,
     MyVueCropper,
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      document.querySelector(".el-main").scrollTop = 0;
+    });
   },
   data() {
     return {
@@ -322,6 +421,9 @@ export default {
         type:4
       }
     };
+  },
+  created() {
+    this.getUploadImg("目标检测");
   },
   methods: {
     getImgArrayBuffer,
@@ -399,14 +501,6 @@ export default {
     goRenderThese() {},
  
     setNormalWay(){}
-  },
-  created() {
-    this.getUploadImg("目标检测");
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      document.querySelector(".el-main").scrollTop = 0;
-    });
   },
 };
 </script>

@@ -5,23 +5,24 @@
       type="primary"
       title="截图上传"
       @click="toImage()"
-      >截图上传</el-button
     >
+      截图上传
+    </el-button>
     <el-input
-      type="text"
       id="suggestId"
+      v-model="address_detail"
+      type="text"
       name="address_detail"
       placeholder="请输入地址"
-      v-model="address_detail"
       class="input_style"
-    ></el-input>
+    />
 
     <div
-      style="width: 100%; height: 100%"
       id="map"
-      class="map"
       ref="imageTofile"
-    ></div>
+      style="width: 100%; height: 100%"
+      class="map"
+    />
     <el-dialog
       v-model="choose"
       :modal="false"
@@ -30,22 +31,31 @@
       top="12%"
     >
       <el-row justify="center">
-        <el-radio class="choose-item" v-model="funtype" label="目标检测"
-          >目标检测</el-radio
+        <el-radio
+          v-model="funtype"
+          class="choose-item"
+          label="目标检测"
         >
-        <el-radio class="choose-item" v-model="funtype" label="地物分类"
-          >地物分类</el-radio
+          目标检测
+        </el-radio>
+        <el-radio
+          v-model="funtype"
+          class="choose-item"
+          label="地物分类"
         >
+          地物分类
+        </el-radio>
       </el-row>
       <el-row>
         <el-button
           type="primary"
           class="btn-animate btn-animate__shiny"
           style="margin: 50px auto"
-          @click="goUpload(this.funtype)"
-          >开始处理</el-button
-        ></el-row
-      >
+          @click="goUpload(funtype)"
+        >
+          开始处理
+        </el-button>
+      </el-row>
     </el-dialog>
     <el-dialog
       v-model="isShow"
@@ -55,18 +65,19 @@
       top="6%"
     >
       <ImgShow
-        :beforeImg="beforeImg"
-        :afterImg="afterImg"
+        :before-img="beforeImg"
+        :after-img="afterImg"
         :funtype="funtype"
-      ></ImgShow>
-      <el-row justify="center"
-        ><el-button
+      />
+      <el-row justify="center">
+        <el-button
           type="primary"
           class="btn-animate btn-animate__shiny"
           @click="removeImg"
-          >确定</el-button
-        ></el-row
-      >
+        >
+          确定
+        </el-button>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -85,7 +96,7 @@ import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import { historyGetPage } from "@/api/history";
 
 export default {
-  name: "onlinemap",
+  name: "Onlinemap",
   components: { html2canvas, ImgShow },
   data() {
     return {
@@ -104,6 +115,79 @@ export default {
       htmlUrl: "",
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
     };
+  },
+  mounted() {
+    // 创建Map实例
+    var map = new BMap.Map("map");
+    // 初始化地图,设置中心点坐标和地图级别
+    map.centerAndZoom(new BMap.Point(104.07258, 30.550701), 20);
+    map.setMapType(BMAP_HYBRID_MAP);
+    // map.centerAndZoom：第一个参数可以是根据之前创建好的一个点为中心，创建出地图，也可以根据城市地区的中文名称创建地图。第二个参数是地图缩放级别，最大为19，最小为0
+    map.addControl(
+      //添加地图类型控件
+      new BMap.MapTypeControl({
+        mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
+      })
+    );
+    map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true);
+
+    this.$nextTick(function () {
+      let th = this;
+      // 创建Map实例
+      // eslint-disable-next-line no-undef
+      // let map = new BMap.Map("map");
+      // // 初始化地图,设置中心点坐标，
+      // // eslint-disable-next-line no-undef
+      //     map.setMapType(BMAP_HYBRID_MAP);
+      // let point = new BMap.Point(117.155827, 36.695916); // 创建点坐标，汉得公司的经纬度坐标
+      // map.centerAndZoom(point, 15);
+      // map.enableScrollWheelZoom();
+      // eslint-disable-next-line no-undef
+      let ac = new BMap.Autocomplete({
+        //建立一个自动完成的对象
+        input: "suggestId",
+        location: map,
+      });
+      let myValue;
+      ac.addEventListener("onconfirm", function (e) {
+        //鼠标点击下拉列表后的事件
+        let _value = e.item.value;
+        myValue =
+          _value.province +
+          _value.city +
+          _value.district +
+          _value.street +
+          _value.business;
+        th.address_detail = myValue;
+        setPlace();
+      });
+
+      function setPlace() {
+        map.clearOverlays(); //清除地图上所有覆盖物
+        function myFun() {
+          th.userlocation = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+          map.centerAndZoom(th.userlocation, 18);
+          // eslint-disable-next-line no-undef
+          map.addOverlay(new BMap.Marker(th.userlocation)); //添加标注
+          th.lng = th.userlocation.lng;
+          th.lat = th.userlocation.lat;
+        }
+
+        // eslint-disable-next-line no-undef
+        let local = new BMap.LocalSearch(map, {
+          //智能搜索
+          onSearchComplete: myFun,
+        });
+        local.search(myValue)
+        //测试输出坐标（指的是输入框最后确定地点的经纬度）
+        map.addEventListener("click", function () {
+          this.lng = th.userlocation.lng;
+
+          this.lat = th.userlocation.lat;
+        });
+      }
+    });
   },
   methods: {
     createSrc,
@@ -211,79 +295,6 @@ export default {
     removeImg() {
       this.isShow = false;
     },
-  },
-  mounted() {
-    // 创建Map实例
-    var map = new BMap.Map("map");
-    // 初始化地图,设置中心点坐标和地图级别
-    map.centerAndZoom(new BMap.Point(104.07258, 30.550701), 20);
-    map.setMapType(BMAP_HYBRID_MAP);
-    // map.centerAndZoom：第一个参数可以是根据之前创建好的一个点为中心，创建出地图，也可以根据城市地区的中文名称创建地图。第二个参数是地图缩放级别，最大为19，最小为0
-    map.addControl(
-      //添加地图类型控件
-      new BMap.MapTypeControl({
-        mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
-      })
-    );
-    map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
-    map.enableScrollWheelZoom(true);
-
-    this.$nextTick(function () {
-      let th = this;
-      // 创建Map实例
-      // eslint-disable-next-line no-undef
-      // let map = new BMap.Map("map");
-      // // 初始化地图,设置中心点坐标，
-      // // eslint-disable-next-line no-undef
-      //     map.setMapType(BMAP_HYBRID_MAP);
-      // let point = new BMap.Point(117.155827, 36.695916); // 创建点坐标，汉得公司的经纬度坐标
-      // map.centerAndZoom(point, 15);
-      // map.enableScrollWheelZoom();
-      // eslint-disable-next-line no-undef
-      let ac = new BMap.Autocomplete({
-        //建立一个自动完成的对象
-        input: "suggestId",
-        location: map,
-      });
-      let myValue;
-      ac.addEventListener("onconfirm", function (e) {
-        //鼠标点击下拉列表后的事件
-        let _value = e.item.value;
-        myValue =
-          _value.province +
-          _value.city +
-          _value.district +
-          _value.street +
-          _value.business;
-        th.address_detail = myValue;
-        setPlace();
-      });
-
-      function setPlace() {
-        map.clearOverlays(); //清除地图上所有覆盖物
-        function myFun() {
-          th.userlocation = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
-          map.centerAndZoom(th.userlocation, 18);
-          // eslint-disable-next-line no-undef
-          map.addOverlay(new BMap.Marker(th.userlocation)); //添加标注
-          th.lng = th.userlocation.lng;
-          th.lat = th.userlocation.lat;
-        }
-
-        // eslint-disable-next-line no-undef
-        let local = new BMap.LocalSearch(map, {
-          //智能搜索
-          onSearchComplete: myFun,
-        });
-        local.search(myValue)
-        //测试输出坐标（指的是输入框最后确定地点的经纬度）
-        map.addEventListener("click", function () {
-          this.lng = th.userlocation.lng;
-
-          this.lat = th.userlocation.lat;
-        });
-      }
-    });
   },
 };
 </script>
