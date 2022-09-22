@@ -2,12 +2,13 @@ type_map = dict()
 type_map["变化检测"] = 1
 type_map["目标检测"] = 2
 type_map["地物分类"] = 3
+type_map["场景分类"] = 4
 
 type_map_1 = dict()
 type_map_1[1] = "变化检测"
 type_map_1[2] = "目标检测"
 type_map_1[3] = "地物分类"
-
+type_map_1[4] = "场景分类"
 
 def str_to_type(strs):
     if strs in type_map:

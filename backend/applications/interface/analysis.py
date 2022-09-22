@@ -16,6 +16,7 @@ from applications.image_processing.sharpen import sharpen
 from applications.interface import semantic_segmentation as SS
 from applications.interface import object_detection as OD
 from applications.interface import change_detection as CD
+from applications.interface import classification as C
 from applications.models.analysis import Analysis
 
 
@@ -207,6 +208,38 @@ def terrain_classification(model_path, data_path, out_dir, names, step1, step2,
             checked=str(step1) + "," + str(step2))
         pass
     print("地物分类----------------->end")
+
+
+def classification(model_path, data_path, names, type):
+    """
+    场景分类
+    :param model_path: 模型存储目录
+    :param data_path: 待推理图片存储目录
+    :param names: 待推理图片列表
+    :param type: 功能类别
+    :return:
+    """
+    print("场景分类----------------->start")
+    imgs = list()
+    for j, pair in enumerate(names):
+        names[j] = img_url_handle(pair)
+        imgs.append(names[j])
+    # 4. 场景分类
+    result = C.execute(model_path, data_path, imgs)
+    # 5.入库
+    for i, pair in enumerate(names):
+        first_ = up_url + pair
+        ret = {}
+        for j in range(0, len(result[i]["label_names_map"])):
+            ret[result[i]["label_names_map"][j]] = result[i]["scores_map"][j]
+        save_analysis(
+            type,
+            first_,
+            "",
+            pic2="",
+            data=json.dumps(ret))
+        pass
+    print("场景分类----------------->end")
 
 
 def handle(fun_type, imgs, src_dir, save_dir):
