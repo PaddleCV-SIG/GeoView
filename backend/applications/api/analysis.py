@@ -58,7 +58,7 @@ def change_detection_api():
 
     for pair in list_:
         if "first" not in pair or "second" not in pair or pair[
-                "first"] == "" or pair["second"] == "":
+            "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
@@ -113,9 +113,12 @@ def semantic_segmentation_api():
                            up_dir, generate_dir, list_, step1_, step2_, type_)
     return success_api()
 
+
 """
     场景分类
 """
+
+
 @analysis_api.post('/classification')
 def classification_api():
     req_json = request.json
@@ -124,8 +127,9 @@ def classification_api():
         return fail_api("请上传图片")
     type_ = 4
     classification("model/classification/resnet50",
-                           up_dir, img_list,type_)
+                   up_dir, img_list, type_)
     return success_api()
+
 
 """
     直图处理
@@ -143,7 +147,7 @@ def pre_handle():
         return fail_api("请求参数异常")
     for pair in list_:
         if "first" not in pair or "second" not in pair or pair[
-                "first"] == "" or pair["second"] == "":
+            "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
         pair["first"] = img_url_handle(pair["first"])
         pair['second'] = img_url_handle(pair['second'])
@@ -175,7 +179,7 @@ def image_pre():
     if type == 1:
         for pair in list_:
             if "first" not in pair or "second" not in pair or pair[
-                    "first"] == "" or pair["second"] == "":
+                "first"] == "" or pair["second"] == "":
                 return fail_api("请求参数异常")
         for pair in list_:
             temps = [

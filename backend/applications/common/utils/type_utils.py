@@ -10,6 +10,7 @@ type_map_1[2] = "目标检测"
 type_map_1[3] = "地物分类"
 type_map_1[4] = "场景分类"
 
+
 def str_to_type(strs):
     if strs in type_map:
         return type_map[strs]
