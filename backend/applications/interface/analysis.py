@@ -233,12 +233,7 @@ def classification(model_path, data_path, names, type):
         ret = {}
         for j in range(0, len(result[i]["label_names_map"])):
             ret[result[i]["label_names_map"][j]] = result[i]["scores_map"][j]
-        save_analysis(
-            type,
-            first_,
-            "",
-            pic2="",
-            data=json.dumps(ret))
+        save_analysis(type, first_, "", pic2="", data=json.dumps(ret))
         pass
     print("场景分类----------------->end")
 

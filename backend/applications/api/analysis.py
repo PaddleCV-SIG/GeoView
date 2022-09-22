@@ -58,7 +58,7 @@ def change_detection_api():
 
     for pair in list_:
         if "first" not in pair or "second" not in pair or pair[
-            "first"] == "" or pair["second"] == "":
+                "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
@@ -126,8 +126,7 @@ def classification_api():
     if img_list is None:
         return fail_api("请上传图片")
     type_ = 4
-    classification("model/classification/resnet50",
-                   up_dir, img_list, type_)
+    classification("model/classification/resnet50", up_dir, img_list, type_)
     return success_api()
 
 
@@ -147,7 +146,7 @@ def pre_handle():
         return fail_api("请求参数异常")
     for pair in list_:
         if "first" not in pair or "second" not in pair or pair[
-            "first"] == "" or pair["second"] == "":
+                "first"] == "" or pair["second"] == "":
             return fail_api("请求参数异常")
         pair["first"] = img_url_handle(pair["first"])
         pair['second'] = img_url_handle(pair['second'])
@@ -179,7 +178,7 @@ def image_pre():
     if type == 1:
         for pair in list_:
             if "first" not in pair or "second" not in pair or pair[
-                "first"] == "" or pair["second"] == "":
+                    "first"] == "" or pair["second"] == "":
                 return fail_api("请求参数异常")
         for pair in list_:
             temps = [
