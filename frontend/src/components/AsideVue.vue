@@ -22,7 +22,7 @@
         <a
           class="platform"
           @click="goShow"
-        >Hippo智能遥感解译平台</a>
+        >PP-GeoView遥感解译</a>
       </div>
     </div>
     <el-divider content-position="center">

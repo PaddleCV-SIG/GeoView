@@ -97,8 +97,8 @@ import { historyGetPage } from "@/api/history";
 
 export default {
   name: "Onlinemap",
-  // eslint-disable-next-line vue/no-unused-components
-  components: { html2canvas, ImgShow },
+
+  components: {  ImgShow },
   data() {
     return {
       beforeImg: [],

@@ -6,7 +6,7 @@
   >
     <el-container>
       <el-aside width="auto">
-        <Aside
+        <AsideVue
           :is-collapse="isCollapse"
           :active-index="activeIndex"
         />
@@ -52,7 +52,7 @@
 
 <script>
 import "@/assets/css/app.css";
-import Aside from "@/components/Aside";
+import AsideVue from "@/components/AsideVue";
 import Tablogin from "@/components/Tablogin";
 import Drawer from "@/components/Drawer.vue";
 import BackTop from "@/components/BackTop";
@@ -60,8 +60,7 @@ import BackTop from "@/components/BackTop";
 export default {
   name: "Home",
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Aside,
+    AsideVue,
     Tablogin,
     Drawer,
     BackTop,

@@ -170,7 +170,6 @@
               </label>
             </p>
           </el-row>
-    
           <div style="text-align: center;margin-top:12px">
             <el-button
               type="primary"
@@ -183,7 +182,7 @@
           </div>
           <el-divider v-if="!uploadSrc.prehandle" />
           <div v-if="uploadSrc.prehandle">
-            <template v-if="uploadSrc.prehandle===2">
+            <div v-if="uploadSrc.prehandle===2">
               <div
                 id="subtitle"
                 style="font-size: 25px"
@@ -193,8 +192,8 @@
                   style="font-size: 23px; margin-left: 17px; color: blue"
                 />
               </div>   
-            </template>
-            <template v-else-if="uploadSrc.prehandle===4">
+            </div>
+            <div v-else-if="uploadSrc.prehandle===4">
               <div
                 id="subtitle"
                 style="font-size: 25px"
@@ -204,7 +203,7 @@
                   style="font-size: 23px; margin-left: 17px; color: blue"
                 />
               </div>   
-            </template>
+            </div>
             <el-divider />
             <el-row
               justify="center"
@@ -218,7 +217,7 @@
                 :xl="6"
               >
                 <div
-                  v-for="(index,item) in before"
+                  v-for="(item,index) in before"
                   :key="index"
                 >
                   <el-image
@@ -244,7 +243,7 @@
                 :xl="6"
               >
                 <div
-                  v-for="(index,item) in claheImg"
+                  v-for="(item,index) in claheImg"
                   :key="index"
                 >
                   <el-image
@@ -273,7 +272,7 @@
                 :xl="6"
               >
                 <div
-                  v-for="(index,item) in sharpenImg"
+                  v-for="(item,index) in sharpenImg"
                   :key="index"
                 >
                   <el-image
@@ -411,9 +410,9 @@
         :funtype="funtype"
         :file="file"
         :length="afterImg.length"
-        :prehandle="uploadSrc.prehandle"
-        :denoise="uploadSrc.denoise"
-        @cutChanged="notvisible"
+        :child-prehandle="uploadSrc.prehandle"
+        :child-denoise="uploadSrc.denoise"
+        @cut-changed="notvisible"
       />
     </el-dialog>
     <ImgShow
@@ -496,7 +495,13 @@ export default {
     };
   },
   watch:{
-
+    uploadSrc:{
+      handler(newVal,oldVal){
+        this.uploadSrc = newVal
+      },
+      deep:true,
+      immediate:true
+    }
   },
   created() {
     this.getUploadImg("地物分类");
@@ -518,7 +523,7 @@ export default {
     selectClahe,
      downloadimgWithWords,
      checkUpload() {
-      this.isUpload = this.afterImg.length != 0;
+      this.isUpload = this.afterImg.length !== 0;
     },
     clearQue() {
       this.fileList = [];

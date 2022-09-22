@@ -97,33 +97,35 @@ export default {
     VueCropper,
   },
   props: {
-    prehandle:{
-      type:Number
+    childPrehandle:{
+      type:Number,
+      default:0
     },
-    denoise:{
-      type:Number
+    childDenoise:{
+      type:Number,
+      default:0
     },
     fileimg: {
       type: String,
       default: () => "",
     },
     funtype: {
-      type:String
+      type:String,
+      default:''
     },
     file: {
       type: Object,
-
+      default:()=>{}
     },
     length: {
       type:Number,
       default:0
     },
   },
-  emits: ["finish", "cutChanged"],
+  emits: ["finish", "cut-changed"],
+
   data() {
     return {
-      setprehandle:'',
-      setdenoise:'',
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
       headImg: "",
       //剪切图片上传
@@ -149,13 +151,21 @@ export default {
     };
   },
   watch:{
-    data(){
-       this.prehandle = this.setprehandle
-      this.denoise = this.setdenoise
-
-    }
+    childDenoise:{
+      handler(newVal,oldVal){
+        this.uploadSrc.denoise = newVal
+      },
+      deep:true,
+      immediate:true
+    },
+    childPrehandle:{
+      handler(newVal,oldVal){
+        this.uploadSrc.prehandle = newVal
+      },
+      deep:true,
+      immediate:true
+    },
   },
-
   methods: {
     createSrc,
     classifyUpload,
@@ -171,7 +181,7 @@ export default {
     checkUpload(){},
     setNormalWay(){},
     submitUpload(funtype) {
-      // this.finish(funtype);
+      this.finish(funtype);
     },
     handleRemove(file, fileList) {},
     handlePreview(file) {
@@ -262,7 +272,7 @@ export default {
               this.getUploadImg("目标检测");
             });
           }
-          this.$emit("cutChanged", false);
+          this.$emit("cut-changed", false);
         });
       });
     },

@@ -240,7 +240,7 @@
               :xl="7"
             >
               <div
-                v-for="(index,item) in Img1"
+                v-for="(item,index) in Img1"
                 :key="index"
               >
                 <el-image
@@ -260,7 +260,7 @@
               :xl="7"
             >
               <div
-                v-for="(index,item) in Img2"
+                v-for="(item,index) in Img2"
                 :key="index"
               >
                 <el-image
@@ -288,7 +288,7 @@
               :xl="7"
             >
               <div 
-                v-for="(index,item) in Img3" 
+                v-for="(item,index) in Img3"
                 :key="index"
               >
                 <el-image
@@ -325,7 +325,7 @@
               :xl="6"
             >
               <div
-                v-for="(index,item) in Img1"
+                v-for="(item,index) in Img1"
                 :key="index"
               >
                 <el-image
@@ -345,7 +345,7 @@
               :xl="6"
             >
               <div
-                v-for="(index,item) in sharpenImg1"
+                v-for="(item,index) in sharpenImg1"
                 :key="index"
               >
                 <el-image
@@ -373,7 +373,7 @@
               :xl="6"
             >
               <div
-                v-for="(index,item) in Img3"
+                v-for="(item,index) in Img3"
                 :key="index"
               >
                 <el-image
@@ -393,7 +393,7 @@
               :xl="6"
             >
               <div
-                v-for="(index,item) in sharpenImg2"
+                v-for="(item,index) in sharpenImg2"
                 :key="index"
               >
                 <el-image
