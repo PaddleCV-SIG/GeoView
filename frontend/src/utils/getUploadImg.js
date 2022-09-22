@@ -13,7 +13,7 @@ function getUploadImg(type) {
     this.beforeList=res.data.data.map((item)=>{
       return global.BASEURL + item.before_img
     })
-    if (type == '变化检测') {
+    if (type === '变化检测') {
       this.beforeImg1 = res.data.data.map((item) => {
         return { before_img1: global.BASEURL + item.before_img1 };
       });
@@ -62,7 +62,7 @@ function goCompress(type) {
 }
 
 function upload(type) {
-  if (this.fileList.length == 0) {
+  if (this.fileList.length === 0) {
     this.$message.error("请上传图片！");
   } else {
     showFullScreenLoading("#load");
@@ -77,7 +77,7 @@ function upload(type) {
       this.uploadSrc.list = res.data.data.map((item) => {
         return item.src;
       });
-      if (type == '地物分类') {
+      if (type === '地物分类') {
         this.classifyUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")
@@ -85,7 +85,7 @@ function upload(type) {
           this.getMore()
         });
       }
-      else if (type == '目标检测') {
+      else if (type === '目标检测') {
         this.detectTargetsUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")

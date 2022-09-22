@@ -97,11 +97,12 @@ import { historyGetPage } from "@/api/history";
 
 export default {
   name: "Onlinemap",
-  components: { html2canvas, ImgShow },
+
+  components: {  ImgShow },
   data() {
     return {
-      beforeImg: {},
-      afterImg: {},
+      beforeImg: [],
+      afterImg: [],
       isShow: false,
       tmpFile: "",
    
@@ -118,7 +119,7 @@ export default {
   },
   mounted() {
     // 创建Map实例
-    var map = new BMap.Map("map");
+    let map = new BMap.Map("map");
     // 初始化地图,设置中心点坐标和地图级别
     map.centerAndZoom(new BMap.Point(104.07258, 30.550701), 20);
     map.setMapType(BMAP_HYBRID_MAP);
@@ -207,7 +208,7 @@ export default {
         this.uploadSrc.list = res.data.data.map((item) => {
           return item.src;
         });
-        if (type == "目标检测") {
+        if (type === "目标检测") {
           this.detectTargetsUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
@@ -226,7 +227,7 @@ export default {
             });
           });
         }
-        if (type == "地物分类") {
+        if (type === "地物分类") {
           this.classifyUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");

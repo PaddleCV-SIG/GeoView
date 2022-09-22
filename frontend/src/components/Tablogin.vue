@@ -41,7 +41,7 @@ export default {
   methods: {
     getCurrentTime,
     goGithub(){
-      window.open('https://github.com/terayco/Intelligent-RS-System');
+      window.open('https://github.com/PaddleCV-SIG/PP-GeoView');
     },
   },
 };

@@ -16,7 +16,7 @@ function downloadimgWithWords(index, src, funtype) {
       ele.style.display = "none";
       // 设置href属性为文件路径，download属性可以设置文件名称
       ele.href = url;
-      if(index == -1){ele.download = `${funtype}`}
+      if(index === -1){ele.download = `${funtype}`}
       else{
         ele.download = `第${index}组${funtype}`;
       }
@@ -34,7 +34,7 @@ function getImgArrayBuffer(url) {
     xmlhttp.open("GET",global.BASEURL+url, true);
     xmlhttp.responseType = "blob";
     xmlhttp.onload = function () {
-      if (this.status == 200) {
+      if (this.status === 200) {
         resolve(this.response);
       } else {
         reject(this.status);

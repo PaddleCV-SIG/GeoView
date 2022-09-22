@@ -12,6 +12,7 @@
       <img
         :src="require('@/assets/image/logo/80.png')"
         style="width:45px;color:rgb(64,158,255);"
+        alt="logo"
         @click="goRemoteSense"
       >
       <div
@@ -21,7 +22,7 @@
         <a
           class="platform"
           @click="goShow"
-        >Hippo智能遥感解译平台</a>
+        >PP-GeoView遥感解译</a>
       </div>
     </div>
     <el-divider content-position="center">
@@ -138,7 +139,16 @@ import {
   goOnlineMap
 } from "@/utils/gosomewhere.js";
 export default {
-  props: ["isCollapse", "activeIndex"],
+  props:{
+    isCollapse:{
+      type:Boolean,
+      default:false
+    },
+    activeIndex:{
+      type:String,
+      default: '/detectchanges'
+    }
+  },
   data() {
     return {};
   },
@@ -270,7 +280,7 @@ export default {
 }
 #bigtitle::after {
   content: "";
-  width: 0px;
+  width: 0;
   height: 3px;
   background:rgb(64,158,255);
   position: absolute;

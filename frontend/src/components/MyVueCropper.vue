@@ -28,8 +28,6 @@
                 :auto-crop-width="option.autoCropWidth"
                 :auto-crop-height="option.autoCropHeight"
                 :fixed-box="option.fixedBox"
-                @realTime="realTime"
-                @imgLoad="imgLoad"
               />
             </div>
           </div>
@@ -80,7 +78,6 @@
     </div>
   </div>
 </template>
-
 <script>
 //https://blog.csdn.net/HH18700418030/article/details/120976087裁剪参考
 import "vue-cropper/dist/index.css";
@@ -100,23 +97,35 @@ export default {
     VueCropper,
   },
   props: {
-    prehandle:'',
-    denoise:'',
+    childPrehandle:{
+      type:Number,
+      default:0
+    },
+    childDenoise:{
+      type:Number,
+      default:0
+    },
     fileimg: {
       type: String,
       default: () => "",
     },
-    funtype: "",
+    funtype: {
+      type:String,
+      default:''
+    },
     file: {
       type: Object,
+      default:()=>{}
     },
-    length: "",
+    length: {
+      type:Number,
+      default:0
+    },
   },
-  emits: ["finish", "cutChanged"],
+  emits: ["finish", "cut-changed"],
+
   data() {
     return {
-      setprehandle:'',
-      setdenoise:'',
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
       headImg: "",
       //剪切图片上传
@@ -142,10 +151,20 @@ export default {
     };
   },
   watch:{
-    data(){
-       this.prehandle = this.setprehandle
-      this.denoise = this.setdenoise
-    }
+    childDenoise:{
+      handler(newVal,oldVal){
+        this.uploadSrc.denoise = newVal
+      },
+      deep:true,
+      immediate:true
+    },
+    childPrehandle:{
+      handler(newVal,oldVal){
+        this.uploadSrc.prehandle = newVal
+      },
+      deep:true,
+      immediate:true
+    },
   },
   methods: {
     createSrc,
@@ -234,8 +253,8 @@ export default {
             
               });
           }
-      
-          if (funtype == "地物分类") {
+
+          if (funtype === "地物分类") {
             this.classifyUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
@@ -245,7 +264,7 @@ export default {
               }, 200);
          
             });
-          } else if (funtype == "目标检测") {
+          } else if (funtype === "目标检测") {
             this.detectTargetsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
@@ -253,16 +272,9 @@ export default {
               this.getUploadImg("目标检测");
             });
           }
-          this.$emit("cutChanged", false);
+          this.$emit("cut-changed", false);
         });
       });
-    },
-    // 实时预览函数
-    realTime(data) {
-      this.previews = data;
-    },
-    imgLoad(msg) {
- 
     },
     base64toFile(dataurl, filename) {
       let arr = dataurl.split(",");
