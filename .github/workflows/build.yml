@@ -68,5 +68,5 @@ jobs:
           pip install -r backend/requirements.txt
       - name: Set up frontend
         run: |
-          cd frontend && npm ci
+          cd frontend && npm install
           npm run build
