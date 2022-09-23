@@ -1,7 +1,8 @@
 import { historyGetPage } from "@/api/history"
-import store from "@/store";
+
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import global from '@/global'
+
 function getUploadImg(type) {
   // showFullScreenLoading("#load");
   historyGetPage(1, 20, type).then((res) => {
@@ -87,6 +88,14 @@ function upload(type) {
       }
       else if (type === '目标检测') {
         this.detectTargetsUpload(this.uploadSrc).then((res) => {
+          this.fileList = []
+          hideFullScreenLoading("#load")
+          this.$message.success("上传成功！");
+          this.getMore()
+        })
+      }
+      else if (type === '场景分类') {
+        this.sceneClassifyUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")
           this.$message.success("上传成功！");

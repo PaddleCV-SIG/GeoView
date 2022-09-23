@@ -59,6 +59,17 @@
           </h3>
         </el-menu-item>
         <el-menu-item
+          index="/classifyscene"
+          @click="goClassifyScene"
+        >
+          <h3>
+            <i
+              class="iconfont icon-changjingguanli"
+              style="font-size: 22px"
+            />场景分类
+          </h3>
+        </el-menu-item>
+        <el-menu-item
           index="/onlinemap"
           @click="goOnlineMap"
         >
@@ -79,6 +90,7 @@ import {
   goDetectChanges,
   goDetectTargets,
   goClassify,
+  goClassifyScene,
   goOnlineMap
 } from "@/utils/gosomewhere.js";
 export default {
@@ -104,6 +116,7 @@ export default {
     goDetectChanges,
     goDetectTargets,
     goClassify,
+    goClassifyScene,
     goOnlineMap,
   },
 };

@@ -13,7 +13,7 @@
         :src="require('@/assets/image/logo/80.png')"
         style="width:45px;color:rgb(64,158,255);"
         alt="logo"
-        @click="goRemoteSense"
+        @click="goDetectChanges"
       >
       <div
         v-if="!isCollapse"
@@ -85,6 +85,25 @@
     </div>
     <div class="item-group">
       <el-menu-item
+        index="/classifyscene"
+        @click="goClassifyScene"
+      >
+        <i
+          v-show="isCollapse"
+          class="iconfont icon-changjingguanli"
+          style="font-size: 22px"
+        />
+        <h3 v-show="!isCollapse">
+          <i
+
+            class="iconfont icon-changjingguanli"
+            style="font-size: 22px"
+          />场景分类
+        </h3>
+      </el-menu-item>
+    </div>
+    <div class="item-group">
+      <el-menu-item
         index="/onlinemap"
         @click="goOnlineMap"
       >
@@ -135,6 +154,7 @@ import {
   goDetectChanges,
   goDetectTargets,
   goClassify,
+  goClassifyScene,
   goHistory,
   goOnlineMap
 } from "@/utils/gosomewhere.js";
@@ -156,6 +176,7 @@ export default {
     goDetectChanges,
     goDetectTargets,
     goClassify,
+    goClassifyScene,
     goHistory,
     goOnlineMap,
     goShow(){
@@ -219,9 +240,7 @@ export default {
 .el-menu-item {
   z-index: 1;
 }
-.item-group * {
-  transition: 0.5s;
-}
+
 .el-menu-item {
   position: relative !important;
 }

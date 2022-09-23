@@ -934,7 +934,7 @@ import {
 import { historyGetPage } from "@/api/history";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
-import store from "@/store";
+
 import global from "@/global";
 export default {
   name: "Detectchanges",

@@ -2,7 +2,7 @@
 import JSZIP from "jszip"
 import FileSaver from 'file-saver'
 import { showCompressLoading, hideCompressLoading,} from "@/utils/loading";
-import store from '@/store'
+
 import global from '@/global'
 function downloadimgWithWords(index, src, funtype) {
   fetch(src)

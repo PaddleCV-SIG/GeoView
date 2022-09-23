@@ -315,7 +315,7 @@ import {
   previewThreePic,
 } from "@/utils/preview.js";
 import { downloadimgWithWords } from "@/utils/download.js";
-import store from "@/store";
+
 import global from "@/global.vue";
 export default {
   name: "History",
