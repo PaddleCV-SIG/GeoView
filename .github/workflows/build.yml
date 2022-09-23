@@ -39,7 +39,10 @@ jobs:
             gdal-whl-url: https://versaweb.dl.sourceforge.net/project/gdal-wheels-for-linux/GDAL-3.4.1-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
