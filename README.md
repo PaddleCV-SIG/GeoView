@@ -1,5 +1,10 @@
 # PP-GeoView
 
+[![build status](https://github.com/PaddleCV-SIG/PP-GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/PP-GeoView/actions)
+![python version](https://img.shields.io/badge/python-3.7+-orange.svg)
+![node.js version](https://img.shields.io/badge/nodejs-16+-orange.svg)
+![support os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-yellow.svg)
+
 ## 代码结构
 
 PP-GeoView目录树中关键部分如下：
