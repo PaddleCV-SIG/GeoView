@@ -52,8 +52,9 @@ def execute(model_path, data_path, out_dir, names):
                         dtype=np.uint8),
                     threshold=0.2,
                     save_dir=None)
-                name = names[idx]
-                new_name = md5_name(name)
-                imsave(osp.join(out_dir, new_name), vis)
-                temps.append(generate_url + new_name)
+            vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
+            name = names[idx]
+            new_name = md5_name(name)
+            imsave(osp.join(out_dir, new_name), vis)
+            temps.append(generate_url + new_name)
     return temps
