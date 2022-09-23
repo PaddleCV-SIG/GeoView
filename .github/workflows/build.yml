@@ -23,7 +23,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.7", "3.8"]
-        node-version: ["16", "17"]
+        node-version: ["17", "18"]
         include:
           - python-version: "3.7"
             os: windows-latest
