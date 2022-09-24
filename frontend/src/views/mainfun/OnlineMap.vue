@@ -45,6 +45,13 @@
         >
           地物分类
         </el-radio>
+        <el-radio
+          v-model="funtype"
+          class="choose-item"
+          label="场景分类"
+        >
+          场景分类
+        </el-radio>
       </el-row>
       <el-row>
         <el-button
@@ -65,10 +72,70 @@
       top="6%"
     >
       <ImgShow
+        v-show="funtype!=='场景分类'"
         :before-img="beforeImg"
         :after-img="afterImg"
         :funtype="funtype"
       />
+      <el-row v-if="funtype==='场景分类'">
+        <el-col>
+          <el-card style="margin-bottom: 10px">
+            <el-row
+              :gutter="10"
+              justify="center"
+            >
+              <el-col
+                :lg="5"
+                :xl="5"
+              >
+                <div
+                  class="img-index hidden-sm-and-down"
+                  :style="{ height: 301 + 'px' }"
+                >
+                  <div>第<span class="index-number">1</span>组</div>
+                </div>
+              </el-col>
+              <el-col
+                :xs="20"
+                :sm="10"
+                :md="6"
+                :lg="6"
+                :xl="6"
+              >
+                <div
+                  style="position: relative;"
+                >
+                  <el-image
+                    ref="tableTab"
+                    :src="beforeList[0]"
+                    :fit="fit"
+                    :lazy="true"
+                    class="gobig custom-pic"
+                    :preview-src-list="[beforeList[0]]"
+                    :preview-teleported="true"
+                  />
+
+                  <div class="img-infor">
+                    <span>原图</span>
+                  </div>
+                  <span class="index-number hidden-md-and-up">{{ sceneKey[0][0] }}:<span>{{ scene[0][sceneKey[0][0]] }}</span></span>
+                </div>
+              </el-col>
+              <el-col
+                :lg="5"
+                :xl="5"
+              >
+                <div
+                  class="img-index hidden-sm-and-down"
+                  :style="{ height: 301 + 'px' }"
+                >
+                  <span class="index-number ">{{ Object.keys(scene[0])[0] }}:{{ scene[0][Object.keys(scene[0])[0]] }}</span>
+                </div>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row justify="center">
         <el-button
           type="primary"
@@ -89,7 +156,7 @@ import ImgShow from "@/components/ImgShow";
 import {
   createSrc,
   classifyUpload,
-  detectTargetsUpload,
+  detectTargetsUpload, sceneClassifyUpload,
 } from "@/api/upload";
 import { getUploadImg } from "@/utils/getUploadImg";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
@@ -97,11 +164,11 @@ import { historyGetPage } from "@/api/history";
 
 export default {
   name: "Onlinemap",
-
   components: {  ImgShow },
   data() {
     return {
       beforeImg: [],
+      beforeList:[],
       afterImg: [],
       isShow: false,
       tmpFile: "",
@@ -115,6 +182,8 @@ export default {
       lat: "",
       htmlUrl: "",
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
+      scene:[],
+      sceneKey:[]
     };
   },
   mounted() {
@@ -194,6 +263,7 @@ export default {
     createSrc,
     classifyUpload,
     detectTargetsUpload,
+    sceneClassifyUpload,
     getUploadImg,
     showFullScreenLoading,
     hideFullScreenLoading,
@@ -209,6 +279,8 @@ export default {
           return item.src;
         });
         if (type === "目标检测") {
+          this.uploadSrc.prehandle = 0
+          this.uploadSrc.denoise = 0
           this.detectTargetsUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
@@ -228,6 +300,8 @@ export default {
           });
         }
         if (type === "地物分类") {
+          this.uploadSrc.prehandle = 0
+          this.uploadSrc.denoise = 0
           this.classifyUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
@@ -242,6 +316,23 @@ export default {
                   id: item.id,
                 };
               });
+              this.isShow = true;
+            });
+          });
+        }
+        if (type === "场景分类") {
+          delete(this.uploadSrc.denoise)
+          delete (this.uploadSrc.prehandle)
+          this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+            hideFullScreenLoading("#load");
+            this.$message.success("上传成功！");
+            this.choose = false;
+            this.historyGetPage(1, 1, "场景分类").then((res) => {
+              this.beforeList=res.data.data.map((item)=>{
+                return global.BASEURL + item.before_img
+              })
+              this.scene = res.data.data.map(item=>item.data)     //场景键值对数组,[{'a':0.8},{‘b’:0.6},{'c':0.8}]
+              this.sceneKey = this.scene.map(item=>Object.keys(item))  //构成场景键数组的数组，[['a'],['b'],['c']]
               this.isShow = true;
             });
           });
@@ -318,5 +409,32 @@ export default {
 }
 .choose-item {
   font-size: 25px;
+}
+.img-index {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.index-number {
+  font-family: Yu Gothic Medium;
+  font-style: oblique;
+  font-size: 30px;
+
+}
+.img-infor {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 256px;
+  height: 30px;
+  font-weight: 500;
+  font-family: Microsoft JhengHei UI, sans-serif;
+}
+.custom-pic{
+  width: 256px;
+  height: 256px;
 }
 </style>
