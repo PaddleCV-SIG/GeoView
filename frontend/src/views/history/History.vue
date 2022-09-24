@@ -7,6 +7,7 @@
           'iconfont icon-bianhuajiance': type === '变化检测',
           'iconfont icon-mubiaojiance': type === '目标检测',
           'iconfont icon-erfenleibianhuajiance16px': type === '地物分类',
+          'iconfont icon-changjingguanli' : type === '场景分类'
         }"
       />
     </div>
@@ -32,6 +33,7 @@
               'iconfont icon-mubiaojiance': scope.row.type === '目标检测',
               'iconfont icon-erfenleibianhuajiance16px':
                 scope.row.type === '地物分类',
+              'iconfont icon-changjingguanli' : scope.row.type === '场景分类'
             }"
           />{{ scope.row.type }}
           </span>
@@ -60,9 +62,10 @@
           >
         </template>
       </el-table-column>
-      <el-table-column label="结果图">
+      <el-table-column label="结果图/预测结果">
         <template #default="scope">
           <img
+            v-show="scope.row.type !== '场景分类'"
             :src="global.BASEURL + scope.row.after_img"
             min-width="70"
             height="70"
@@ -70,6 +73,10 @@
             alt="结果图"
             @click="previewOnePic(scope.row.after_img)"
           >
+          <div v-show="scope.row.type === '场景分类'">
+            {{ Object.keys(scope.row.data)[0] }}:
+            {{ scope.row.data[(Object.keys(scope.row.data)[0])] }}
+          </div>
         </template>
       </el-table-column>
 
@@ -83,7 +90,7 @@
             删除
           </el-button>
           <el-button
-            v-if="scope.row.type !== '变化检测'"
+            v-show="scope.row.type !== '变化检测'&&scope.row.type !=='场景分类'"
             size="default"
             type="primary"
             @click="previewTwoPic(scope.row.before_img, scope.row.after_img)"
@@ -91,7 +98,15 @@
             预览
           </el-button>
           <el-button
-            v-else
+            v-show="scope.row.type === '场景分类'"
+            size="default"
+            type="primary"
+            @click="previewOnePic(scope.row.before_img, scope.row.after_img)"
+          >
+            预览
+          </el-button>
+          <el-button
+            v-show="scope.row.type ==='变化检测'"
             size="default"
             type="primary"
             @click="
@@ -105,6 +120,7 @@
             预览
           </el-button>
           <el-button
+            v-show="scope.row.type !== '场景分类'"
             size="default"
             type="primary"
             @click="
@@ -178,6 +194,17 @@
                 class="iconfont icon-erfenleibianhuajiance16px"
                 style="font-size: 13px"
               />地物分类
+            </h3>
+          </el-menu-item>
+          <el-menu-item
+            index="4"
+            @click="onlyClassifyScene"
+          >
+            <h3>
+              <i
+                class="iconfont icon-changjingguanli"
+                style="font-size: 22px"
+              />场景分类
             </h3>
           </el-menu-item>
           <el-menu-item
@@ -458,7 +485,7 @@ export default {
       this.getTabelInfo();
     },
     getTabelInfo() {
-      // showFullScreenLoading(".his-box");
+      showFullScreenLoading(".his-box");
 
       this.historyGetPage(this.currentPage, 10, this.type).then((res) => {
         hideFullScreenLoading(".his-box");
@@ -484,6 +511,11 @@ export default {
     },
     onlyClassify() {
       this.type = "地物分类";
+      this.getTabelInfo();
+      this.fundrawer = false;
+    },
+    onlyClassifyScene() {
+      this.type = "场景分类";
       this.getTabelInfo();
       this.fundrawer = false;
     },
