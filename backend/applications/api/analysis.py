@@ -13,7 +13,7 @@ from applications.common.utils.upload import img_url_handle
 from applications.extensions import db
 from applications.image_processing import histogram_match
 from applications.interface.analysis import change_detection, object_detection, terrain_classification, hole_handle, \
-    handle
+    handle, classification
 from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
 
@@ -111,6 +111,22 @@ def semantic_segmentation_api():
     type_ = 3
     terrain_classification("model/semantic_segmentation/deeplabv3p_512x512",
                            up_dir, generate_dir, list_, step1_, step2_, type_)
+    return success_api()
+
+
+"""
+    场景分类
+"""
+
+
+@analysis_api.post('/classification')
+def classification_api():
+    req_json = request.json
+    img_list = req_json["list"]
+    if img_list is None:
+        return fail_api("请上传图片")
+    type_ = 4
+    classification("model/classification/resnet50", up_dir, img_list, type_)
     return success_api()
 
 
