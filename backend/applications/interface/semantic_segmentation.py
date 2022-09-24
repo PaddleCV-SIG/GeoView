@@ -14,7 +14,7 @@ def get_lut():
     lut[1] = [30, 255, 142]  # 浅绿
     lut[2] = [60, 0, 255]  # 蓝
     lut[3] = [255, 222, 0]  # 橙黄
-    lut[4] = [0, 0, 0]  # 黑
+    lut[4] = [255, 0, 255]  # 粉
     return lut
 
 
@@ -26,8 +26,6 @@ def execute(model_path, data_path, out_dir, test_names):
     lut = get_lut()
     temps = list()
     for idx, im in zip(range(len(image_list)), ims):
-        if im.ndim == 3:
-            im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
         im = lut[im]
         new_name = md5_name(test_names[idx])
         imsave(osp.join(out_dir, new_name), im)
