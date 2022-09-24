@@ -4,6 +4,7 @@ const Home = () => import('@/views/Home.vue')
 const DetectChanges = () => import('@/views/mainfun/DetectChanges.vue')
 const DetectTargets = () => import('@/views/mainfun/DetectTargets.vue')
 const Classify = () => import('@/views/mainfun/Classify.vue')
+const ClassifyScene = ()=> import('@/views/mainfun/ClassifyScene')
 const OnlineMap = () => import('@/views/mainfun/OnlineMap.vue')
 const History = () => import('@/views/history/History.vue')
 const NotFound = () => import('@/views/NotFound.vue')
@@ -30,7 +31,13 @@ const routes = [
         path: '/classify',
         name: 'classify',
         component: Classify
-      }, {
+      },
+      {
+        path: '/classifyscene',
+        name:'classifyscene',
+        component:ClassifyScene
+      },
+      {
         path: '/history',
         name: 'history',
         component: History,

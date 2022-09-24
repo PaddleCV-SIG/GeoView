@@ -17,6 +17,14 @@ function goClassify() {
         this.$message.success('您已经在该界面了哦')
     } else this.$router.push("classify");
 }
+
+function goClassifyScene() {
+    this.drawer = false;
+    if (this.$route.path === "/classifyscene") {
+        this.$message.success('您已经在该界面了哦')
+    } else this.$router.push("classifyscene");
+}
+
 function goOnlineMap(){
     this.drawer = false
     if (this.$route.path === "/onlinemap") {
@@ -31,4 +39,4 @@ function goHistory() {
   
         });
 }
-export { goDetectChanges, goDetectTargets, goClassify,goOnlineMap, goHistory }
+export { goDetectChanges, goDetectTargets, goClassify,goClassifyScene,goOnlineMap, goHistory }

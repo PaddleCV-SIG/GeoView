@@ -1,11 +1,10 @@
 import { historyGetPage } from "@/api/history"
-import store from "@/store";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import global from '@/global'
+
 function getUploadImg(type) {
-  // showFullScreenLoading("#load");
+  showFullScreenLoading("#load");
   historyGetPage(1, 20, type).then((res) => {
- 
     hideFullScreenLoading("#load")
     this.beforeImg = res.data.data.map((item) => {
       return { before_img: global.BASEURL + item.before_img };
@@ -17,6 +16,10 @@ function getUploadImg(type) {
       this.beforeImg1 = res.data.data.map((item) => {
         return { before_img1: global.BASEURL + item.before_img1 };
       });
+    }
+    if (type === '场景分类') {
+      this.scene = res.data.data.map(item=>item.data)     //场景键值对数组,[{'a':0.8},{‘b’:0.6},{'c':0.8}]
+      this.sceneKey = this.scene.map(item=>Object.keys(item))  //构成场景键数组的数组，[['a'],['b'],['c']]
     }
     this.afterImg = res.data.data.map((item) => {
       return { after_img: global.BASEURL + item.after_img, id: item.id };
@@ -93,7 +96,15 @@ function upload(type) {
           this.getMore()
         })
       }
-      if (this.afterImg.length >= 20) {
+      else if (type === '场景分类') {
+        this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+          this.fileList = []
+          hideFullScreenLoading("#load")
+          this.$message.success("上传成功！");
+          this.getMore()
+        })
+      }
+      if (this.afterImg.length >= 20 && type!=='场景分类') {
         this.$confirm("上传图片过多，是否压缩?在此期间不能进行其他操作", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
