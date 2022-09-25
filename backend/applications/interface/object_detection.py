@@ -3,6 +3,7 @@ import os.path as osp
 
 import paddle
 import numpy as np
+from paddlers.models.ppdet.utils.colormap import colormap
 from skimage.io import imsave
 
 import paddlers as pdrs
@@ -33,11 +34,7 @@ def execute(model_path, data_path, out_dir, names):
                 vis = visualize_detection(
                     np.array(vis),
                     pred[idx],
-                    color=np.asarray(
-                        [[255, 0, 255], [255, 0, 0], [0, 0, 255],
-                         [255, 255, 0]],
-                        dtype=np.uint8),
-                    threshold=0.2,
+                    threshold=0.5,
                     save_dir=None)
             name = names[idx]
             new_name = md5_name(name)
