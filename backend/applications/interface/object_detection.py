@@ -32,10 +32,7 @@ def execute(model_path, data_path, out_dir, names):
             # 用紫色画出预测目标框
             if len(pred[idx]) > 0:
                 vis = visualize_detection(
-                    np.array(vis),
-                    pred[idx],
-                    threshold=0.5,
-                    save_dir=None)
+                    np.array(vis), pred[idx], threshold=0.5, save_dir=None)
             name = names[idx]
             new_name = md5_name(name)
             imsave(osp.join(out_dir, new_name), vis)
