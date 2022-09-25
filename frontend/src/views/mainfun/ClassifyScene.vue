@@ -167,6 +167,7 @@
         :child_prehandle="uploadSrc.prehandle"
         :child_denoise="uploadSrc.denoise"
         @cut-changed="notvisible"
+        @child-refresh="getMore"
       />
     </el-dialog>
 
