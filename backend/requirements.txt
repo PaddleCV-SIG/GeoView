@@ -6,7 +6,7 @@ Flask_SQLAlchemy>=2.5.1
 marshmallow>=3.18.0
 marshmallow_sqlalchemy>=0.28.1
 matplotlib>=3.5.3
-numpy>=1.23.3
+numpy>=1.21.3
 opencv_python>=4.5.1.48,<=4.5.5.64
 Pillow>=9.2.0
 PyMySQL>=1.0.2
