@@ -41,7 +41,7 @@ def execute(model_path, data_path, out_dir, names_):
         return_list=True)
     # 设置滑窗大小与滑动步长
     WINDOW_SIZE = 256
-    STRIDE = 128
+    STRIDE = 256
 
     ORIGINAL_SIZE = (1024, 1024)
 

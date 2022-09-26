@@ -1,6 +1,6 @@
 import axios from "axios"
 import router from '../router'
-import store from "@/store"
+
 import global from '@/global'
 export function requestfile(config) {
   const instance = axios.create({

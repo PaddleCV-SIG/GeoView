@@ -15,6 +15,14 @@ export function createSrc(formdata) {
     })
 }
 
+export function sceneClassifyUpload(data) {
+    return request({
+        method: 'POST',
+        url: '/api/analysis/classification',
+        data,
+    })
+}
+
 export function classifyUpload(data) {
     return request({
         method: 'POST',

@@ -934,7 +934,7 @@ import {
 import { historyGetPage } from "@/api/history";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
-import store from "@/store";
+
 import global from "@/global";
 export default {
   name: "Detectchanges",
@@ -1345,7 +1345,7 @@ export default {
       });
     },
     getMore() {
-      // showFullScreenLoading(".changes-box");
+      showFullScreenLoading(".changes-box");
       this.historyGetPage(1, 20, "变化检测")
         .then((res) => {
           hideFullScreenLoading(".changes-box");
@@ -1943,14 +1943,6 @@ export default {
   font-family: "幼圆", sans-serif;
   font-weight: 600;
   margin-bottom: 20px;
-}
-.feed-back {
-  border: 3px solid #0f2d2d;
-  width: 880px;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  font-size: 18px;
-  font-family: Microsoft YaHei;
 }
 .img-index {
   text-align: center;
