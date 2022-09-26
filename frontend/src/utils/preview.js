@@ -1,4 +1,4 @@
-import store from '@/store'
+
 import global from '@/global'
 function previewOnePic(pic) {
     this.flag = 1

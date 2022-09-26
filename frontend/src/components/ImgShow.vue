@@ -186,17 +186,8 @@ export default {
   font-family: SimHei sans-serif;
 }
 
-.feed-back {
-  border: 3px solid #0f2d2d;
-  width: 880px;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  font-size: 18px;
-  font-family: Microsoft YaHei;
-}
 .img-index {
   text-align: center;
-
   align-content: center;
   line-height: 19rem
 }
@@ -219,9 +210,5 @@ export default {
 .icon-xiazai {
   margin-left: 5px;
   font-size: 24px;
-}
-.icon-fankui {
-  font-size: 24px;
-  color: skyblue;
 }
 </style>

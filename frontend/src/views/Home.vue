@@ -32,7 +32,7 @@
               mode="out-in"
             >
               <keep-alive
-                include="detecttargets,detectchanges,classify,onlinemap"
+                include="detecttargets,detectchanges,classify,classifyscene,onlinemap"
               >
                 <component :is="Component" />
               </keep-alive>

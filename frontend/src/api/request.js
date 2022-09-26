@@ -1,6 +1,6 @@
 import axios from "axios"
 import router from '../router'
-import store from '@/store' 
+
 import global from '@/global'
 import { hideFullScreenLoading} from '@/utils/loading'
 import { ElMessage } from 'element-plus'

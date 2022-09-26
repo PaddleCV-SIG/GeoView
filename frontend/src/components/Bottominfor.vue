@@ -9,9 +9,7 @@
         :xl="16"
         class="hidden-sm-and-down"
         style="margin-left:30px"
-      >
-        web developement based on vue3 + elememnt ui + axios
-      </el-col>
+      />
       <el-col
         :xs="24"
         :sm="24"

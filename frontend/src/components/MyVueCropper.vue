@@ -86,6 +86,7 @@ import {
   createSrc,
   classifyUpload,
   detectTargetsUpload,
+  sceneClassifyUpload,
 } from "@/api/upload";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import { getUploadImg, upload, goCompress } from "@/utils/getUploadImg";
@@ -170,6 +171,7 @@ export default {
     createSrc,
     classifyUpload,
     detectTargetsUpload,
+    sceneClassifyUpload,
     getUploadImg,
     upload,
     goCompress,
@@ -270,6 +272,16 @@ export default {
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.getUploadImg("目标检测");
+            });
+          }
+          else if (funtype === "场景分类") {
+            delete this.uploadSrc.prehandle
+            delete this.uploadSrc.denoise
+            this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+              this.fileList = [];
+              hideFullScreenLoading("#load");
+              this.$message.success("上传成功！");
+              this.getUploadImg("场景分类");
             });
           }
           this.$emit("cut-changed", false);
