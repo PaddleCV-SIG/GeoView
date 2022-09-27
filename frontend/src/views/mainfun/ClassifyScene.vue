@@ -167,6 +167,7 @@
         :child_prehandle="uploadSrc.prehandle"
         :child_denoise="uploadSrc.denoise"
         @cut-changed="notvisible"
+        @child-refresh="getMore"
       />
     </el-dialog>
 
@@ -211,7 +212,7 @@
                   :src="beforeList[index]"
                   :fit="fit"
                   :lazy="true"
-                  class="gobig"
+                  class="gobig custom-pic"
                   :preview-src-list="[beforeList[index]]"
                   :preview-teleported="true"
                 />
@@ -462,5 +463,9 @@ export default {
   height: 30px;
   font-weight: 500;
   font-family: Microsoft JhengHei UI, sans-serif;
+}
+.custom-pic{
+  width: 256px;
+  height: 256px;
 }
 </style>

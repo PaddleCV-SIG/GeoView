@@ -413,6 +413,7 @@
         :child-prehandle="uploadSrc.prehandle"
         :child-denoise="uploadSrc.denoise"
         @cut-changed="notvisible"
+        @child-refresh="getMore"
       />
     </el-dialog>
     <ImgShow

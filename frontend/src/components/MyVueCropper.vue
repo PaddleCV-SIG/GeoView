@@ -123,7 +123,7 @@ export default {
       default:0
     },
   },
-  emits: ["finish", "cut-changed"],
+  emits: ["finish", "cut-changed",'child-refresh'],
 
   data() {
     return {
@@ -261,17 +261,14 @@ export default {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              setTimeout(() => {
-                     this.getUploadImg("地物分类");
-              }, 200);
-         
+              this.$emit('child-refresh')
             });
           } else if (funtype === "目标检测") {
             this.detectTargetsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              this.getUploadImg("目标检测");
+              this.$emit('child-refresh')
             });
           }
           else if (funtype === "场景分类") {
@@ -281,7 +278,7 @@ export default {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              this.getUploadImg("场景分类");
+              this.$emit('child-refresh')
             });
           }
           this.$emit("cut-changed", false);
