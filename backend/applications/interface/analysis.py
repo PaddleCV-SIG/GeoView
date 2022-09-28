@@ -11,7 +11,7 @@ from applications.image_processing.gaussian_blur import gaussian_blur
 from applications.image_processing.hole import hole_fill
 from applications.image_processing.median_blur import median_blur
 from applications.image_processing.render import batch_render
-from applications.image_processing.render_seg import bitch_render_seg
+from applications.image_processing.render_seg import batch_render_seg
 from applications.image_processing.resize import resize
 from applications.image_processing.sharpen import sharpen
 from applications.interface import change_detection as CD
@@ -274,7 +274,7 @@ def handle(fun_type, imgs, src_dir, save_dir):
     elif fun_type == fun_type_6:
         temps = batch_render(src_dir, save_dir, imgs)
     elif fun_type == fun_type_7:
-        temps = bitch_render_seg(src_dir, save_dir, imgs)
+        temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:
         temps = hole_fill(src_dir, save_dir, imgs)
         pass
