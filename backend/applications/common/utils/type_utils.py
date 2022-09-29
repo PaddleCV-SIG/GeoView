@@ -8,7 +8,7 @@ def str_to_type(strs):
 
 
 def type_to_str(num):
-    if num in type_map:
+    if num < len(type_map):
         return type_map[num]
     return ""
 
@@ -16,5 +16,4 @@ def type_to_str(num):
 def items_handle(items):
     for t in items:
         if 'type' in t:
-            type_ = t['type']
-            t['type'] = type_to_str(type_)
+            t['type'] = type_to_str(t['type'])
