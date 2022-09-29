@@ -13,11 +13,13 @@ from paddlers.tasks.utils.visualize import visualize_detection
 from applications.common.path_global import md5_name, generate_url
 
 
-def execute(model_path, data_path, out_dir, names):
+def execute(model_path, data_path, out_dir, names, threshold=0.2):
     """
     :param model_path: 模型路径
     :param data_path: 数据文件夹路径，里面只包含图片
     :param out_dir: 结果保存路径
+    :param names: 待处理文件名列表
+    :param threshold: 阈值
     """
     image_list = [osp.join(data_path, name) for name in names]
     predictor = pdrs.deploy.Predictor(model_dir=model_path, use_gpu=True)
@@ -32,7 +34,10 @@ def execute(model_path, data_path, out_dir, names):
             # 绘制预测目标框
             if len(pred[idx]) > 0:
                 vis = visualize_detection(
-                    np.array(vis), pred[idx], threshold=0.2, save_dir=None)
+                    np.array(vis),
+                    pred[idx],
+                    threshold=threshold,
+                    save_dir=None)
             name = names[idx]
             new_name = md5_name(name)
             imsave(osp.join(out_dir, new_name), vis)
