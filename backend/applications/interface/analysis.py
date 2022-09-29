@@ -11,13 +11,14 @@ from applications.image_processing.gaussian_blur import gaussian_blur
 from applications.image_processing.hole import hole_fill
 from applications.image_processing.median_blur import median_blur
 from applications.image_processing.render import batch_render
-from applications.image_processing.render_seg import bitch_render_seg
+from applications.image_processing.render_seg import batch_render_seg
 from applications.image_processing.resize import resize
 from applications.image_processing.sharpen import sharpen
 from applications.interface import change_detection as CD
 from applications.interface import classification as C
 from applications.interface import object_detection as OD
 from applications.interface import semantic_segmentation as SS
+from applications.interface import image_restoration as IR
 from applications.models.analysis import Analysis
 
 
@@ -225,9 +226,9 @@ def classification(model_path, data_path, names, type):
     for j, pair in enumerate(names):
         names[j] = img_url_handle(pair)
         imgs.append(names[j])
-    # 4. 场景分类
+    # 1. 场景分类
     result = C.execute(model_path, data_path, imgs)
-    # 5.入库
+    # 2.入库
     for i, pair in enumerate(names):
         first_ = up_url + pair
         ret = {}
@@ -236,6 +237,31 @@ def classification(model_path, data_path, names, type):
         save_analysis(type, first_, "", pic2="", data=json.dumps(ret))
         pass
     print("场景分类----------------->end")
+
+
+def image_restoration(model_path, data_path, out_dir, names, type_):
+    """
+    图像复原
+    :param model_path:
+    :param data_path:
+    :param out_dir:
+    :return:
+    """
+    print("图像复原----------------->start")
+    imgs = list()
+    for j, pair in enumerate(names):
+        names[j] = img_url_handle(pair)
+        imgs.append(names[j])
+
+    # 1. 图像复原
+    retPics = IR.execute(model_path, data_path, out_dir, imgs)
+    # 2.入库
+    for i, pair in enumerate(names):
+        first_ = up_url + pair
+        retPic = retPics[i]
+        save_analysis(type_, first_, retPic, pic2="", data="")
+        pass
+    print("图像复原----------------->end")
 
 
 def handle(fun_type, imgs, src_dir, save_dir):
@@ -274,7 +300,7 @@ def handle(fun_type, imgs, src_dir, save_dir):
     elif fun_type == fun_type_6:
         temps = batch_render(src_dir, save_dir, imgs)
     elif fun_type == fun_type_7:
-        temps = bitch_render_seg(src_dir, save_dir, imgs)
+        temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:
         temps = hole_fill(src_dir, save_dir, imgs)
         pass
