@@ -287,7 +287,7 @@
               :lg="7"
               :xl="7"
             >
-              <div 
+              <div
                 v-for="(item,index) in Img3"
                 :key="index"
               >
@@ -987,8 +987,8 @@ export default {
       beforeImg1: [],
       currentQroup: 0,
       src:
-        global.BASEURL +
-        "/_uploads/photos/res/01b19a165679f676b59242284b1f6f31_b62b1cb9afd6acbccd16e476a9c0b80b_test_50_5.png",
+          global.BASEURL +
+          "/_uploads/photos/res/01b19a165679f676b59242284b1f6f31_b62b1cb9afd6acbccd16e476a9c0b80b_test_50_5.png",
       srcs: [
 
       ],
@@ -1128,10 +1128,7 @@ export default {
     goRenderThese(index) {
 
       this.onRenderGroup = index;
-      let x = document.querySelectorAll(".img-box");
-      for (let item of x) {
-        item.setAttribute("style", `transform:translateX(0%)`);
-      }
+
       this.currentQroup = 5 * index;
       this.currentIndex = 5 * index;
       this.srcs = [];
@@ -1206,8 +1203,8 @@ export default {
     uploadfile() {
       this.uploadSrc = [];
       if (
-        this.fileList1.length !== this.fileList2.length ||
-        this.fileList1.length === 0
+          this.fileList1.length !== this.fileList2.length ||
+          this.fileList1.length === 0
       ) {
         this.$message.error("请按照要求上传文件夹或图片！");
       } else {
@@ -1216,12 +1213,12 @@ export default {
         let formData2 = new FormData();
         for (const item of this.fileList1) {
           formData1.append("files", item) ||
-            formData1.append("files", item.raw);
+          formData1.append("files", item.raw);
           formData1.append("type", "变化检测");
         }
         for (const item of this.fileList2) {
           formData2.append("files", item) ||
-            formData2.append("files", item.raw);
+          formData2.append("files", item.raw);
           formData2.append("type", "变化检测");
         }
         let upload1 = new Promise((resolve, reject) => {
@@ -1241,71 +1238,71 @@ export default {
           });
         });
         Promise.all([upload1, upload2])
-          .then((val) => {
-            this.uploadSrc = this.uploadSrc1.concat(this.uploadSrc2);
-            this.uploadSrc = this.uploadSrc.map((item) => {
-              return {
-                filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
-                ),
-                src: item.src,
-              };
-            });
+            .then((val) => {
+              this.uploadSrc = this.uploadSrc1.concat(this.uploadSrc2);
+              this.uploadSrc = this.uploadSrc.map((item) => {
+                return {
+                  filename: item.filename.substring(
+                      item.filename.indexOf("/") + 1,
+                      item.length
+                  ),
+                  src: item.src,
+                };
+              });
 
-            this.pairs = this.uploadSrc.map((item) => {
-              return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
-              );
-            });
+              this.pairs = this.uploadSrc.map((item) => {
+                return item.filename.substring(
+                    item.filename.indexOf("/") + 1,
+                    item.length
+                );
+              });
 
-            this.checkPairs(this.pairs);
-            if (!this.canUpload) {
-              this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
-              );
-              hideFullScreenLoading("#load");
-            } else {
-              this.getList(this.uploadSrc);
-              this.detectChangesUpload(this.upload)
-                .then((res) => {
-                  if (res.data.code === 1) {
-                    this.$message.error(res.data.msg);
-                  }
-
-                  this.$refs.upload1.clearFiles();
-                  this.$refs.upload2.clearFiles();
-                  this.fileList1 = [];
-                  this.fileList2 = [];
-                  this.$message.success("上传成功");
-                  this.isUpload = true;
-                  this.getMore();
-                  hideFullScreenLoading("#load");
-                  if (this.afterImg.length >= 20) {
-                    this.$confirm(
-                      "上传图片过多，是否压缩?在此期间不能进行其他操作",
-                      "提示",
-                      {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "warning",
+              this.checkPairs(this.pairs);
+              if (!this.canUpload) {
+                this.$message.error(
+                    "检测到命名对应失败的图片，请检查您的文件命名"
+                );
+                hideFullScreenLoading("#load");
+              } else {
+                this.getList(this.uploadSrc);
+                this.detectChangesUpload(this.upload)
+                    .then((res) => {
+                      if (res.data.code === 1) {
+                        this.$message.error(res.data.msg);
                       }
-                    )
-                      .then(() => {
-                        this.goCompress();
-                      })
-                      .catch(() => {});
-                  }
-                })
-                .catch((rej) => {
-                  hideFullScreenLoading("#load");
-                });
-            }
-          })
-          .catch((rej) => {
-            hideFullScreenLoading("#load");
-          });
+
+                      this.$refs.upload1.clearFiles();
+                      this.$refs.upload2.clearFiles();
+                      this.fileList1 = [];
+                      this.fileList2 = [];
+                      this.$message.success("上传成功");
+                      this.isUpload = true;
+                      this.getMore();
+                      hideFullScreenLoading("#load");
+                      if (this.afterImg.length >= 20) {
+                        this.$confirm(
+                            "上传图片过多，是否压缩?在此期间不能进行其他操作",
+                            "提示",
+                            {
+                              confirmButtonText: "确定",
+                              cancelButtonText: "取消",
+                              type: "warning",
+                            }
+                        )
+                            .then(() => {
+                              this.goCompress();
+                            })
+                            .catch(() => {});
+                      }
+                    })
+                    .catch((rej) => {
+                      hideFullScreenLoading("#load");
+                    });
+              }
+            })
+            .catch((rej) => {
+              hideFullScreenLoading("#load");
+            });
       }
     },
     getList(beforeData) {
@@ -1338,68 +1335,68 @@ export default {
       }, 2000);
       this.historyGetPage(1, 9999, "变化检测").then((res) => {
         this.atchDownload(
-          res.data.data.map((item) => {
-            return { after_img: item.after_img, id: item.id };
-          })
+            res.data.data.map((item) => {
+              return { after_img: item.after_img, id: item.id };
+            })
         );
       });
     },
     getMore() {
       showFullScreenLoading(".changes-box");
       this.historyGetPage(1, 20, "变化检测")
-        .then((res) => {
-          hideFullScreenLoading(".changes-box");
-          this.beforeImg = res.data.data.map((item) => {
-            return global.BASEURL + item.before_img;
-          });
-          this.idList = res.data.data.map((item) => {
-            return item.id;
-          });
-          this.isHole = res.data.data.map((item) => {
-            return item.is_hole;
-          });
-          this.isHole;
-          this.afterImg = res.data.data.map((item) => {
-            return {
-              after_img: global.BASEURL + item.after_img,
-              id: item.id,
-            };
-          });
+          .then((res) => {
+            hideFullScreenLoading(".changes-box");
+            this.beforeImg = res.data.data.map((item) => {
+              return global.BASEURL + item.before_img;
+            });
+            this.idList = res.data.data.map((item) => {
+              return item.id;
+            });
+            this.isHole = res.data.data.map((item) => {
+              return item.is_hole;
+            });
+            this.isHole;
+            this.afterImg = res.data.data.map((item) => {
+              return {
+                after_img: global.BASEURL + item.after_img,
+                id: item.id,
+              };
+            });
 
-          this.afterList = res.data.data.map((item) => {
-            return global.BASEURL + item.after_img;
-          });
-          this.showingList = res.data.data.map((item) => {
-            return global.BASEURL + item.after_img;
-          });
+            this.afterList = res.data.data.map((item) => {
+              return global.BASEURL + item.after_img;
+            });
+            this.showingList = res.data.data.map((item) => {
+              return global.BASEURL + item.after_img;
+            });
 
-          if (this.afterList.length !== 0) {
-            this.goRenderThese(0);
-            this.goRenderThis(0);
-          }
-          this.beforeImg1 = res.data.data.map((item) => {
-            return global.BASEURL + item.before_img1;
+            if (this.afterList.length !== 0) {
+              this.goRenderThese(0);
+              this.goRenderThis(0);
+            }
+            this.beforeImg1 = res.data.data.map((item) => {
+              return global.BASEURL + item.before_img1;
+            });
+            this.woods = res.data.data.map((item) => {
+              return global.BASEURL + item.data[2];
+            });
+            this.neon = res.data.data.map((item) => {
+              return global.BASEURL + item.data[3];
+            });
+            this.flash = res.data.data.map((item) => {
+              return global.BASEURL + item.data[0];
+            });
+            this.aurora = res.data.data.map((item) => {
+              return global.BASEURL + item.data[1];
+            });
+            this.checkUpload();
+            if (!this.isUpload) {
+              this.setNormalWay(this.onRender);
+            }
+          })
+          .catch((rej) => {
+            hideFullScreenLoading(".changes-box");
           });
-          this.woods = res.data.data.map((item) => {
-            return global.BASEURL + item.data[2];
-          });
-          this.neon = res.data.data.map((item) => {
-            return global.BASEURL + item.data[3];
-          });
-          this.flash = res.data.data.map((item) => {
-            return global.BASEURL + item.data[0];
-          });
-          this.aurora = res.data.data.map((item) => {
-            return global.BASEURL + item.data[1];
-          });
-          this.checkUpload();
-          if (!this.isUpload) {
-            this.setNormalWay(this.onRender);
-          }
-        })
-        .catch((rej) => {
-          hideFullScreenLoading(".changes-box");
-        });
     },
     uploadFirst() {
       this.checkFile1(...this.$refs.myfile1.files);
@@ -1430,8 +1427,8 @@ export default {
     selectHistogram() {
       if (this.$refs.histogram.checked === true) {
         if (
-          this.fileList1.length !== this.fileList2.length ||
-          this.fileList1.length === 0
+            this.fileList1.length !== this.fileList2.length ||
+            this.fileList1.length === 0
         ) {
           if (this.upload.prehandle === 1) {
             this.$refs.histogram.checked = false;
@@ -1452,13 +1449,13 @@ export default {
 
           for (const item of this.fileList1) {
             formData1.append("files", item) ||
-              formData1.append("files", item.raw);
+            formData1.append("files", item.raw);
             formData1.append("type", "变化检测");
           }
 
           for (const item of this.fileList2) {
             formData2.append("files", item) ||
-              formData2.append("files", item.raw);
+            formData2.append("files", item.raw);
             formData2.append("type", "变化检测");
           }
           let upload3 = new Promise((resolve, reject) => {
@@ -1485,8 +1482,8 @@ export default {
             this.histogramSrc = this.histogramSrc.map((item) => {
               return {
                 filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
+                    item.filename.indexOf("/") + 1,
+                    item.length
                 ),
                 src: item.src,
               };
@@ -1494,8 +1491,8 @@ export default {
 
             this.hisPairs = this.histogramSrc.map((item) => {
               return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
+                  item.filename.indexOf("/") + 1,
+                  item.length
               );
             });
 
@@ -1503,7 +1500,7 @@ export default {
 
             if (!this.canUpload) {
               this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
+                  "检测到命名对应失败的图片，请检查您的文件命名"
               );
               hideFullScreenLoading("#load");
               this.Img1 = [];
@@ -1547,8 +1544,8 @@ export default {
     },
     selectSharpen() {
       if (
-        this.fileList1.length !== this.fileList2.length ||
-        this.fileList1.length === 0
+          this.fileList1.length !== this.fileList2.length ||
+          this.fileList1.length === 0
       ) {
         if (this.upload.prehandle === 4) {
           this.$refs.sharpen.checked = false;
@@ -1575,13 +1572,13 @@ export default {
 
           for (const item of this.fileList1) {
             formData1.append("files", item) ||
-              formData1.append("files", item.raw);
+            formData1.append("files", item.raw);
             formData1.append("type", "变化检测");
           }
 
           for (const item of this.fileList2) {
             formData2.append("files", item) ||
-              formData2.append("files", item.raw);
+            formData2.append("files", item.raw);
             formData2.append("type", "变化检测");
           }
           let upload1 = new Promise((resolve, reject) => {
@@ -1607,16 +1604,16 @@ export default {
             this.sharpenSrc = this.sharpenSrc.map((item) => {
               return {
                 filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
+                    item.filename.indexOf("/") + 1,
+                    item.length
                 ),
                 src: item.src,
               };
             });
             this.shaPairs = this.sharpenSrc.map((item) => {
               return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
+                  item.filename.indexOf("/") + 1,
+                  item.length
               );
             });
 
@@ -1624,7 +1621,7 @@ export default {
 
             if (!this.canUpload) {
               this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
+                  "检测到命名对应失败的图片，请检查您的文件命名"
               );
               hideFullScreenLoading("#load");
               this.Img1 = [];
@@ -1764,20 +1761,20 @@ export default {
       const sliderLeftX = slider.offsetLeft;
 
       const sliderWidth = slider.clientWidth;
-   
+
       const sliderHandleWidth = handle.clientWidth;
-   
+
       let mouseX = event.clientX - sliderLeftX;
 
       if (mouseX < 0) mouseX = 0;
       else if (mouseX > sliderWidth) mouseX = sliderWidth;
 
       wrapper.style.width = `${((1 - mouseX / sliderWidth) * 100).toFixed(4)}%`;
-    
+
       handle.style.left = `calc(${((mouseX / sliderWidth) * 100).toFixed(
-        4
+          4
       )}% - ${sliderHandleWidth / 2}px)`;
-    
+
     },
     sliderMouseDown() {
       if (this.isSliderLocked) this.isSliderLocked = false;
@@ -1885,7 +1882,7 @@ export default {
     // width: 100%;
     max-height: 600px;
     overflow: hidden;
-    
+
   }
   .render-style {
     height: auto;
@@ -2006,7 +2003,7 @@ export default {
   display: block;
   height: 100%;
   max-width:550px;
- max-height: 550px;
+  max-height: 550px;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
@@ -2027,8 +2024,6 @@ export default {
   top: 0;
   right: 0;
   height: 100%;
-
-  transform: scale(1.2);
 }
 
 #image-slider .handle {

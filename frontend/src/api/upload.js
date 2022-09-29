@@ -8,10 +8,17 @@ export function createSrc(formdata) {
         transformRequest: [function(data, headers) {
             delete headers.post['Content-Type']
             return data
-          }],
-          headers:{
+        }],
+        headers:{
             'Content-Type':'multipart/form-data'
-          }
+        }
+    })
+}
+export function restoreImgsUpload(data) {
+    return request({
+        method: 'POST',
+        url: '/api/analysis/image_restoration',
+        data,
     })
 }
 

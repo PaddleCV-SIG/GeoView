@@ -1,6 +1,7 @@
 import { historyGetPage } from "@/api/history"
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import global from '@/global'
+import {restoreImgsUpload} from "@/api/upload";
 
 function getUploadImg(type) {
   showFullScreenLoading("#load");
@@ -24,7 +25,16 @@ function getUploadImg(type) {
     this.afterImg = res.data.data.map((item) => {
       return { after_img: global.BASEURL + item.after_img, id: item.id };
     });
-    this.checkUpload(); 
+    this.afterList = res.data.data.map((item) => {
+      return global.BASEURL + item.after_img
+    });
+    if(type === '图像复原') {
+      this.idList = res.data.data.map((item) => {
+        return item.id;
+      });
+      this.goShowThese(0)
+    }
+    this.checkUpload();
     // if(type=='地物分类'&&!this.isUpload){
     //   this.beforeImg = [{before_img:'https://u5l5066767.goho.co/_uploads/photos/b038eb0aa89c272bedb12da531a5e9c7_T073142_5.jpg',id:0}]
     //   this.beforeList= ['https://u5l5066767.goho.co/_uploads/photos/b038eb0aa89c272bedb12da531a5e9c7_T073142_5.jpg']
@@ -57,9 +67,9 @@ function goCompress(type) {
   }, 500);
   this.historyGetPage(1, 99999, type).then((res) => {
     this.atchDownload(
-      res.data.data.map((item) => {
-        return { after_img: item.after_img, id: item.id };
-      })
+        res.data.data.map((item) => {
+          return { after_img: item.after_img, id: item.id };
+        })
     );
   });
 }
@@ -71,7 +81,7 @@ function upload(type) {
     showFullScreenLoading("#load");
     let formData = new FormData();
     let _this = this;
- 
+
     for (const item of this.fileList) {
       formData.append("files", item) || formData.append('files', item.raw);
       formData.append("type", type);
@@ -104,19 +114,27 @@ function upload(type) {
           this.getMore()
         })
       }
+      else if (type === '图像复原') {
+        this.restoreImgsUpload(this.uploadSrc).then((res) => {
+          this.fileList = []
+          hideFullScreenLoading("#load")
+          this.$message.success("上传成功！");
+          this.getMore()
+        })
+      }
       if (this.afterImg.length >= 20 && type!=='场景分类') {
         this.$confirm("上传图片过多，是否压缩?在此期间不能进行其他操作", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         })
-          .then(() => {
-          
-            showFullScreenLoading('#load')
-            this.goCompress(type)
-          }).catch(() => {
-           
-          })
+            .then(() => {
+
+              showFullScreenLoading('#load')
+              this.goCompress(type)
+            }).catch(() => {
+
+        })
       }
       _this.$refs.upload.clearFiles();
     });

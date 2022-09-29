@@ -4,7 +4,8 @@ const Home = () => import('@/views/Home.vue')
 const DetectChanges = () => import('@/views/mainfun/DetectChanges.vue')
 const DetectTargets = () => import('@/views/mainfun/DetectTargets.vue')
 const Classify = () => import('@/views/mainfun/Classify.vue')
-const ClassifyScene = ()=> import('@/views/mainfun/ClassifyScene')
+const ClassifyScenes = ()=> import('@/views/mainfun/ClassifyScenes')
+const RestoreImgs = ()=> import('@/views/mainfun/RestoreImgs')
 const OnlineMap = () => import('@/views/mainfun/OnlineMap.vue')
 const History = () => import('@/views/history/History.vue')
 const NotFound = () => import('@/views/NotFound.vue')
@@ -18,7 +19,7 @@ const routes = [
     name: 'home',
     component: Home,
     children: [
-       {
+      {
         path: '/detectchanges',
         name: 'detectchanges',
         component: DetectChanges,
@@ -33,9 +34,14 @@ const routes = [
         component: Classify
       },
       {
-        path: '/classifyscene',
-        name:'classifyscene',
-        component:ClassifyScene
+        path: '/classifyscenes',
+        name:'classifyscenes',
+        component:ClassifyScenes
+      },
+      {
+        path:'/restoreimgs',
+        name:'restoreimgs',
+        component:RestoreImgs
       },
       {
         path: '/history',
@@ -51,8 +57,8 @@ const routes = [
   },
   {
     path: "/:pathMatch(.*)*",
-      name: 'notfound',
-      component: NotFound
+    name: 'notfound',
+    component: NotFound
   }
 ]
 

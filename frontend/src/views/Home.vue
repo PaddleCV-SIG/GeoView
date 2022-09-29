@@ -32,7 +32,7 @@
               mode="out-in"
             >
               <keep-alive
-                include="detecttargets,detectchanges,classify,classifyscene,onlinemap"
+                include="detecttargets,detectchanges,classify,classifyscenes,restoreimgs,onlinemap"
               >
                 <component :is="Component" />
               </keep-alive>
@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     window.onresize = () => {
-    
+
       if (document.documentElement.clientWidth <= 1100) {
         this.isCollapse = true;
       } else {
@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
 .el-main {
-   --el-main-padding: 0px 20px 0 20px;
+  --el-main-padding: 0px 20px 0 20px;
   height: auto;
   width: 100%;
   overflow-x: hidden;
