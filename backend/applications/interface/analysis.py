@@ -255,7 +255,6 @@ def image_restoration(model_path, data_path, out_dir, names, type_):
 
     # 1. 图像复原
     retPics = IR.execute(model_path, data_path, out_dir, imgs)
-    print(retPics)
     # 2.入库
     for i, pair in enumerate(names):
         first_ = up_url + pair
