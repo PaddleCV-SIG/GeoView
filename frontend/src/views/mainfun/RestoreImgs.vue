@@ -439,6 +439,7 @@ export default {
     goShowThis(index) {
       this.currentIndex = this.currentQroup;
       this.currentIndex += index;
+      this.onRender = index
     },
     goShowThese(index) {
       this.currentQroup = 5 * index;
@@ -733,5 +734,8 @@ export default {
     margin-right: 10px;
     justify-content: space-between;
   }
+}
+.render-border {
+  border: rgb(64, 158, 255) 0.5rem solid;
 }
 </style>
