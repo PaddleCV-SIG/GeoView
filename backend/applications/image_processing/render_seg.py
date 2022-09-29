@@ -56,7 +56,7 @@ def render_seg(name, data_dir, save_dir,
 
 
 # 批量渲染
-def bitch_render_seg(data_dir, save_dir, imgs):
+def batch_render_seg(data_dir, save_dir, imgs):
     temps = list()
     for img in imgs:
         maps = dict()
