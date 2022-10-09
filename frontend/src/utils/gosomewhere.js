@@ -18,11 +18,18 @@ function goClassify() {
     } else this.$router.push("classify");
 }
 
-function goClassifyScene() {
+function goClassifyScenes() {
     this.drawer = false;
-    if (this.$route.path === "/classifyscene") {
+    if (this.$route.path === "/classifyscenes") {
         this.$message.success('您已经在该界面了哦')
-    } else this.$router.push("classifyscene");
+    } else this.$router.push("classifyscenes");
+}
+
+function goRestoreImgs() {
+    this.drawer = false;
+    if (this.$route.path === "/restoreimgs") {
+        this.$message.success('您已经在该界面了哦')
+    } else this.$router.push("restoreimgs");
 }
 
 function goOnlineMap(){
@@ -36,7 +43,7 @@ function goHistory() {
     else
         this.$router.push({
             name: "history",
-  
+
         });
 }
-export { goDetectChanges, goDetectTargets, goClassify,goClassifyScene,goOnlineMap, goHistory }
+export { goDetectChanges, goDetectTargets, goClassify,goClassifyScenes,goRestoreImgs,goOnlineMap,goHistory }

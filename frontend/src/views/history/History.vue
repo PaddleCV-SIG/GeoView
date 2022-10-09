@@ -7,7 +7,8 @@
           'iconfont icon-bianhuajiance': type === '变化检测',
           'iconfont icon-mubiaojiance': type === '目标检测',
           'iconfont icon-erfenleibianhuajiance16px': type === '地物分类',
-          'iconfont icon-changjingguanli' : type === '场景分类'
+          'iconfont icon-changjingguanli' : type === '场景分类',
+          'iconfont icon-jishu' : type === '图像复原'
         }"
       />
     </div>
@@ -33,7 +34,8 @@
               'iconfont icon-mubiaojiance': scope.row.type === '目标检测',
               'iconfont icon-erfenleibianhuajiance16px':
                 scope.row.type === '地物分类',
-              'iconfont icon-changjingguanli' : scope.row.type === '场景分类'
+              'iconfont icon-changjingguanli' : scope.row.type === '场景分类',
+              'iconfont icon-jishu' : scope.row.type ==='图像复原'
             }"
           />{{ scope.row.type }}
           </span>
@@ -198,7 +200,7 @@
           </el-menu-item>
           <el-menu-item
             index="4"
-            @click="onlyClassifyScene"
+            @click="onlyClassifyScenes"
           >
             <h3>
               <i
@@ -209,6 +211,17 @@
           </el-menu-item>
           <el-menu-item
             index="5"
+            @click="onlyRestoreImgs"
+          >
+            <h3>
+              <i
+                class="iconfont icon-jishu"
+                style="font-size: 22px"
+              />图像复原
+            </h3>
+          </el-menu-item>
+          <el-menu-item
+            index="6"
             @click="goBackData"
           >
             <h3><i class="iconfont icon-fuyuan" />列表复原</h3>
@@ -391,48 +404,12 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          showFullScreenLoading(".his-box");
-          this.delete.ids.push(row.id);
-          this.historyDelete(this.delete).then((res) => {
-            this.tableData.splice(index, 1);
-            this.getTabelInfo();
-            hideFullScreenLoading(".his-box");
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
-    deleteAll() {
-      if (this.multipleSelection.length === 0) {
-        this.$message.warning("请选择要删除的记录哦");
-      } else {
-        this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
           .then(() => {
             showFullScreenLoading(".his-box");
-            this.delete.ids = this.multipleSelection.map((item) => {
-              return item.id;
-            });
-
+            this.delete.ids.push(row.id);
             this.historyDelete(this.delete).then((res) => {
+              this.tableData.splice(index, 1);
               this.getTabelInfo();
-              this.tableData = this.tableData.filter((item) => {
-                return this.multipleSelection.every((item2) => {
-                  return item.id !== item2.id;
-                });
-              });
               hideFullScreenLoading(".his-box");
               this.$message({
                 type: "success",
@@ -446,6 +423,42 @@ export default {
               message: "已取消删除",
             });
           });
+    },
+    deleteAll() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning("请选择要删除的记录哦");
+      } else {
+        this.$confirm("此操作将永久删除, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+            .then(() => {
+              showFullScreenLoading(".his-box");
+              this.delete.ids = this.multipleSelection.map((item) => {
+                return item.id;
+              });
+
+              this.historyDelete(this.delete).then((res) => {
+                this.getTabelInfo();
+                this.tableData = this.tableData.filter((item) => {
+                  return this.multipleSelection.every((item2) => {
+                    return item.id !== item2.id;
+                  });
+                });
+                hideFullScreenLoading(".his-box");
+                this.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+              });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消删除",
+              });
+            });
       }
     },
     downLoadAll() {
@@ -454,10 +467,10 @@ export default {
       } else {
         for (let item of this.multipleSelection) {
           this.downloadimgWithWords(
-            item.id,
-            global.BASEURL + item.after_img,
+              item.id,
+              global.BASEURL + item.after_img,
 
-            `${item.type}结果图.png`
+              `${item.type}结果图.png`
           );
         }
       }
@@ -514,8 +527,13 @@ export default {
       this.getTabelInfo();
       this.fundrawer = false;
     },
-    onlyClassifyScene() {
+    onlyClassifyScenes() {
       this.type = "场景分类";
+      this.getTabelInfo();
+      this.fundrawer = false;
+    },
+    onlyRestoreImgs(){
+      this.type = "图像复原";
       this.getTabelInfo();
       this.fundrawer = false;
     },
@@ -534,8 +552,8 @@ export default {
 }
 .hint {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 18px;
   margin-bottom: 10px;
   margin-top: 10px;
