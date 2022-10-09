@@ -16,7 +16,6 @@
       placeholder="请输入地址"
       class="input_style"
     />
-
     <div
       id="map"
       ref="imageTofile"
@@ -79,7 +78,7 @@
       />
       <el-row v-if="funtype==='场景分类'">
         <el-col>
-          <el-card style="margin-bottom: 10px">
+          <el-card>
             <el-row
               :gutter="10"
               justify="center"
@@ -90,7 +89,7 @@
               >
                 <div
                   class="img-index hidden-sm-and-down"
-                  :style="{ height: 301 + 'px' }"
+                  style=" height: 301px"
                 >
                   <div>第<span class="index-number">1</span>组</div>
                 </div>
@@ -110,7 +109,7 @@
                     :src="beforeList[0]"
                     :fit="fit"
                     :lazy="true"
-                    class="gobig custom-pic"
+                    class="custom-pic"
                     :preview-src-list="[beforeList[0]]"
                     :preview-teleported="true"
                   />
@@ -118,7 +117,10 @@
                   <div class="img-infor">
                     <span>原图</span>
                   </div>
-                  <span class="index-number hidden-md-and-up">{{ sceneKey[0][0] }}:<span>{{ scene[0][sceneKey[0][0]] }}</span></span>
+                  <span
+                    v-if="sceneKey"
+                    class="index-number hidden-md-and-up"
+                  >{{ sceneKey[0][0] }}:<span>{{ scene[0][sceneKey[0][0]] }}</span></span>
                 </div>
               </el-col>
               <el-col
@@ -127,9 +129,12 @@
               >
                 <div
                   class="img-index hidden-sm-and-down"
-                  :style="{ height: 301 + 'px' }"
+                  style="height:301px"
                 >
-                  <span class="index-number ">{{ Object.keys(scene[0])[0] }}:{{ scene[0][Object.keys(scene[0])[0]] }}</span>
+                  <span
+                    v-if="scene"
+                    class="index-number "
+                  >{{ Object.keys(scene[0])[0] }}:{{ scene[0][Object.keys(scene[0])[0]] }}</span>
                 </div>
               </el-col>
             </el-row>
@@ -153,14 +158,9 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {
-  createSrc,
-  classifyUpload,
-  detectTargetsUpload, sceneClassifyUpload,
-} from "@/api/upload";
-import { getUploadImg } from "@/utils/getUploadImg";
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
-import { historyGetPage } from "@/api/history";
+import {classifyUpload, createSrc, detectTargetsUpload, sceneClassifyUpload,} from "@/api/upload";
+import {hideFullScreenLoading, showFullScreenLoading} from "@/utils/loading";
+import {historyGetPage} from "@/api/history";
 
 export default {
   name: "Onlinemap",
@@ -170,20 +170,19 @@ export default {
       beforeImg: [],
       beforeList:[],
       afterImg: [],
+      fit:'fill',
       isShow: false,
       tmpFile: "",
-
       choose: false,
       funtype: "目标检测",
       address_detail: null, //详细地址
       userlocation: { lng: "", lat: "" },
-
       lng: "",
       lat: "",
       htmlUrl: "",
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
-      scene:[],
-      sceneKey:[]
+      scene:[{}],
+      sceneKey:[['']]
     };
   },
   mounted() {
@@ -213,7 +212,6 @@ export default {
       // let point = new BMap.Point(117.155827, 36.695916); // 创建点坐标，汉得公司的经纬度坐标
       // map.centerAndZoom(point, 15);
       // map.enableScrollWheelZoom();
-      // eslint-disable-next-line no-undef
       let ac = new BMap.Autocomplete({
         //建立一个自动完成的对象
         input: "suggestId",
@@ -264,13 +262,9 @@ export default {
     classifyUpload,
     detectTargetsUpload,
     sceneClassifyUpload,
-    getUploadImg,
-    showFullScreenLoading,
-    hideFullScreenLoading,
     historyGetPage,
     goUpload(type) {
       showFullScreenLoading("#load");
-
       let formData = new FormData();
       formData.append("files", this.tmpFile);
       formData.append("type", type);
@@ -366,8 +360,7 @@ export default {
         // toDataURL 图片格式转成 base64
         let dataURL = canvas.toDataURL("image/png");
         // this.downloadImage(dataURL)
-        const File = this.base64toFile(dataURL);
-        this.tmpFile = File;
+        this.tmpFile = this.base64toFile(dataURL);
       });
     },
     base64toFile(dataurl) {
@@ -391,10 +384,6 @@ export default {
 };
 </script>
 <style  scoped>
-#allmap {
-  width: 100%;
-  height: 100%;
-}
 .button-dalod {
   position: absolute;
   top: 55vh;
