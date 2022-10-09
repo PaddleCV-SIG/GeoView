@@ -14,6 +14,7 @@ from applications.extensions import db
 from applications.image_processing import histogram_match
 from applications.interface.analysis import change_detection, object_detection, terrain_classification, hole_handle, \
     handle, classification, image_restoration
+from applications.interface.utils import get_model_info
 from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
 
@@ -46,6 +47,13 @@ def show_result(type):
 @analysis_api.post('/change_detection')
 def change_detection_api():
     req_json = request.json
+    model_path = req_json["model_path"]
+    try:
+        model_info = get_model_info(model_path)
+        if model_info["_Attributes"]["model_type"] != "change_detector":
+            return fail_api("模型类型不正确，请检查")
+    except:
+        return fail_api("模型不存在，请检查")
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
@@ -62,8 +70,8 @@ def change_detection_api():
             return fail_api("请求参数异常")
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
-    change_detection("model/change_detector/bit_256x256", up_dir, generate_dir,
-                     list_, step1_, step2_, type_)
+    change_detection(model_path, up_dir, generate_dir, list_, step1_, step2_,
+                     type_)
     return success_api()
 
 
@@ -75,6 +83,13 @@ def change_detection_api():
 @analysis_api.post('/object_detection')
 def object_detection_api():
     req_json = request.json
+    model_path = req_json["model_path"]
+    try:
+        model_info = get_model_info(model_path)
+        if model_info["_Attributes"]["model_type"] != "detector":
+            return fail_api("模型类型不正确，请检查")
+    except:
+        return fail_api("模型不存在，请检查")
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
@@ -85,8 +100,8 @@ def object_detection_api():
     if list_ is None:
         return fail_api("请上传图片")
     type_ = 2
-    object_detection("model/object_detector/ppyolo_608x608", up_dir,
-                     generate_dir, list_, step1_, step2_, type_)
+    object_detection(model_path, up_dir, generate_dir, list_, step1_, step2_,
+                     type_)
 
     return success_api()
 
@@ -99,6 +114,13 @@ def object_detection_api():
 @analysis_api.post('/semantic_segmentation')
 def semantic_segmentation_api():
     req_json = request.json
+    model_path = req_json["model_path"]
+    try:
+        model_info = get_model_info(model_path)
+        if model_info["_Attributes"]["model_type"] != "segmenter":
+            return fail_api("模型类型不正确，请检查")
+    except:
+        return fail_api("模型不存在，请检查")
     list_ = req_json["list"]
     step1_ = req_json["prehandle"]
     step2_ = req_json["denoise"]
@@ -109,8 +131,8 @@ def semantic_segmentation_api():
     if list_ is None:
         return fail_api("请上传图片")
     type_ = 3
-    terrain_classification("model/semantic_segmentation/deeplabv3p_512x512",
-                           up_dir, generate_dir, list_, step1_, step2_, type_)
+    terrain_classification(model_path, up_dir, generate_dir, list_, step1_,
+                           step2_, type_)
     return success_api()
 
 
@@ -122,11 +144,18 @@ def semantic_segmentation_api():
 @analysis_api.post('/classification')
 def classification_api():
     req_json = request.json
+    model_path = req_json["model_path"]
+    try:
+        model_info = get_model_info(model_path)
+        if model_info["_Attributes"]["model_type"] != "classifier":
+            return fail_api("模型类型不正确，请检查")
+    except:
+        return fail_api("模型不存在，请检查")
     img_list = req_json["list"]
     if img_list is None:
         return fail_api("请上传图片")
     type_ = 4
-    classification("model/classification/resnet50", up_dir, img_list, type_)
+    classification(model_path, up_dir, img_list, type_)
     return success_api()
 
 
@@ -138,12 +167,18 @@ def classification_api():
 @analysis_api.post('/image_restoration')
 def image_restoration_api():
     req_json = request.json
+    model_path = req_json["model_path"]
+    try:
+        model_info = get_model_info(model_path)
+        if model_info["_Attributes"]["model_type"] != "restorer":
+            return fail_api("模型类型不正确，请检查")
+    except:
+        return fail_api("模型不存在，请检查")
     img_list = req_json["list"]
     if img_list is None:
         return fail_api("请上传图片")
     type_ = 5
-    image_restoration("model/image_restoration/drn", up_dir, generate_dir,
-                      img_list, type_)
+    image_restoration(model_path, up_dir, generate_dir, img_list, type_)
     return success_api()
 
 
