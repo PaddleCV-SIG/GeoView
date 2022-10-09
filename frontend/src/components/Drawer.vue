@@ -59,14 +59,25 @@
           </h3>
         </el-menu-item>
         <el-menu-item
-          index="/classifyscene"
-          @click="goClassifyScene"
+          index="/classifyscenes"
+          @click="goClassifyScenes"
         >
           <h3>
             <i
               class="iconfont icon-changjingguanli"
               style="font-size: 22px"
             />场景分类
+          </h3>
+        </el-menu-item>
+        <el-menu-item
+          index="/restoreimgs"
+          @click="goRestoreImgs"
+        >
+          <h3>
+            <i
+              class="iconfont icon-jishu"
+              style="font-size: 22px"
+            />图像复原
           </h3>
         </el-menu-item>
         <el-menu-item
@@ -90,7 +101,8 @@ import {
   goDetectChanges,
   goDetectTargets,
   goClassify,
-  goClassifyScene,
+  goClassifyScenes,
+  goRestoreImgs,
   goOnlineMap
 } from "@/utils/gosomewhere.js";
 export default {
@@ -116,7 +128,8 @@ export default {
     goDetectChanges,
     goDetectTargets,
     goClassify,
-    goClassifyScene,
+    goClassifyScenes,
+    goRestoreImgs,
     goOnlineMap,
   },
 };

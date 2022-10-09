@@ -85,8 +85,8 @@
     </div>
     <div class="item-group">
       <el-menu-item
-        index="/classifyscene"
-        @click="goClassifyScene"
+        index="/classifyscenes"
+        @click="goClassifyScenes"
       >
         <i
           v-show="isCollapse"
@@ -99,6 +99,25 @@
             class="iconfont icon-changjingguanli"
             style="font-size: 22px"
           />场景分类
+        </h3>
+      </el-menu-item>
+    </div>
+    <div class="item-group">
+      <el-menu-item
+        index="/restoreimgs"
+        @click="goRestoreImgs"
+      >
+        <i
+          v-show="isCollapse"
+          class="iconfont icon-jishu"
+          style="font-size: 22px"
+        />
+        <h3 v-show="!isCollapse">
+          <i
+
+            class="iconfont icon-jishu"
+            style="font-size: 22px"
+          />图像复原
         </h3>
       </el-menu-item>
     </div>
@@ -154,7 +173,8 @@ import {
   goDetectChanges,
   goDetectTargets,
   goClassify,
-  goClassifyScene,
+  goClassifyScenes,
+  goRestoreImgs,
   goHistory,
   goOnlineMap
 } from "@/utils/gosomewhere.js";
@@ -176,7 +196,8 @@ export default {
     goDetectChanges,
     goDetectTargets,
     goClassify,
-    goClassifyScene,
+    goClassifyScenes,
+    goRestoreImgs,
     goHistory,
     goOnlineMap,
     goShow(){
@@ -195,14 +216,14 @@ export default {
   text-align: center;
   overflow-x: hidden;
 
- font-family: Microsoft JhengHei UI, sans-serif;
+  font-family: Microsoft JhengHei UI, sans-serif;
 
 }
 .el-menu-item {
   padding: 0 0;
   border-radius: 10px;
   position: relative;
-      color: rgb(117,117,117);
+  color: rgb(117,117,117);
   h3 {
 
     padding-right: 30px;

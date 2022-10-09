@@ -420,6 +420,7 @@
       :before-img="beforeImg"
       :after-img="afterImg"
       :funtype="funtype"
+      :height="height"
     />
     <Bottominfor />
   </div>
@@ -492,7 +493,9 @@ export default {
         list:[],
         prehandle:0,
         type:4
-      }
+      },
+      height:376
+      //结果图展示高度
     };
   },
   watch:{

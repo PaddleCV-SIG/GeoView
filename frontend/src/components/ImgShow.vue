@@ -15,7 +15,6 @@
               v-for="index in beforeList.length"
               :key="index"
               class="img-index hidden-sm-and-down"
-              :style="{ height: indexHeight + 'rem' }"
             >
               第<span class="index-number">{{ index }}</span>组
             </div>
@@ -189,7 +188,8 @@ export default {
 .img-index {
   text-align: center;
   align-content: center;
-  line-height: 19rem
+  height: 376px;
+  line-height: 376px
 }
 .index-number {
   font-family: Yu Gothic Medium;

@@ -13,7 +13,7 @@ from applications.common.utils.upload import img_url_handle
 from applications.extensions import db
 from applications.image_processing import histogram_match
 from applications.interface.analysis import change_detection, object_detection, terrain_classification, hole_handle, \
-    handle, classification
+    handle, classification, image_restoration
 from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
 
@@ -127,6 +127,23 @@ def classification_api():
         return fail_api("请上传图片")
     type_ = 4
     classification("model/classification/resnet50", up_dir, img_list, type_)
+    return success_api()
+
+
+"""
+    图像还原
+"""
+
+
+@analysis_api.post('/image_restoration')
+def image_restoration_api():
+    req_json = request.json
+    img_list = req_json["list"]
+    if img_list is None:
+        return fail_api("请上传图片")
+    type_ = 5
+    image_restoration("model/image_restoration/drn", up_dir, generate_dir,
+                      img_list, type_)
     return success_api()
 
 
