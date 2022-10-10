@@ -16,7 +16,8 @@ def get_model_info(model_dir):
     return model_info
 
 
-def load_transformer_from_file(model_dir, exclude=[]):
+def load_transformer_from_file(model_dir, exclude=None):
+    exclude = exclude or []
     model_info = get_model_info(model_dir)
     if 'Transforms' in model_info:
         transform = []
