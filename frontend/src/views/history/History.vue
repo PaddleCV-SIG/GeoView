@@ -1,5 +1,5 @@
 <template>
-  <div class="his-box">
+  <div>
     <div class="hint">
       当前浏览功能区：<span v-if="type !== ''">{{ type }}</span><span v-else>全部</span><i
         style="margin-left: 8px; font-size: 20px"
@@ -15,20 +15,17 @@
     <el-table
       ref="multipleTable"
       :data="tableData"
-      style="width: 100%"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" />
       <el-table-column label="日期">
         <template #default="scope">
-          <i class="el-icon-time" />
           <span>{{ scope.row.create_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="功能区">
         <template #default="scope">
-          <span id="bigtitle"><i
-            style="font-size: 18px; margin-right: 6px"
+          <span id="sub-title"><i
             :class="{
               'iconfont icon-bianhuajiance': scope.row.type === '变化检测',
               'iconfont icon-mubiaojiance': scope.row.type === '目标检测',
@@ -47,7 +44,6 @@
             :src="global.BASEURL + scope.row.before_img"
             min-width="70"
             height="70"
-            class="goup"
             alt="原图"
             @click="previewOnePic(scope.row.before_img)"
           >
@@ -57,7 +53,6 @@
             :src="global.BASEURL + scope.row.before_img1"
             min-width="70"
             height="70"
-            class="goup"
             style="margin-left: 20px"
             alt="原图"
             @click="previewOnePic(scope.row.before_img1)"
@@ -71,7 +66,6 @@
             :src="global.BASEURL + scope.row.after_img"
             min-width="70"
             height="70"
-            class="goup"
             alt="结果图"
             @click="previewOnePic(scope.row.after_img)"
           >
@@ -141,23 +135,19 @@
 
     <div
       type="primary"
-      style="margin-left: 16px"
-      class="fundrawer hidden-md-and-down"
-      @click="fundrawer = true"
+      class="select-fun-drawer hidden-md-and-down"
+      @click="isSelect = true"
     >
-      <div class="drawer2">
-        <span style="color: red; font-family: Microsoft JhengHei UI, sans-serif">功能筛选</span>
+      <div class="select-fun-title">
+        <span style="">功能筛选</span>
       </div>
-      <div class="drawer3">
-        <i
-          class="iconfont icon-shaixuan"
-          style="color: red"
-        />
+      <div class="select-fun-icon">
+        <i class="iconfont icon-shaixuan" />
       </div>
     </div>
 
     <el-drawer
-      v-model="fundrawer"
+      v-model="isSelect"
       title="功能区筛选"
       :direction="direction"
       :size="size"
@@ -170,7 +160,7 @@
         <el-menu-item-group>
           <el-menu-item
             index="1"
-            @click="onlyDetectChanges"
+            @click="onlyOneFun('变化检测')"
           >
             <h3>
               <i class="iconfont icon-bianhuajiance" />变化检测
@@ -178,51 +168,39 @@
           </el-menu-item>
           <el-menu-item
             index="2"
-            @click="onlyDetectTargets"
+            @click="onlyOneFun('目标检测')"
           >
             <h3>
-              <i
-                class="iconfont icon-mubiaojiance"
-                style="font-size: 25px"
-              />目标检测
+              <i class="iconfont icon-mubiaojiance" />目标检测
             </h3>
           </el-menu-item>
           <el-menu-item
             index="3"
-            @click="onlyClassify"
+            @click="onlyOneFun('地物分类')"
           >
             <h3>
-              <i
-                class="iconfont icon-erfenleibianhuajiance16px"
-                style="font-size: 13px"
-              />地物分类
+              <i class="iconfont icon-erfenleibianhuajiance16px" />地物分类
             </h3>
           </el-menu-item>
           <el-menu-item
             index="4"
-            @click="onlyClassifyScenes"
+            @click="onlyOneFun('场景分类')"
           >
             <h3>
-              <i
-                class="iconfont icon-changjingguanli"
-                style="font-size: 22px"
-              />场景分类
+              <i class="iconfont icon-changjingguanli" />场景分类
             </h3>
           </el-menu-item>
           <el-menu-item
             index="5"
-            @click="onlyRestoreImgs"
+            @click="onlyOneFun('图像复原')"
           >
             <h3>
-              <i
-                class="iconfont icon-jishu"
-                style="font-size: 22px"
-              />图像复原
+              <i class="iconfont icon-jishu" />图像复原
             </h3>
           </el-menu-item>
           <el-menu-item
             index="6"
-            @click="goBackData"
+            @click="onlyOneFun('')"
           >
             <h3><i class="iconfont icon-fuyuan" />列表复原</h3>
           </el-menu-item>
@@ -276,7 +254,7 @@
     </el-row>
 
     <el-dialog
-      v-model="dialogVisible"
+      v-model="preVisible"
       :modal="false"
       title="图片预览"
       width="75%"
@@ -290,7 +268,6 @@
             :src="previewPic1"
             alt="预览"
           >
-
           <img
             id="pre-img"
             :src="previewPic2"
@@ -336,7 +313,7 @@
         <el-col :span="1">
           <el-button
             type="primary"
-            @click="dialogVisible = false"
+            @click="preVisible = false"
           >
             OK
           </el-button>
@@ -370,7 +347,7 @@ export default {
         ids: [],
       },
       type: "",
-      fundrawer: false,
+      isSelect: false,
       direction: "rtl",
       size: "15%",
       pageSize: 10,
@@ -378,7 +355,7 @@ export default {
       flag: "",
       currentPage: 1,
       multipleSelection: [],
-      dialogVisible: false,
+      preVisible: false,
       previewPic1: "",
       previewPic2: "",
       previewPic3: "",
@@ -404,12 +381,48 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
+        .then(() => {
+          showFullScreenLoading(".his-box");
+          this.delete.ids.push(row.id);
+          this.historyDelete(this.delete).then((res) => {
+            this.tableData.splice(index, 1);
+            this.getTabelInfo();
+            hideFullScreenLoading(".his-box");
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    deleteAll() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning("请选择要删除的记录哦");
+      } else {
+        this.$confirm("此操作将永久删除, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
           .then(() => {
             showFullScreenLoading(".his-box");
-            this.delete.ids.push(row.id);
+            this.delete.ids = this.multipleSelection.map((item) => {
+              return item.id;
+            });
+
             this.historyDelete(this.delete).then((res) => {
-              this.tableData.splice(index, 1);
               this.getTabelInfo();
+              this.tableData = this.tableData.filter((item) => {
+                return this.multipleSelection.every((item2) => {
+                  return item.id !== item2.id;
+                });
+              });
               hideFullScreenLoading(".his-box");
               this.$message({
                 type: "success",
@@ -423,42 +436,6 @@ export default {
               message: "已取消删除",
             });
           });
-    },
-    deleteAll() {
-      if (this.multipleSelection.length === 0) {
-        this.$message.warning("请选择要删除的记录哦");
-      } else {
-        this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-            .then(() => {
-              showFullScreenLoading(".his-box");
-              this.delete.ids = this.multipleSelection.map((item) => {
-                return item.id;
-              });
-
-              this.historyDelete(this.delete).then((res) => {
-                this.getTabelInfo();
-                this.tableData = this.tableData.filter((item) => {
-                  return this.multipleSelection.every((item2) => {
-                    return item.id !== item2.id;
-                  });
-                });
-                hideFullScreenLoading(".his-box");
-                this.$message({
-                  type: "success",
-                  message: "删除成功!",
-                });
-              });
-            })
-            .catch(() => {
-              this.$message({
-                type: "info",
-                message: "已取消删除",
-              });
-            });
       }
     },
     downLoadAll() {
@@ -467,10 +444,10 @@ export default {
       } else {
         for (let item of this.multipleSelection) {
           this.downloadimgWithWords(
-              item.id,
-              global.BASEURL + item.after_img,
+            item.id,
+            global.BASEURL + item.after_img,
 
-              `${item.type}结果图.png`
+            `${item.type}结果图.png`
           );
         }
       }
@@ -512,72 +489,36 @@ export default {
     goPrePage() {
       this.getTabelInfo();
     },
-    onlyDetectChanges() {
-      this.type = "变化检测";
-      this.getTabelInfo();
-      this.fundrawer = false;
-    },
-    onlyDetectTargets() {
-      this.type = "目标检测";
-      this.getTabelInfo();
-      this.fundrawer = false;
-    },
-    onlyClassify() {
-      this.type = "地物分类";
-      this.getTabelInfo();
-      this.fundrawer = false;
-    },
-    onlyClassifyScenes() {
-      this.type = "场景分类";
-      this.getTabelInfo();
-      this.fundrawer = false;
-    },
-    onlyRestoreImgs(){
-      this.type = "图像复原";
-      this.getTabelInfo();
-      this.fundrawer = false;
-    },
-    goBackData() {
-      this.type = "";
-      this.getTabelInfo();
-      this.fundrawer = false;
+    onlyOneFun(funName){
+      this.type = funName
+      this.getTabelInfo()
+      this.isSelect = false
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.his-box {
-  min-height: 600px;
-}
 .hint {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 18px;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin: 10px 0;
 }
-.block {
-  text-align: center;
-  margin: 0 auto;
-}
-.el-pagination {
-  text-align: center;
-  margin: 20px 0 10px 0;
-}
-.dis {
-  display: none;
-}
-#bigtitle {
+#sub-title {
   font-size: 16px;
+  .iconfont {
+    margin-right: 8px;
+  }
 }
-#bigtitle:hover:after {
+
+#sub-title:hover:after {
   left: 0%;
   right: 0%;
   width: 100%;
 }
-.fundrawer {
+.select-fun-drawer {
   position: fixed;
   z-index: 100;
   background: rgb(252, 252, 252);
@@ -593,45 +534,45 @@ export default {
   transition: all 0.1s ease-in-out;
   cursor: pointer;
   font-family: SimHei sans-serif;
-}
-.drawer2 {
-  font-size: 17px;
-  font-weight: 1000;
-  -webkit-writing-mode: vertical-rl;
-  writing-mode: vertical-rl;
-  color: rgb(92, 142, 228);
-  background: rgb(237, 242, 245);
-  padding: 0.12rem;
-  border-radius: 0.2rem;
-  height: 80px;
-  text-align: center;
-  width: 33px;
-  span {
-    display: block;
-    padding-right: 6px;
+  .select-fun-title {
+    font-size: 17px;
+    font-weight: 1000;
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+    color: var(--theme--color);
+    background: rgb(237, 242, 245);
+    padding: 0.12rem;
+    border-radius: 0.2rem;
+    height: 80px;
+    text-align: center;
+    width: 33px;
+    span {
+      display: block;
+      padding-right: 6px;
+      color: red; 
+      font-family: Microsoft JhengHei UI, sans-serif;
+    }
+  }
+  .select-fun-icon {
+    width: 37px;
+    text-align: center;
+    margin-top: 6px;
+    color: var(--theme--color);
+    background: rgb(237, 242, 245);
+    border-radius: 0.2rem;
+    height: 30px;
+    .iconfont {
+      display: block;
+      padding-top: 5px;
+    }
   }
 }
-.drawer3 {
-  width: 37px;
-  text-align: center;
-  margin-top: 6px;
-  color: rgb(92, 142, 228);
-  background: rgb(237, 242, 245);
-  border-radius: 0.2rem;
-  height: 30px;
-  .iconfont {
-    display: block;
-    padding-top: 5px;
-  }
-}
-.drawer2:hover,
-.drawer3:hover {
+.select-fun-title:hover,
+.select-fun-icon:hover {
   background-color: rgb(228, 235, 240);
 }
 .el-menu {
   width: 100%;
 }
-.is-active {
-  color: white;
-}
+
 </style>

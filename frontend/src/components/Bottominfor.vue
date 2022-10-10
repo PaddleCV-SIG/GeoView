@@ -20,7 +20,6 @@
       >
         more details please click <a @click="goGithub">here<i
           class="iconfont icon-dianji1"
-          style="font-size:28px"
         /></a>
       </el-col>
     </el-row>
@@ -58,6 +57,6 @@ a{
   transition: all .4s;
 }
 a:hover{
-  color: skyblue;
+  color: var(--theme--color);
 }
 </style>

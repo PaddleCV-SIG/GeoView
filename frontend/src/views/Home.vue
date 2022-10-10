@@ -1,53 +1,45 @@
 <template>
   <Drawer :active-index="activeIndex" />
-  <div
-    v-show="isLogin"
-    class="common-layout"
-  >
+  <el-container>
+    <el-aside width="auto">
+      <AsideVue
+        :is-collapse="isCollapse"
+        :active-index="activeIndex"
+      />
+    </el-aside>
     <el-container>
-      <el-aside width="auto">
-        <AsideVue
-          :is-collapse="isCollapse"
-          :active-index="activeIndex"
-        />
-      </el-aside>
-      <el-container>
-        <el-main
-          class="gotop"
-          style="overflow-x:hidden"
-        >
-          <el-header class="theheader">
-            <el-row align="middle">
-              <i
-                class="iconfont icon-caidan"
-                style="margin-right:30px;font-size:32px"
-                @click="goCollapse"
-              /><Tablogin />
-            </el-row>
-          </el-header>
-          <!-- https://segmentfault.com/a/1190000040935668界面渐入渐出效果 -->
-          <router-view v-slot="{ Component }">
-            <transition
-              name="fade"
-              mode="out-in"
+      <el-main
+        class="main-ctx"
+      >
+        <el-header class="platform-header">
+          <el-row align="middle">
+            <i
+              class="iconfont icon-caidan"
+              @click="goCollapse"
+            /><Tablogin />
+          </el-row>
+        </el-header>
+        <router-view v-slot="{ Component }">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <keep-alive
+              include="detecttargets,detectchanges,classify,classifyscenes,restoreimgs"
             >
-              <keep-alive
-                include="detecttargets,detectchanges,classify,classifyscenes,restoreimgs,onlinemap"
-              >
-                <component :is="Component" />
-              </keep-alive>
-            </transition>
-          </router-view>
-          <el-backtop
-            target=".gotop"
-            :bottom="40"
-            :visibility-height="50"
-            :right="27"
-          />
-        </el-main>
-      </el-container>
+              <component :is="Component" />
+            </keep-alive>
+          </transition>
+        </router-view>
+        <el-backtop
+          target=".main-ctx"
+          :bottom="40"
+          :visibility-height="50"
+          :right="27"
+        />
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -68,26 +60,19 @@ export default {
   data() {
     return {
       isCollapse: false,
-      isLogin: true,
       scrollTop: "",
       activeIndex: this.$route.path,
     };
   },
   mounted() {
     window.onresize = () => {
-
-      if (document.documentElement.clientWidth <= 1100) {
-        this.isCollapse = true;
-      } else {
-        this.isCollapse = false;
-      }
+      this.isCollapse = document.documentElement.clientWidth <= 1100;
     };
     document.body.style.overflow = "hidden";
   },
   updated(){
     this.activeIndex=this.$route.path
   },
-
   methods: {
     goCollapse() {
       this.isCollapse = !this.isCollapse;
@@ -103,19 +88,19 @@ export default {
   width: 100%;
   overflow-x: hidden;
 }
-.gotop {
+.main-ctx {
   height: 100vh;
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s ease;
+  transition: all 0.25s 
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
-.theheader{
+.platform-header{
   left: -20px;
   width: 105%;
 }

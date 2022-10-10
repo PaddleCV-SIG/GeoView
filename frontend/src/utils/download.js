@@ -1,7 +1,7 @@
 //https://blog.csdn.net/tattoo_jie/article/details/122251905压缩打包功能
 import JSZIP from "jszip"
 import FileSaver from 'file-saver'
-import { showCompressLoading, hideCompressLoading,} from "@/utils/loading";
+import {  showFullScreenLoading, hideFullScreenLoading} from "@/utils/loading";
 
 import global from '@/global'
 function downloadimgWithWords(index, src, funtype) {
@@ -48,11 +48,6 @@ function atchDownload(compressImg) {
   // this.images 是要下载的图片数组  [{url: 图片地址, id: 图片名称}]
   // 定时器 loading
 
-  showCompressLoading('body')
-  this.loading = true;
-  this.setTimeout = setTimeout(() => {
-    this.loading = false;
-  }, 2000);
   let _this = this;
   let zip = new JSZIP();
   let cache = {};
@@ -73,12 +68,12 @@ function atchDownload(compressImg) {
         // 生成Blob二进制流
         FileSaver.saveAs(content, "打包图片"); // 利用file-saver保存文件  自定义文件名
         _this.$message.success("压缩完成！");
-        hideCompressLoading("body")
+        hideFullScreenLoading("#load")
       });
     })
     .catch((res) => {
       _this.$message.error('压缩失败！')
-      hideCompressLoading("body")
+        hideFullScreenLoading("body")
     });
 }
 

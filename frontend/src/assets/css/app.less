@@ -1,4 +1,6 @@
-
+:root {
+  --theme--color: rgb(64,158,255);
+}
 .el-header {
   box-shadow: 0 0 2rem 0 rgba(41, 48, 66, 0.1);
   margin-left: 0px;
@@ -6,24 +8,18 @@
   position: relative;
   min-width: 400px;
   clear: both;
-  .iconfont {
-    cursor: pointer;
-   
-  }
   .iconfont:hover{
-    color: rgb(64,158,255);
-  }
-  .el-dropdown {
-    position: absolute;
-    line-height: 60px;
-    right: 5%;
+    color: var(--theme--color);
   }
 }
-.el-menu{
-  .iconfont{
-    font-size: 20px;
-  }
+.el-upload-dragger{
+  border: 4px dashed var(--el-border-color);
+  transition: all .5s;
 }
+.el-upload-dragger:hover{
+  transform: scale(1.05);
+}
+
 .el-main{
   .el-image{
     border-radius: 10px;
@@ -34,72 +30,26 @@
   }
 }
 .el-upload{
-
-  
   .iconfont{
     font-size: 100px;
   }
 }
-#subtitle {
+#sub-title {
   margin-top: 20px;
   position: relative;
-  /* font-size: 20px; */
   font-weight: 1000;
   cursor: pointer;
 }
-#subtitle::after {
+#sub-title::after {
   content: "";
   width: 0px;
   height: 3px;
-  background: rgb(64,158,255);
+  background: var(--theme--color);
   position: absolute;
   top: 100%;
   left: 50%;
   right: 50%;
   transition: all 0.5s;
-}
-// #subtitle:hover:after {
-//   left: 7%;
-//   right: 7%;
-//   width: 85%;
-// }
-.el-upload-dragger{
-  border: 4px dashed var(--el-border-color);
-  transition: all .5s;
-}
-.el-upload-dragger:hover{
-  transform: scale(1.05);
-}
-.el-image{
-  cursor: pointer;
-}
-#imgPre{
-  height: 500px;
-}
-.el-pagination {
-  text-align: center;
-
-}
-a{
- text-decoration: none;
-}
-.goweight{
-  font-weight:bold
-}
-.iconfont{
-  cursor: pointer;
-}
-#pre-img{
-  height: 500px;
-}
-.el-dialog{
-  font-family: SimHei sans-serif;
-}
-.el-button{
-  font-family: SimHei sans-serif;
-}
-.el-table{
-  font-family: SimHei sans-serif;
 }
 .el-image{
   cursor: pointer;
@@ -107,8 +57,26 @@ a{
 img{
   cursor: pointer;
 }
-.el-message{
+#pre-img{
+  height: 500px;
+}
+.el-pagination {
+  text-align: center;
+  margin: 20px 0 10px 0;
+}
+a{
+ text-decoration: none;
+}
+.go-bold{
+  font-weight:bold
+}
+.iconfont{
+  cursor: pointer;
+}
+.el-dialog,.el-button,.el-table,.el-message{
   font-family: SimHei sans-serif;
+}
+.el-message{
   font-size: larger;
   font-weight: 600;
 }
@@ -120,7 +88,7 @@ img{
   line-height: 40px;
   border: none;
   border-radius: 5px;
-  background: rgb(64,158,255);
+  background: var(--theme--color);
   color: #fff;
   text-align: center;
 }
@@ -159,8 +127,6 @@ img{
   animation: shiny-btn 0.6s ease-in-out;
 }
 
-
-
 .btn-animate {
   position: relative;
   width: 110px;
@@ -168,7 +134,7 @@ img{
   line-height: 40px;
   border: none;
   border-radius: 5px;
-  background: rgb(64,158,255);
+  background: var(--theme--color);
   color: #fff;
   text-align: center; }
 
@@ -202,9 +168,9 @@ img{
   .btn-animate__vibrate:hover::before {
     animation: vibrate2 .3s .3s forwards; }
 
-    .mylabel {
+    .prehandle-label {
       vertical-align: middle;
-      margin-left: 30px;
+      margin:0 10px 0 30px;
       position: relative;
       .label-words {
         display: inline-block;
@@ -235,7 +201,7 @@ img{
      
      /* When the checkbox is checked, add a blue background */
      .container input:checked ~ .checkmark {
-       background-color: rgb(64, 158, 255);
+       background-color: var(--theme--color);
        transition: all .4s;
      
      }
@@ -263,29 +229,16 @@ img{
        transform: rotate(45deg);
        transition: all .6s;
      }
-    #file1,
-#file2 {
+    #upload-fileA,
+#upload-fileB,#folder {
   display: none;
 }
-.icon-wenjianshangchuan {
-  font-size: 20px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  transition: all 0.5s;
-  color: rgb(64, 158, 255);
-}
-.icon-wenjianshangchuan:hover {
-  color: rgb(64,158,255);
-  transform: scale(1.2);
-}
-.file1{
+.folder-uploadA {
   margin-right: 230px;
 }
-.file2{
+.folder-uploadB {
   margin-left: 230px;
 }
-
-
 .btn-animate2 {
   position: relative;
   width: 135px;
@@ -295,17 +248,16 @@ img{
   font-size: 17px;
   border-radius: 5px;
   background: rgb(236,245,255);
-  color: rgb(64, 158, 255);
+  color: var(--theme--color);
   text-align: center; 
 }
-
 
 .btn-animate__surround::before, .btn-animate__surround::after {
   content: '';
   position: absolute;
   right: 0;
   top: 0;
-  background: rgb(64, 158, 255);
+  background: var(--theme--color);
   transition: all 0.4s ease; }
 
 .btn-animate__surround::before {
@@ -326,7 +278,7 @@ img{
 .btn-animate__surround > span {
   display: block; }
   .btn-animate__surround > span:hover {
-    color: rgb(64, 158, 255); }
+    color: var(--theme--color);}
     .btn-animate__surround > span:hover::before {
       height: 100%; }
     .btn-animate__surround > span:hover::after {
@@ -336,7 +288,7 @@ img{
     position: absolute;
     left: 0;
     bottom: 0;
-    background: rgb(64, 158, 255);
+    background: var(--theme--color);
     transition: all 0.4s ease; }
   .btn-animate__surround > span:before {
     width: 2px;
@@ -346,5 +298,24 @@ img{
     height: 2px; }
     
     .icon-dabaoxiazai{
-      color: rgb(64, 158, 255);
+      color: var(--theme--color);
     }
+
+.handle-words {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 600;
+  font-family: Microsoft JhengHei UI, sans-serif;
+}
+.el-drawer__body{
+  overflow: hidden;
+}
+.handle-button{
+  text-align: center;
+  margin-top: 12px;
+}
+.upload-card {
+  text-align: center;
+}

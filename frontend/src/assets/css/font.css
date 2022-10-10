@@ -1,0 +1,96 @@
+.icon-wenjianshangchuan {
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    transition: all 0.5s;
+    color: var(--theme--color);
+}
+.icon-wenjianshangchuan:hover {
+    color: var(--theme--color);
+    transform: scale(1.2);
+}
+.icon-shuaxin {
+    transition: all 0.3s;
+}
+.icon-shuaxin:hover {
+    color: var(--theme--color);
+}
+.icon-bianhuajiance{
+    font-size: 19px;
+}
+.icon-mubiaojiance{
+    font-size: 23px;
+}
+.icon-erfenleibianhuajiance16px{
+    font-size: 14px;
+}
+.icon-changjingguanli{
+    font-size: 22px;
+}
+.icon-jishu{
+    font-size: 22px;
+}
+.icon-zaixianditu{
+    font-size: 20px;
+}
+.icon-history{
+    font-size: 22px;
+}
+.icon-dianji1{
+    font-size: 28px;
+    margin-left: 17px;
+}
+.icon-xiazai {
+    margin-left: 5px;
+    font-size: 24px;
+}
+.icon-shijian{
+    font-size: 20px;
+}
+.icon-github{
+    font-size: 28px;
+}
+.icon-shaixuan{
+    color: red;
+}
+.icon-wenjianjia{
+    color: blue;
+}
+.icon-tupiantianjia{
+    color: skyblue;
+}
+.icon-crop-full{
+    color: var(--theme--color);
+    margin-left:10px
+}
+.icon-tuxingtuxiangchuli{
+    font-size: 20px;
+    color: var(--theme--color);
+}
+.icon-agora_AIjiangzao{
+    font-size: 35px;
+    color: var(--theme--color);
+}
+.icon-duigou{
+    color: green;
+    margin-right: 20px;
+}
+.icon-dianji{
+    font-size: 23px;
+    color: blue;
+    margin-left: 17px;
+}
+.icon-zhuyi{
+    color: var(--theme--color);
+    font-size: 18px
+}
+.icon-xuanran{
+    color: red;
+}
+.icon-qiehuan{
+    color: var(--theme--color);
+    margin-left:15px
+}
+.icon-caidan{
+    margin-right:30px;font-size:32px
+}
