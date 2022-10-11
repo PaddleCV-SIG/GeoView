@@ -18,4 +18,10 @@ def before():
 migrate = Migrate(app, db)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port="5008")
+    import yaml
+    with open('../config.yaml') as file:
+        config = yaml.load(file.read(), Loader=yaml.FullLoader)
+    with open("../frontend/.env", 'w') as file:
+        file.write("VUE_APP_BACKEND_PORT = {}".format(config["port"][
+            "backend"]))
+    app.run(host=config["host"]["backend"], port=config["port"]["backend"])
