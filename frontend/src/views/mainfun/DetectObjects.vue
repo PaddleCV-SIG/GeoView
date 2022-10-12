@@ -2,22 +2,24 @@
   <div>
     <Tabinfor>
       <template #left>
-        <div id="sub-title">
-          地物分类<i class="iconfont icon-dianji" />
+        <div
+          id="sub-title"
+        >
+          目标检测<i
+            class="iconfont icon-dianji"
+          />
         </div>
       </template>
     </Tabinfor>
     <el-divider />
-
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
       >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
     </p>
-
     <el-row
       type="flex"
-      justify="space-evenly"
+      justify="center"
     >
       <el-col :span="24">
         <el-card style="border: 4px dashed var(--el-border-color)">
@@ -40,15 +42,17 @@
             drag
             action="#"
             multiple
-            accpet=".jpg,.jpeg,.png,.JPG,.JPEG"
             :auto-upload="false"
             @change="beforeUpload(fileList[fileList.length - 1].raw)"
           >
             <i class="iconfont icon-yunduanshangchuan" />
             <div class="el-upload__text">
-              将图片拖到此处，或<em>点击上传</em>
+              将文件拖到此处，或<em>点击上传</em>
             </div>
-            <div class="el-upload__tip">
+            <div
+           
+              class="el-upload__tip"
+            >
               只能上传一张或多张图片，请在下方上传文件夹
             </div>
           </el-upload>
@@ -74,6 +78,7 @@
                 <input
                   ref="cut"
                   type="checkbox"
+
                   @change="select()"
                 >
                 <span class="checkmark" />
@@ -96,8 +101,7 @@
                 <input
                   ref="clahe"
                   type="checkbox"
-
-                  @change="selectClahe(4)"
+                  @change="selectClahe(2)"
                 >
                 <span class="checkmark" />
                 <span class="go-bold label-words">CLAHE</span>
@@ -108,8 +112,7 @@
                 <input
                   ref="sharpen"
                   type="checkbox"
-
-                  @change="selectSharpen(4)"
+                  @change="selectSharpen(2)"
                 >
                 <span class="checkmark" />
                 <span class="go-bold label-words">锐化</span>
@@ -129,7 +132,6 @@
                 <input
                   ref="smooth"
                   type="checkbox"
-
                   @change="selectSmooth()"
                 >
                 <span class="checkmark" />
@@ -166,7 +168,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="goUpload"
+              @click="upload('目标检测')"
             >
               开始处理
             </el-button>
@@ -180,7 +182,7 @@
                 CLAHE处理结果预览<i
                   class="iconfont icon-dianji"
                 />
-              </div>
+              </div>   
             </div>
             <div v-else-if="uploadSrc.prehandle===4">
               <div
@@ -189,7 +191,7 @@
                 锐化处理结果预览<i
                   class="iconfont icon-dianji"
                 />
-              </div>
+              </div>   
             </div>
             <el-divider />
             <el-row
@@ -211,8 +213,7 @@
                     :src="item"
                     :preview-src-list="[item]"
                     :preview-teleported="true"
-                  />
-                  <div class="handle-words">
+                  /><div class="handle-words">
                     原图
                   </div>
                 </div>
@@ -238,9 +239,8 @@
                     :src="item"
                     :preview-src-list="[item]"
                     :preview-teleported="true"
-                  />
-                  <div class="handle-words">
-                    CLAHE处理后 <span
+                  /><div class="handle-words">
+                    CLAHE处理后       <span
                       @click="
                         downloadimgWithWords(
                           -1,
@@ -268,9 +268,8 @@
                     :src="item"
                     :preview-src-list="[item]"
                     :preview-teleported="true"
-                  />
-                  <div class="handle-words">
-                    锐化处理后 <span
+                  /><div class="handle-words">
+                    锐化处理后      <span
                       @click="
                         downloadimgWithWords(
                           -1,
@@ -310,86 +309,19 @@
         </p>
       </template>
       <template #mid>
-        <el-row
-          justify="center"
-          align="middle"
-        >
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block road" />
-            道路
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block tree" />
-            树木
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block none" />
-            空地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block waste" />
-            荒地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block back" />
-            背景
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <p v-if="isUpload">
-              <i
-                class="iconfont icon-dabaoxiazai"
-                @click="goCompress('地物分类')"
-              >打包</i>
-            </p>
-          </el-col>
-        </el-row>
+        <p v-if="isUpload">
+          <i
+            class="iconfont icon-dabaoxiazai"
+            @click="goCompress('目标检测')"
+          >结果图打包</i>
+        </p>
       </template>
       <template #right>
-        <div class="go-bold">
-          <i
-            class="iconfont icon-shuaxin"
-            style="padding-right:65px"
-            @click="getMore"
-          ><span
-            class="hidden-sm-and-down"
-          >点击刷新</span></i>
-        </div>
+        <span class="go-bold"><i
+          class="iconfont icon-shuaxin"
+          style="padding-right:55px"
+          @click="getMore"
+        ><span class="hidden-sm-and-down">点击刷新</span></i></span>
       </template>
     </Tabinfor>
     <el-dialog
@@ -404,8 +336,9 @@
         :funtype="funtype"
         :file="file"
         :length="afterImg.length"
-        :child-prehandle="uploadSrc.prehandle"
-        :child-denoise="uploadSrc.denoise"
+        :child_prehandle="uploadSrc.prehandle"
+        :child_denoise="uploadSrc.denoise"
+        :child-model-path="uploadSrc.model_path"
         @cut-changed="notvisible"
         @child-refresh="getMore"
       />
@@ -418,20 +351,18 @@
     <Bottominfor />
   </div>
 </template>
-
 <script>
-import { atchDownload, downloadimgWithWords, getImgArrayBuffer } from "@/utils/download.js";
-import { classifyUpload, createSrc ,getCustomModel } from "@/api/upload";
-import { historyGetPage } from "@/api/history";
-import { getUploadImg, goCompress, upload } from "@/utils/getUploadImg";
-import { selectClahe, selectFilter, selectSharpen, selectSmooth, } from "@/utils/preHandle";
+import {atchDownload, downloadimgWithWords, getImgArrayBuffer} from "@/utils/download.js";
+import {createSrc, detectObjectsUpload,getCustomModel} from "@/api/upload";
+import {historyGetPage} from "@/api/history";
+import {getUploadImg, goCompress, upload} from "@/utils/getUploadImg";
+import {selectClahe, selectFilter, selectSharpen, selectSmooth,} from "@/utils/preHandle";
 import ImgShow from "@/components/ImgShow";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
 import MyVueCropper from "@/components/MyVueCropper";
-
 export default {
-  name: "Classify",
+  name: "Detectobjects",
   components: {
     ImgShow,
     Tabinfor,
@@ -445,44 +376,47 @@ export default {
   },
   data() {
     return {
-      isUpload: true,
-      canUpload: true,
-      claheImg: [],
-      sharpenImg: [],
-      before: [],
+      isUpload:true,
+      canUpload:true,
+      claheImg:[],
+      sharpenImg:[],
+      before:[],
       fileimg: "",
       file: {},
       isNotCut: true,
       cutVisible: false,
-      fileList: [],
-      funtype: "地物分类",
+      funtype: "目标检测",
       scrollTop: "",
       fit: "fill",
       beforeImg: [],
       afterImg: [],
-      afterList: [],
-      uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
-      modelPathArr:[],
-
-      prePhoto: {
+      fileList: [],
+      uploadSrc: {
         list: [],
         prehandle: 0,
-        type: 4
+        denoise: 0,
+        model_path:''
       },
+      modelPathArr:[],
+      prePhoto:{
+        list:[],
+        prehandle:0,
+        type:4
+      }
     };
   },
-  watch: {
-    uploadSrc: {
-      handler(newVal, oldVal) {
+  watch:{
+    uploadSrc:{
+      handler(newVal,oldVal){
         this.uploadSrc = newVal
       },
-      deep: true,
-      immediate: true
+      deep:true,
+      immediate:true
     }
   },
   created() {
-    this.getUploadImg("地物分类");
-    this.getCustomModel('semantic_segmentation').then(res=>{
+    this.getUploadImg("目标检测");
+    this.getCustomModel('object_detector').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
     })
@@ -490,7 +424,8 @@ export default {
   methods: {
     getImgArrayBuffer,
     atchDownload,
-    classifyUpload,
+    downloadimgWithWords,
+    detectObjectsUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
@@ -501,7 +436,6 @@ export default {
     selectFilter,
     selectSmooth,
     selectClahe,
-    downloadimgWithWords,
     checkUpload() {
       this.isUpload = this.afterImg.length !== 0;
     },
@@ -513,45 +447,44 @@ export default {
       this.cutVisible = false;
       this.fileList = [];
     },
-    uploadMore() {
-      this.beforeUpload(...this.$refs.uploadFile.files)
-      if (this.canUpload) {
-        this.fileList.push(...this.$refs.uploadFile.files);
-      } else {
-        setTimeout(() => {
-          this.$message.error('检测到您上传的文件夹内存在不符合规范的图片类型')
-        }, 1000);
-
-      }
-    },
     getMore() {
-      this.getUploadImg("地物分类");
+      this.getUploadImg("目标检测");
     },
-    goUpload() {
-      this.upload("地物分类");
+    uploadMore() {
+            this.beforeUpload(...this.$refs.uploadFile.files)
+        if(this.canUpload){
+          this.fileList.push(...this.$refs.uploadFile.files);
+        }else{
+          setTimeout(() => {
+              this.$message.error('检测到您上传的文件夹内存在不符合规范的图片类型')
+          }, 1000);
+        
+        }
     },
     fileClick() {
       document.querySelector("#folder").click();
     },
     beforeUpload(file) {
       this.cutVisible = this.$refs.cut.checked;
-      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1)
-      const whiteList = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG']
-      if (whiteList.indexOf(fileSuffix) === -1) {
-        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
-        this.fileList = []
-        this.cutVisible = false;
-        this.canUpload = false
-      }
-      else {
+        const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1)
+  const whiteList = ['jpg','jpeg','png','JPG','JPEG']
+  if (whiteList.indexOf(fileSuffix) === -1) {
+    this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+    this.fileList= []
+    this.canUpload = false
+  this.cutVisible = false;
+  }
+     else{
         this.canUpload = true
-        this.fileimg = window.URL.createObjectURL(new Blob([file]));
-      }
-
+    this.fileimg = window.URL.createObjectURL(new Blob([file]));}
     },
     select() {
       this.isNotCut = this.$refs.cut.checked;
     },
+    goRenderThis() {},
+    goRenderThese() {},
+ 
+    setNormalWay(){}
   },
 };
 </script>
@@ -559,48 +492,21 @@ export default {
 * {
   font-family: SimHei sans-serif;
 }
-#sub-title {
+#sub-title{
   font-size: 25px;
 }
 #sub-title:hover:after {
-  left: 0;
-  right: 0;
+  left: 0%;
+  right: 0%;
   width: 220px;
 }
-.lit-block {
-  width: 13px;
-  height: 13px;
-  display: inline-block;
-}
-.road {
-  background-color: blue;
-}
-
-.tree {
-  background-color: green;
-}
-
-.none {
-  background-color: red;
-}
-
-.waste {
-  background-color: orange;
-}
-
-.back {
-  background-color: black;
-}
-
 .clear-queue {
   position: absolute;
   left: 5px;
   top: 10%;
   z-index: 100;
 }
-
 .el-radio /deep/{
   height: 62px;
 }
-
 </style>

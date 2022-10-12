@@ -40,6 +40,7 @@
           :xl="5"
         >
           <div>
+            {{ uploadSrc }}
             <br>
             <el-button
               type="primary"
@@ -84,9 +85,9 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import {
   createSrc,
-  classifyUpload,
-  detectTargetsUpload,
-  sceneClassifyUpload,
+  SegmentationUpload,
+  detectObjectsUpload,
+  classificationUpload,
 } from "@/api/upload";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import { getUploadImg, upload, goCompress } from "@/utils/getUploadImg";
@@ -105,6 +106,10 @@ export default {
     childDenoise:{
       type:Number,
       default:0
+    },
+    childModelPath:{
+      type:String,
+      default:''
     },
     fileimg: {
       type: String,
@@ -127,7 +132,7 @@ export default {
 
   data() {
     return {
-      uploadSrc: { list: [], prehandle: 0, denoise: 0 },
+      uploadSrc: { list: [], prehandle: 0, denoise: 0,model_path:'' },
       headImg: "",
       //剪切图片上传
       crap: false,
@@ -166,12 +171,19 @@ export default {
       deep:true,
       immediate:true
     },
+    childModelPath:{
+      handler(newVal,oldVal){
+        this.uploadSrc.model_path = newVal
+      },
+      deep:true,
+      immediate:true
+    }
   },
   methods: {
     createSrc,
-    classifyUpload,
-    detectTargetsUpload,
-    sceneClassifyUpload,
+    SegmentationUpload,
+    detectObjectsUpload,
+    classificationUpload,
     getUploadImg,
     upload,
     goCompress,
@@ -230,14 +242,14 @@ export default {
               });
           }
           if (funtype === "地物分类") {
-            this.classifyUpload(this.uploadSrc).then((res) => {
+            this.SegmentationUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
             });
           } else if (funtype === "目标检测") {
-            this.detectTargetsUpload(this.uploadSrc).then((res) => {
+            this.detectObjectsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
@@ -247,7 +259,7 @@ export default {
           else if (funtype === "场景分类") {
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
-            this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+            this.classificationUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");

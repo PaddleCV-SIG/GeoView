@@ -44,8 +44,8 @@
     </el-menu-item>
 
     <el-menu-item
-      index="/detecttargets"
-      @click="goDetectTargets"
+      index="/detectobjects"
+      @click="goDetectObjects"
     >
       <i
         v-show="isCollapse"
@@ -57,8 +57,8 @@
     </el-menu-item>
 
     <el-menu-item
-      index="/classify"
-      @click="goClassify"
+      index="/segmentation"
+      @click="goSegmentation"
     >
       <i
         v-show="isCollapse"
@@ -70,8 +70,8 @@
     </el-menu-item>
 
     <el-menu-item
-      index="/classifyscenes"
-      @click="goClassifyScenes"
+      index="/classification"
+      @click="goClassification"
     >
       <i
         v-show="isCollapse"
@@ -140,9 +140,9 @@
 <script>
 import {
   goDetectChanges,
-  goDetectTargets,
-  goClassify,
-  goClassifyScenes,
+  goDetectObjects,
+  goSegmentation,
+  goClassification,
   goRestoreImgs,
   goHistory,
   goOnlineMap
@@ -160,9 +160,9 @@ export default {
   },
   methods: {
     goDetectChanges,
-    goDetectTargets,
-    goClassify,
-    goClassifyScenes,
+    goDetectObjects,
+    goSegmentation,
+    goClassification,
     goRestoreImgs,
     goHistory,
     goOnlineMap,

@@ -159,6 +159,7 @@
         :length="afterImg.length"
         :child_prehandle="uploadSrc.prehandle"
         :child_denoise="uploadSrc.denoise"
+        :child-model-path="uploadSrc.model_path"
         @cut-changed="notvisible"
         @child-refresh="getMore"
       />
@@ -236,7 +237,7 @@
   </div>
 </template>
 <script>
-import {createSrc, sceneClassifyUpload,getCustomModel} from "@/api/upload";
+import {createSrc, classificationUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, upload} from "@/utils/getUploadImg";
 import Tabinfor from "@/components/Tabinfor";
@@ -244,7 +245,7 @@ import Bottominfor from "@/components/Bottominfor";
 import MyVueCropper from "@/components/MyVueCropper";
 
 export default {
-  name: "Classifyscene",
+  name: "Classification",
   components: {
     Tabinfor,
     Bottominfor,
@@ -300,7 +301,7 @@ export default {
     })
   },
   methods: {
-    sceneClassifyUpload,
+    classificationUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
