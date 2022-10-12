@@ -69,17 +69,6 @@
           </h3>
         </el-menu-item>
         <el-menu-item
-          index="/restoreimgs"
-          @click="goRestoreImgs"
-        >
-          <h3>
-            <i
-              class="iconfont icon-jishu"
-              style="font-size: 22px"
-            />图像复原
-          </h3>
-        </el-menu-item>
-        <el-menu-item
           index="/onlinemap"
           @click="goOnlineMap"
         >

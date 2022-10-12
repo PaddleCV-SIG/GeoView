@@ -12,19 +12,11 @@
       </template>
     </Tabinfor>
     <el-divider />
-    <Tabinfor>
-      <template #left>
-        <p>
-          请上传包含<span class="go-bold">图片的文件夹</span><i
-            class="iconfont icon-wenjianjia"
-          />或者<span
-            class="go-bold"
-          >图片</span><i
-            class="iconfont icon-tupiantianjia"
-          />
-        </p>
-      </template>
-    </Tabinfor>
+    <p>
+      请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
+        class="go-bold"
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+    </p>
     <el-row
       type="flex"
       justify="center"
@@ -95,7 +87,21 @@
               </label>
             </p>
           </el-row>
-
+          <el-row justify="center">
+            <div class="custom-model">
+              可选训练模型：
+              <span v-if="modelPathArr.length===0">未检测到模型文件，请查看上传目录是否有误</span>
+              <el-radio
+                v-for="(item,index) in modelPathArr"
+                :key="index"
+                v-model="uploadSrc.model_path"
+                class="choose-item"
+                :label="item.model_path"
+              >
+                {{ item.model_name }}
+              </el-radio>
+            </div>
+          </el-row>
           <div class="handle-button">
             <el-button
               type="primary"
@@ -230,7 +236,7 @@
   </div>
 </template>
 <script>
-import {createSrc, sceneClassifyUpload} from "@/api/upload";
+import {createSrc, sceneClassifyUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, upload} from "@/utils/getUploadImg";
 import Tabinfor from "@/components/Tabinfor";
@@ -268,7 +274,9 @@ export default {
       fileList: [],
       uploadSrc: {
         list: [],
+        model_path:''
       },
+      modelPathArr:[],
       //场景键值对数组,[{'a':0.8},{},{}]
       scene:[],
       //构成场景键数组的数组，[['a'],['b'],['c']]
@@ -286,9 +294,14 @@ export default {
   },
   created() {
     this.getUploadImg("场景分类");
+    this.getCustomModel('classification').then((res)=>{
+      this.modelPathArr = res.data.data
+      this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
+    })
   },
   methods: {
     sceneClassifyUpload,
+    getCustomModel,
     historyGetPage,
     createSrc,
     getUploadImg,
@@ -386,5 +399,8 @@ export default {
 .custom-pic{
   width: 256px;
   height: 256px;
+}
+.el-radio /deep/{
+  height: 62px;
 }
 </style>

@@ -8,15 +8,12 @@
       </template>
     </Tabinfor>
     <el-divider />
-    <Tabinfor>
-      <template #left>
-        <p>
-          请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
-            class="go-bold"
-          >图片</span><i class="iconfont icon-tupiantianjia" />
-        </p>
-      </template>
-    </Tabinfor>
+
+    <p>
+      请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
+        class="go-bold"
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+    </p>
 
     <el-row
       type="flex"
@@ -149,6 +146,21 @@
                 <span class="go-bold label-words">滤波</span>
               </label>
             </p>
+          </el-row>
+          <el-row justify="center">
+            <div class="custom-model">
+              可选训练模型：
+              <span v-if="modelPathArr.length===0">未检测到模型文件，请查看上传目录是否有误</span>
+              <el-radio
+                v-for="(item,index) in modelPathArr"
+                :key="index"
+                v-model="uploadSrc.model_path"
+                class="choose-item"
+                :label="item.model_path"
+              >
+                {{ item.model_name }}
+              </el-radio>
+            </div>
           </el-row>
           <div class="handle-button">
             <el-button
@@ -409,7 +421,7 @@
 
 <script>
 import { atchDownload, downloadimgWithWords, getImgArrayBuffer } from "@/utils/download.js";
-import { classifyUpload, createSrc } from "@/api/upload";
+import { classifyUpload, createSrc ,getCustomModel } from "@/api/upload";
 import { historyGetPage } from "@/api/history";
 import { getUploadImg, goCompress, upload } from "@/utils/getUploadImg";
 import { selectClahe, selectFilter, selectSharpen, selectSmooth, } from "@/utils/preHandle";
@@ -449,7 +461,9 @@ export default {
       beforeImg: [],
       afterImg: [],
       afterList: [],
-      uploadSrc: { list: [], prehandle: 0, denoise: 0 },
+      uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
+      modelPathArr:[],
+
       prePhoto: {
         list: [],
         prehandle: 0,
@@ -468,11 +482,16 @@ export default {
   },
   created() {
     this.getUploadImg("地物分类");
+    this.getCustomModel('semantic_segmentation').then(res=>{
+      this.modelPathArr = res.data.data
+      this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
+    })
   },
   methods: {
     getImgArrayBuffer,
     atchDownload,
     classifyUpload,
+    getCustomModel,
     historyGetPage,
     createSrc,
     getUploadImg,
@@ -578,6 +597,10 @@ export default {
   left: 5px;
   top: 10%;
   z-index: 100;
+}
+
+.el-radio /deep/{
+  height: 62px;
 }
 
 </style>

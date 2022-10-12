@@ -76,3 +76,10 @@ export function prePhotoHandle(data){
         data
     })
 }
+
+export function getCustomModel(model_type){
+    return request({
+        method:'GET',
+        url:`/api/model/list/${model_type}`
+    })
+}
