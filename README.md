@@ -45,6 +45,18 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
+### 修改端口号（可选）
+
+按以下规则编辑根目录下的`config.yaml`文件。
+``` yaml
+port:
+  backend: 后端端口号
+  frontend: 前端端口号
+host:
+  backend: 后端监听ip
+  frontend: 前端监听ip
+```
+
 ### Web后端的安装
 
 #### 安装依赖

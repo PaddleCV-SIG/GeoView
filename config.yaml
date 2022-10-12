@@ -1,0 +1,6 @@
+port:
+  backend: 5008
+  frontend: 3000
+host:
+  backend: 0.0.0.0
+  frontend: 0.0.0.0
