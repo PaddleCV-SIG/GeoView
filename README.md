@@ -2,7 +2,7 @@
 
 [![build status](https://github.com/PaddleCV-SIG/PP-GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/PP-GeoView/actions)
 ![python version](https://img.shields.io/badge/python-3.7+-orange.svg)
-![node.js version](https://img.shields.io/badge/nodejs-17+-orange.svg)
+![node.js version](https://img.shields.io/badge/nodejs-16+-orange.svg)
 ![support os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-yellow.svg)
 
 ## 代码结构
@@ -25,7 +25,7 @@ PP-GeoView目录树中关键部分如下：
 
 - mysql >= 5.7
 
-- Node.js >= 17.0
+- Node.js >= 16.0
 
 - PaddlePaddle >= 2.2.0
 
@@ -43,6 +43,18 @@ paddleRS安装可以参考[PaddleRS文档](https://github.com/PaddlePaddle/Paddl
 cd PaddleRS
 pip install -r requirements.txt
 python setup.py install
+```
+
+### 修改端口号（可选）
+
+按以下规则编辑根目录下的`config.yaml`文件。
+``` yaml
+port:
+  backend: 后端端口号
+  frontend: 前端端口号
+host:
+  backend: 后端监听ip
+  frontend: 前端监听ip
 ```
 
 ### Web后端的安装

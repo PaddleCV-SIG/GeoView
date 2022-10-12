@@ -123,7 +123,7 @@ export default {
       default:0
     },
   },
-  emits: ["finish", "cut-changed"],
+  emits: ["finish", "cut-changed",'child-refresh'],
 
   data() {
     return {
@@ -178,19 +178,9 @@ export default {
     getImgArrayBuffer,
     atchDownload,
     historyGetPage,
-    goRenderThis(){},
-    goRenderThese(){},
-    checkUpload(){},
-    setNormalWay(){},
     submitUpload(funtype) {
       this.finish(funtype);
     },
-    handleRemove(file, fileList) {},
-    handlePreview(file) {
-      //   let data = window.URL.createObjectURL(new Blob([file]));
-      //   this.option.img = data;
-    },
-    //放大/缩小
     changeScale(num) {
       num = num || 1;
       this.$refs.cropper.changeScale(num);
@@ -206,11 +196,8 @@ export default {
     //上传图片（点击上传按钮）
     finish(funtype, cutVisible) {
       // 输出
- 
      showFullScreenLoading('#load')
       this.$refs.cropper.getCropData((data) => {
-        // this.model = true
-        // this.modelSrc = data
         const File = this.base64toFile(data, this.file.name);
         let formData = new FormData();
         formData.append("files", File);
@@ -221,7 +208,7 @@ export default {
           });
           if (this.length >= 20) {
             this.$confirm(
-              "上传图片过多，是否压缩?在此期间不能进行其他操作",
+              "上传图片过多，是否压缩?",
               "提示",
               {
                 confirmButtonText: "确定",
@@ -230,20 +217,7 @@ export default {
               }
             )
               .then(() => {
-            
-                // this.goCompress(funtype);
-                setTimeout(() => {
-                  this.$message({
-                    type: "info",
-                    message: "正在压缩，请勿进行其他操作！刷新界面取消压缩",
-                    duration: 4000,
-                    center: true,
-                    showClose: true,
-                  });
-                }, 1000);
-
                 this.historyGetPage(1, 99999, funtype).then((res) => {
-               
                   this.atchDownload(
                     res.data.data.map((item) => {
                       return { after_img: item.after_img, id: item.id };
@@ -255,23 +229,19 @@ export default {
             
               });
           }
-
           if (funtype === "地物分类") {
             this.classifyUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              setTimeout(() => {
-                     this.getUploadImg("地物分类");
-              }, 200);
-         
+              this.$emit('child-refresh')
             });
           } else if (funtype === "目标检测") {
             this.detectTargetsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              this.getUploadImg("目标检测");
+              this.$emit('child-refresh')
             });
           }
           else if (funtype === "场景分类") {
@@ -281,7 +251,7 @@ export default {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
-              this.getUploadImg("场景分类");
+              this.$emit('child-refresh')
             });
           }
           this.$emit("cut-changed", false);

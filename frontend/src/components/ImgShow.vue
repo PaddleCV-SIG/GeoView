@@ -15,7 +15,6 @@
               v-for="index in beforeList.length"
               :key="index"
               class="img-index hidden-sm-and-down"
-              :style="{ height: indexHeight + 'rem' }"
             >
               第<span class="index-number">{{ index }}</span>组
             </div>
@@ -37,7 +36,6 @@
                 :src="beforeList[index]"
                 :fit="fit"
                 :lazy="true"
-                class="gobig"
                 :preview-src-list="[beforeList[index]]"
                 :preview-teleported="true"
               />
@@ -71,7 +69,6 @@
                 :src="afterList[index]"
                 :fit="fit"
                 :lazy="true"
-                class="gobig"
                 :preview-src-list="[afterList[index]]"
                 :preview-teleported="true"
               />
@@ -125,26 +122,8 @@ export default {
       indexHeight:'',
       beforeList: [],
       afterList: [],
-      feedBackVisible: false,
-      previewPic1: "",
-      dialogVisible: false,
       fit: "fill",
-      form: {
-        content: "",
-        type: this.funtype,
-        analysis_id: "",
-      },
-      formLabelWidth: "120px",
-      value: null,
-      iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
     };
-  },
-  watch:{
-    data() {
-      return {
-        
-      }
-    },
   },
   created() {
         if(this.funtype === '地物分类'){
@@ -155,25 +134,20 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
       this.beforeList = this.beforeImg.map((item) => {
         return item.before_img;
       });
       this.afterList = this.afterImg.map((item) => {
         return item.after_img;
       });
-    }, 500);
   },
   updated() {
-    setTimeout(() => {
       this.beforeList = this.beforeImg.map((item) => {
         return item.before_img;
       });
       this.afterList = this.afterImg.map((item) => {
         return item.after_img;
       });
-  
-    }, 500);
   },
   methods: {
     downloadimgWithWords,
@@ -189,7 +163,8 @@ export default {
 .img-index {
   text-align: center;
   align-content: center;
-  line-height: 19rem
+  height: 376px;
+  line-height: 376px
 }
 .index-number {
   font-family: Yu Gothic Medium;
@@ -207,8 +182,5 @@ export default {
   font-weight: 500;
   font-family: Microsoft JhengHei UI, sans-serif;
 }
-.icon-xiazai {
-  margin-left: 5px;
-  font-size: 24px;
-}
+
 </style>

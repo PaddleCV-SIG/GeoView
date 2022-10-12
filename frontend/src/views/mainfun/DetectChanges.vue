@@ -1,48 +1,42 @@
 <template>
-  <div class="changes-box">
+  <div>
     <Tabinfor>
       <template #left>
         <div
-          id="subtitle"
-          style="font-size: 25px"
+          id="sub-title"
         >
           变化检测<i
             class="iconfont icon-dianji"
-            style="font-size: 23px; margin-left: 17px; color: blue"
           />
         </div>
       </template>
     </Tabinfor>
     <el-divider />
     <p>
-      请上传包含<span class="goweight">图片的文件夹</span><i
+      请上传包含<span class="go-bold">图片的文件夹</span><i
         class="iconfont icon-wenjianjia"
-        style="color: blue"
       />或者<span
-        class="goweight"
+        class="go-bold"
       >图片</span><i
         class="iconfont icon-tupiantianjia"
-        style="color: skyblue"
-      />，确保上传的文件夹和图片<span class="goweight">格式正确</span>，属于一组的图片<span class="goweight">分别</span>放在两个文件夹里<i
+      />，确保上传的文件夹和图片<span class="go-bold">格式正确</span>，属于一组的图片<span class="go-bold">分别</span>放在两个文件夹里<i
         class="iconfont icon-duigou"
-        style="color: green"
       />
     </p>
     <p style="text-decoration: underline">
       <i
         class="iconfont icon-zhuyi"
-        style="color: rgb(64,158,255); font-size: 18px"
-      />注意，请将属于<span class="goweight">同一组</span>的图片设置<span class="goweight">相同</span>的命名，这将成为我们处理一组图片的依据
+      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
     </p>
-    <el-card style="border: 4px dashed var(--el-border-color);position:relative">
+    <el-card style="border: 4px dashed var(--el-border-color)">
       <div
         v-if="fileList1.length||fileList2.length"
-        class="clearQ"
+        class="clear-queue"
       >
         <el-button
           type="primary"
           class="btn-animate2 btn-animate__surround"
-          @click="clearQue"
+          @click="clearQueue"
         >
           清空图片
         </el-button>
@@ -52,10 +46,8 @@
         justify="space-evenly"
       >
         <el-upload
-          id="one"
-          ref="upload1"
+          ref="uploadA"
           v-model:file-list="fileList1"
-          class="upload-demo"
           drag
           action="#"
           multiple
@@ -67,20 +59,14 @@
             将文件夹或图片拖到此处，或<em>点击上传</em>
           </div>
           <div
-
             class="el-upload__tip"
           >
             只能上传一张或多张图片，请在下方上传文件夹
           </div>
         </el-upload>
-
-
-
         <el-upload
-          id="two"
-          ref="upload2"
+          ref="uploadB"
           v-model:file-list="fileList2"
-          class="upload-demo"
           drag
           action="#"
           multiple
@@ -92,7 +78,6 @@
             将文件夹或图片拖到此处，或<em>点击上传</em>
           </div>
           <div
-
             class="el-upload__tip"
           >
             只能上传一张或多张图片，请在下方上传文件夹
@@ -100,10 +85,10 @@
         </el-upload>
       </el-row>
       <el-row justify="center">
-        <el-row class="file1">
+        <el-row class="folder-uploadA">
           <input
-            id="file1"
-            ref="myfile1"
+            id="upload-fileA"
+            ref="refFileA"
             type="file"
             webkitdirectory
             directory
@@ -115,10 +100,10 @@
             @click="file1Click"
           >上传文件夹</i>
         </el-row>
-        <el-row class="file2">
+        <el-row class="folder-uploadB">
           <input
-            id="file2"
-            ref="myfile2"
+            id="upload-fileB"
+            ref="refFileB"
             type="file"
             webkitdirectory
             directory
@@ -138,29 +123,26 @@
       >
         <i
           class="iconfont icon-tuxingtuxiangchuli"
-          style="color:rgb(64,158,255);font-size:20px"
         /><p>图像预处理：</p>
         <p>
-          <label class="mylabel container">
+          <label class="prehandle-label container">
             <input
               ref="histogram"
               type="checkbox"
-              class="myinput"
               @change="selectHistogram()"
             >
             <span class="checkmark" />
-            <span class="goweight label-words">直方图匹配</span>
+            <span class="go-bold label-words">直方图匹配</span>
           </label>
 
-          <label class="container mylabel">
+          <label class="container prehandle-label">
             <input
               ref="sharpen"
               type="checkbox"
-              class="myinput"
               @change="selectSharpen()"
             >
             <span class="checkmark" />
-            <span class="goweight label-words">锐化</span>
+            <span class="go-bold label-words">锐化</span>
           </label>
         </p>
       </el-row>
@@ -170,31 +152,26 @@
       >
         <i
           class="iconfont icon-agora_AIjiangzao"
-          style="color:rgb(64,158,255);font-size:35px"
         /> <p>降噪处理：</p>
         <p>
-          <label class="container mylabel">
+          <label class="container prehandle-label">
             <input
               ref="smooth"
               type="checkbox"
-              class="myinput"
+
               @change="selectSmooth()"
             >
             <span class="checkmark " />
-            <span class="goweight label-words">平滑</span>
+            <span class="go-bold label-words">平滑</span>
           </label>
-
-
-
-          <label class="container mylabel">
+          <label class="container prehandle-label">
             <input
               ref="filter"
               type="checkbox"
-              class="myinput"
               @change="selectFilter()"
             >
             <span class="checkmark " />
-            <span class="goweight label-words">滤波</span>
+            <span class="go-bold label-words">滤波</span>
           </label>
         </p>
       </el-row>
@@ -203,7 +180,7 @@
         type="flex"
         justify="center"
       >
-        <div style="margin-top:12px">
+        <div class="handle-button">
           <el-button
             type="primary"
             class=" btn-animate btn-animate__shiny"
@@ -217,17 +194,14 @@
       <div v-if="upload.prehandle">
         <div v-if="upload.prehandle===1">
           <div
-            id="subtitle"
-            style="font-size: 25px"
+            id="sub-title"
           >
             直方图匹配结果预览
             <i
               class="iconfont icon-dianji"
-              style="font-size: 23px; margin-left: 17px; color: blue"
             />
           </div>
           <el-divider />
-          <!-- <el-empty image-size="100" ></el-empty> -->
           <el-row
             justify="center"
             :gutter="20"
@@ -247,7 +221,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   第一时期图
                 </div>
               </div>
@@ -267,7 +241,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   匹配后的第一时期图       <span
                     @click="
                       downloadimgWithWords(
@@ -287,7 +261,7 @@
               :lg="7"
               :xl="7"
             >
-              <div 
+              <div
                 v-for="(item,index) in Img3"
                 :key="index"
               >
@@ -295,7 +269,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   第二时期图
                 </div>
               </div>
@@ -304,12 +278,10 @@
         </div>
         <div v-else-if="upload.prehandle === 4">
           <div
-            id="subtitle"
-            style="font-size: 25px"
+            id="sub-title"
           >
             锐化结果预览<i
               class="iconfont icon-dianji"
-              style="font-size: 23px; margin-left: 17px; color: blue"
             />
           </div>
           <el-divider />
@@ -332,7 +304,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   第一时期图
                 </div>
               </div>
@@ -352,7 +324,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   锐化后的第一时期图       <span
                     @click="
                       downloadimgWithWords(
@@ -380,7 +352,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   第二时期图
                 </div>
               </div>
@@ -400,7 +372,7 @@
                   :src="item"
                   :preview-src-list="[item]"
                   :preview-teleported="true"
-                /><div class="his-words">
+                /><div class="handle-words">
                   锐化后的第二时期图       <span
                     @click="
                       downloadimgWithWords(
@@ -421,81 +393,71 @@
     <Tabinfor>
       <template #left>
         <div
-          id="subtitle"
+          id="sub-title"
           style="font-size: 25px"
         >
           结果图预览<i
             class="iconfont icon-dianji"
-            style="font-size: 23px; margin-left: 17px; color: blue"
           />
         </div>
       </template>
     </Tabinfor>
-
     <el-divider />
-
     <Tabinfor>
       <template #left>
         <p>
-          对输出的结果图进行<span class="goweight">多种渲染</span><i
+          对输出的结果图进行<span class="go-bold">多种渲染</span><i
             class="iconfont icon-xuanran"
-            style="color: red"
           />
-          <span class="goweight">，点击图片</span>即可预览
+          <span class="go-bold">，点击图片</span>即可预览
           <i
             class="iconfont icon-duigou"
-            style="color: green"
           />
         </p>
       </template>
       <template #mid>
         <p v-if="isUpload">
-          <label class="mylabel container">
+          <label class="prehandle-label container">
             <input
               ref="hole"
               type="checkbox"
-              class="myinput"
               :checked="isHole[currentIndex]"
               @click="dealAfterImg(currentIndex)"
             >
             <span class="checkmark" />
-            <span class="goweight label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
+            <span class="go-bold label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
           </label>
 
           <span><i
             class="iconfont icon-qiehuan"
-            style=" color:rgb(64, 158, 255);margin-left:15px"
             @click="changePreMode"
           >切换预览模式</i></span>
         </p>
 
         <p
           v-else
-          style="text-align:center"
         >
-          <label class="mylabel container">
+          <label class="prehandle-label container">
             <input
               ref="hole1"
               type="checkbox"
-              class="myinput"
               :checked="true"
               @click="dealExample()"
             >
             <span class="checkmark" />
-            <span class="goweight label-words">开启连通域滤波并填充孔洞处理</span>
+            <span class="go-bold label-words">开启连通域滤波并填充孔洞处理</span>
           </label>
           <span><i
             class="iconfont icon-qiehuan"
-            style=" color:rgb(64, 158, 255);margin-left:15px"
             @click="changePreMode"
           >切换预览模式</i></span>
         </p>
       </template>
       <template #right>
         <p>
-          <span class="goweight"><i
+          <span class="go-bold"><i
             class="iconfont icon-shuaxin"
-            style="padding-right:73px"
+            style="padding-right:33px"
             @click="getMore"
           ><span class="hidden-sm-and-down">点击刷新</span></i></span>
         </p>
@@ -515,7 +477,7 @@
           :lg="10"
           :xl="10"
         >
-          <p class="his-words">
+          <p class="handle-words">
             上传第一时期和第二时期图
           </p>
           <div
@@ -580,7 +542,7 @@
           :xl="10"
         >
           <div class="render-img">
-            <p class="his-words">
+            <p class="handle-words">
               预测结果
             </p>
             <el-image
@@ -641,7 +603,7 @@
           :xl="6"
         >
           <div class="render-img">
-            <p class="his-words">
+            <p class="handle-words">
               第一时期
             </p>
             <el-image
@@ -671,7 +633,7 @@
           :xl="6"
         >
           <div class="render-img">
-            <p class="his-words">
+            <p class="handle-words">
               第二时期
             </p>
             <el-image
@@ -701,7 +663,7 @@
           :xl="6"
         >
           <div class="render-img">
-            <p class="his-words">
+            <p class="handle-words">
               预测结果
             </p>
             <el-image
@@ -761,7 +723,7 @@
           :xl="4"
         >
           <div class="rendr-style">
-            <el-divider style="margin-top:0" />
+            <el-divider />
             <div class="style-title">
               结果图渲染
             </div>
@@ -814,37 +776,22 @@
               class="list-number"
               @click="goRenderThese(index)"
             >
-              <div @click="setWhichWay">
+              <div>
                 {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
               </div>
             </div>
           </div>
           <div
-            v-show="showingList.length !== 0"
+            v-if="isUpload"
             style="text-align:center"
           >
             下载此图片：<el-button
-              v-if="isUpload"
               type="primary"
               style="width:60px"
               class="btn-animate btn-animate__shiny"
               @click="
                 downloadimgWithWords(
                   idList[currentIndex],
-                  showingList[currentIndex],
-                  `变化检测${renderstyle}渲染结果图.png`
-                )
-              "
-            >
-              下载
-            </el-button><el-button
-              v-else
-              type="primary"
-              style="width:60px"
-              class="btn-animate btn-animate__shiny"
-              @click="
-                downloadimgWithWords(
-                  ++downnumber,
                   showingList[currentIndex],
                   `变化检测${renderstyle}渲染结果图.png`
                 )
@@ -879,40 +826,6 @@
         </div>
       </el-row>
     </el-card>
-    <el-dialog
-      v-model="dialogVisible"
-      :modal="false"
-      title="图片预览"
-      width="75%"
-      fullscreen
-    >
-      <el-row
-        type="flex"
-        justify="center"
-        style="margin-bottom: 10px"
-      >
-        <el-col :span="1">
-          <el-button
-            type="primary"
-            @click="dialogVisible = false"
-          >
-            OK
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-row
-        type="flex"
-        justify="center"
-      >
-        <el-col :span="12">
-          <img
-            id="imgPre"
-            :src="previewPic1"
-            alt=""
-          >
-        </el-col>
-      </el-row>
-    </el-dialog>
     <Bottominfor />
   </div>
 </template>
@@ -934,7 +847,6 @@ import {
 import { historyGetPage } from "@/api/history";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
-
 import global from "@/global";
 export default {
   name: "Detectchanges",
@@ -966,14 +878,6 @@ export default {
       value:null,
       renderstyle: "原图",
       funtype: "变化检测",
-      feedBackVisible: false,
-      previewPic1: "",
-      dialogVisible: false,
-      form: {
-        content: "",
-        analysis_id: "",
-        type: "变化检测",
-      },
       scrollTop: "",
       afterImg: [],
       afterList: [],
@@ -986,34 +890,24 @@ export default {
       beforeImg: [],
       beforeImg1: [],
       currentQroup: 0,
-      src:
-        global.BASEURL +
-        "/_uploads/photos/res/01b19a165679f676b59242284b1f6f31_b62b1cb9afd6acbccd16e476a9c0b80b_test_50_5.png",
+      src:'',
       srcs: [
-
       ],
       example: {
         outcome: [
-
         ],
         first: [
-
         ],
         second: [],
         normal: [
-
         ],
         woods: [
-
         ],
         neon: [
-
         ],
         flash: [
-
         ],
         aurora: [
-
         ],
       },
       currentIndex: 0,
@@ -1081,12 +975,10 @@ export default {
         id: "",
       },
 
-      iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
     };
   },
   created() {
     this.getMore();
-
   },
 
   methods: {
@@ -1098,7 +990,7 @@ export default {
     atchDownload,
     holeHandle,
     histogramUpload,
-    clearQue() {
+    clearQueue() {
       this.fileList1 = [];
       this.fileList2 = [];
       this.$message.success("清除成功");
@@ -1110,9 +1002,7 @@ export default {
     },
     checkExist(val) {
       this.isExist = val.map((item) => {
-        if (typeof item == "undefined") {
-          return false;
-        } else return true;
+        return typeof item != "undefined";
       });
     },
     goRenderThis(index) {
@@ -1128,10 +1018,7 @@ export default {
     goRenderThese(index) {
 
       this.onRenderGroup = index;
-      let x = document.querySelectorAll(".img-box");
-      for (let item of x) {
-        item.setAttribute("style", `transform:translateX(0%)`);
-      }
+
       this.currentQroup = 5 * index;
       this.currentIndex = 5 * index;
       this.srcs = [];
@@ -1206,8 +1093,8 @@ export default {
     uploadfile() {
       this.uploadSrc = [];
       if (
-        this.fileList1.length !== this.fileList2.length ||
-        this.fileList1.length === 0
+          this.fileList1.length !== this.fileList2.length ||
+          this.fileList1.length === 0
       ) {
         this.$message.error("请按照要求上传文件夹或图片！");
       } else {
@@ -1216,19 +1103,18 @@ export default {
         let formData2 = new FormData();
         for (const item of this.fileList1) {
           formData1.append("files", item) ||
-            formData1.append("files", item.raw);
+          formData1.append("files", item.raw);
           formData1.append("type", "变化检测");
         }
         for (const item of this.fileList2) {
           formData2.append("files", item) ||
-            formData2.append("files", item.raw);
+          formData2.append("files", item.raw);
           formData2.append("type", "变化检测");
         }
         let upload1 = new Promise((resolve, reject) => {
           setTimeout(() => {
             this.createSrc(formData1).then((res) => {
               this.uploadSrc1 = res.data.data;
-
               resolve();
             });
           }, 200);
@@ -1236,76 +1122,75 @@ export default {
         let upload2 = new Promise((resolve, reject) => {
           this.createSrc(formData2).then((res) => {
             this.uploadSrc2 = res.data.data;
-
             resolve();
           });
         });
         Promise.all([upload1, upload2])
-          .then((val) => {
-            this.uploadSrc = this.uploadSrc1.concat(this.uploadSrc2);
-            this.uploadSrc = this.uploadSrc.map((item) => {
-              return {
-                filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
-                ),
-                src: item.src,
-              };
-            });
+            .then((val) => {
+              this.uploadSrc = this.uploadSrc1.concat(this.uploadSrc2);
+              this.uploadSrc = this.uploadSrc.map((item) => {
+                return {
+                  filename: item.filename.substring(
+                      item.filename.indexOf("/") + 1,
+                      item.length
+                  ),
+                  src: item.src,
+                };
+              });
 
-            this.pairs = this.uploadSrc.map((item) => {
-              return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
-              );
-            });
+              this.pairs = this.uploadSrc.map((item) => {
+                return item.filename.substring(
+                    item.filename.indexOf("/") + 1,
+                    item.length
+                );
+              });
 
-            this.checkPairs(this.pairs);
-            if (!this.canUpload) {
-              this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
-              );
-              hideFullScreenLoading("#load");
-            } else {
-              this.getList(this.uploadSrc);
-              this.detectChangesUpload(this.upload)
-                .then((res) => {
-                  if (res.data.code === 1) {
-                    this.$message.error(res.data.msg);
-                  }
-
-                  this.$refs.upload1.clearFiles();
-                  this.$refs.upload2.clearFiles();
-                  this.fileList1 = [];
-                  this.fileList2 = [];
-                  this.$message.success("上传成功");
-                  this.isUpload = true;
-                  this.getMore();
-                  hideFullScreenLoading("#load");
-                  if (this.afterImg.length >= 20) {
-                    this.$confirm(
-                      "上传图片过多，是否压缩?在此期间不能进行其他操作",
-                      "提示",
-                      {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "warning",
+              this.checkPairs(this.pairs);
+              if (!this.canUpload) {
+                this.$message.error(
+                    "检测到命名对应失败的图片，请检查您的文件命名"
+                );
+                hideFullScreenLoading("#load");
+              } else {
+                this.getList(this.uploadSrc);
+                this.detectChangesUpload(this.upload)
+                    .then((res) => {
+                      if (res.data.code === 1) {
+                        this.$message.error(res.data.msg);
                       }
-                    )
-                      .then(() => {
-                        this.goCompress();
-                      })
-                      .catch(() => {});
-                  }
-                })
-                .catch((rej) => {
-                  hideFullScreenLoading("#load");
-                });
-            }
-          })
-          .catch((rej) => {
-            hideFullScreenLoading("#load");
-          });
+
+                      this.$refs.uploadA.clearFiles();
+                      this.$refs.uploadB.clearFiles();
+                      this.fileList1 = [];
+                      this.fileList2 = [];
+                      this.$message.success("上传成功");
+                      this.isUpload = true;
+                      this.getMore();
+                      hideFullScreenLoading("#load");
+                      if (this.afterImg.length >= 20) {
+                        this.$confirm(
+                            "上传图片过多，是否压缩?",
+                            "提示",
+                            {
+                              confirmButtonText: "确定",
+                              cancelButtonText: "取消",
+                              type: "warning",
+                            }
+                        )
+                            .then(() => {
+                              this.goCompress();
+                            })
+                            .catch(() => {});
+                      }
+                    })
+                    .catch((rej) => {
+                      hideFullScreenLoading("#load");
+                    });
+              }
+            })
+            .catch((rej) => {
+              hideFullScreenLoading("#load");
+            });
       }
     },
     getList(beforeData) {
@@ -1333,78 +1218,74 @@ export default {
     },
     goCompress() {
       this.$message.success("正在将所有图片下载压缩");
-      setTimeout(() => {
-        this.$message("正在压缩，请稍后");
-      }, 2000);
       this.historyGetPage(1, 9999, "变化检测").then((res) => {
         this.atchDownload(
-          res.data.data.map((item) => {
-            return { after_img: item.after_img, id: item.id };
-          })
+            res.data.data.map((item) => {
+              return { after_img: item.after_img, id: item.id };
+            })
         );
       });
     },
     getMore() {
-      showFullScreenLoading(".changes-box");
+      showFullScreenLoading("body");
       this.historyGetPage(1, 20, "变化检测")
-        .then((res) => {
-          hideFullScreenLoading(".changes-box");
-          this.beforeImg = res.data.data.map((item) => {
-            return global.BASEURL + item.before_img;
-          });
-          this.idList = res.data.data.map((item) => {
-            return item.id;
-          });
-          this.isHole = res.data.data.map((item) => {
-            return item.is_hole;
-          });
-          this.isHole;
-          this.afterImg = res.data.data.map((item) => {
-            return {
-              after_img: global.BASEURL + item.after_img,
-              id: item.id,
-            };
-          });
+          .then((res) => {
+            hideFullScreenLoading("body");
+            this.beforeImg = res.data.data.map((item) => {
+              return global.BASEURL + item.before_img;
+            });
+            this.idList = res.data.data.map((item) => {
+              return item.id;
+            });
+            this.isHole = res.data.data.map((item) => {
+              return item.is_hole;
+            });
+            this.afterImg = res.data.data.map((item) => {
+              return {
+                after_img: global.BASEURL + item.after_img,
+                id: item.id,
+              };
+            });
 
-          this.afterList = res.data.data.map((item) => {
-            return global.BASEURL + item.after_img;
-          });
-          this.showingList = res.data.data.map((item) => {
-            return global.BASEURL + item.after_img;
-          });
+            this.afterList = res.data.data.map((item) => {
+              return global.BASEURL + item.after_img;
+            });
+            this.showingList = res.data.data.map((item) => {
+              return global.BASEURL + item.after_img;
+            });
 
-          if (this.afterList.length !== 0) {
-            this.goRenderThese(0);
-            this.goRenderThis(0);
-          }
-          this.beforeImg1 = res.data.data.map((item) => {
-            return global.BASEURL + item.before_img1;
+            if (this.afterList.length !== 0) {
+              this.goRenderThese(0);
+              this.goRenderThis(0);
+            }
+            this.beforeImg1 = res.data.data.map((item) => {
+              return global.BASEURL + item.before_img1;
+            });
+            this.woods = res.data.data.map((item) => {
+              return global.BASEURL + item.data[2];
+            });
+            this.neon = res.data.data.map((item) => {
+              return global.BASEURL + item.data[3];
+            });
+            this.flash = res.data.data.map((item) => {
+              return global.BASEURL + item.data[0];
+            });
+            this.aurora = res.data.data.map((item) => {
+              return global.BASEURL + item.data[1];
+            });
+            this.checkUpload();
+            if (!this.isUpload) {
+              this.setNormalWay(this.onRender);
+            }
+          })
+          .catch((rej) => {
+            hideFullScreenLoading("body");
           });
-          this.woods = res.data.data.map((item) => {
-            return global.BASEURL + item.data[2];
-          });
-          this.neon = res.data.data.map((item) => {
-            return global.BASEURL + item.data[3];
-          });
-          this.flash = res.data.data.map((item) => {
-            return global.BASEURL + item.data[0];
-          });
-          this.aurora = res.data.data.map((item) => {
-            return global.BASEURL + item.data[1];
-          });
-          this.checkUpload();
-          if (!this.isUpload) {
-            this.setNormalWay(this.onRender);
-          }
-        })
-        .catch((rej) => {
-          hideFullScreenLoading(".changes-box");
-        });
     },
     uploadFirst() {
-      this.checkFile1(...this.$refs.myfile1.files);
+      this.checkFile1(...this.$refs.refFileA.files);
       if (this.canUpload) {
-        this.fileList1.push(...this.$refs.myfile1.files);
+        this.fileList1.push(...this.$refs.refFileA.files);
       } else {
         setTimeout(() => {
           this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
@@ -1412,9 +1293,9 @@ export default {
       }
     },
     uploadSecond() {
-      this.checkFile2(...this.$refs.myfile2.files);
+      this.checkFile2(...this.$refs.refFileB.files);
       if (this.canUpload) {
-        this.fileList2.push(...this.$refs.myfile2.files);
+        this.fileList2.push(...this.$refs.refFileB.files);
       } else {
         setTimeout(() => {
           this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
@@ -1422,16 +1303,16 @@ export default {
       }
     },
     file1Click() {
-      document.querySelector("#file1").click();
+      document.querySelector("#upload-fileA").click();
     },
     file2Click() {
-      document.querySelector("#file2").click();
+      document.querySelector("#upload-fileB").click();
     },
     selectHistogram() {
       if (this.$refs.histogram.checked === true) {
         if (
-          this.fileList1.length !== this.fileList2.length ||
-          this.fileList1.length === 0
+            this.fileList1.length !== this.fileList2.length ||
+            this.fileList1.length === 0
         ) {
           if (this.upload.prehandle === 1) {
             this.$refs.histogram.checked = false;
@@ -1452,13 +1333,13 @@ export default {
 
           for (const item of this.fileList1) {
             formData1.append("files", item) ||
-              formData1.append("files", item.raw);
+            formData1.append("files", item.raw);
             formData1.append("type", "变化检测");
           }
 
           for (const item of this.fileList2) {
             formData2.append("files", item) ||
-              formData2.append("files", item.raw);
+            formData2.append("files", item.raw);
             formData2.append("type", "变化检测");
           }
           let upload3 = new Promise((resolve, reject) => {
@@ -1485,8 +1366,8 @@ export default {
             this.histogramSrc = this.histogramSrc.map((item) => {
               return {
                 filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
+                    item.filename.indexOf("/") + 1,
+                    item.length
                 ),
                 src: item.src,
               };
@@ -1494,8 +1375,8 @@ export default {
 
             this.hisPairs = this.histogramSrc.map((item) => {
               return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
+                  item.filename.indexOf("/") + 1,
+                  item.length
               );
             });
 
@@ -1503,7 +1384,7 @@ export default {
 
             if (!this.canUpload) {
               this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
+                  "检测到命名对应失败的图片，请检查您的文件命名"
               );
               hideFullScreenLoading("#load");
               this.Img1 = [];
@@ -1547,8 +1428,8 @@ export default {
     },
     selectSharpen() {
       if (
-        this.fileList1.length !== this.fileList2.length ||
-        this.fileList1.length === 0
+          this.fileList1.length !== this.fileList2.length ||
+          this.fileList1.length === 0
       ) {
         if (this.upload.prehandle === 4) {
           this.$refs.sharpen.checked = false;
@@ -1575,13 +1456,13 @@ export default {
 
           for (const item of this.fileList1) {
             formData1.append("files", item) ||
-              formData1.append("files", item.raw);
+            formData1.append("files", item.raw);
             formData1.append("type", "变化检测");
           }
 
           for (const item of this.fileList2) {
             formData2.append("files", item) ||
-              formData2.append("files", item.raw);
+            formData2.append("files", item.raw);
             formData2.append("type", "变化检测");
           }
           let upload1 = new Promise((resolve, reject) => {
@@ -1607,16 +1488,16 @@ export default {
             this.sharpenSrc = this.sharpenSrc.map((item) => {
               return {
                 filename: item.filename.substring(
-                  item.filename.indexOf("/") + 1,
-                  item.length
+                    item.filename.indexOf("/") + 1,
+                    item.length
                 ),
                 src: item.src,
               };
             });
             this.shaPairs = this.sharpenSrc.map((item) => {
               return item.filename.substring(
-                item.filename.indexOf("/") + 1,
-                item.length
+                  item.filename.indexOf("/") + 1,
+                  item.length
               );
             });
 
@@ -1624,7 +1505,7 @@ export default {
 
             if (!this.canUpload) {
               this.$message.error(
-                "检测到命名对应失败的图片，请检查您的文件命名"
+                  "检测到命名对应失败的图片，请检查您的文件命名"
               );
               hideFullScreenLoading("#load");
               this.Img1 = [];
@@ -1740,12 +1621,7 @@ export default {
           break;
         }
       }
-
-      if (j !== 0) {
-        this.canUpload = false;
-      } else {
-        this.canUpload = true;
-      }
+      this.canUpload = j === 0;
     },
     changePreMode() {
       if (this.preMode === 1) {
@@ -1764,20 +1640,20 @@ export default {
       const sliderLeftX = slider.offsetLeft;
 
       const sliderWidth = slider.clientWidth;
-   
+
       const sliderHandleWidth = handle.clientWidth;
-   
+
       let mouseX = event.clientX - sliderLeftX;
 
       if (mouseX < 0) mouseX = 0;
       else if (mouseX > sliderWidth) mouseX = sliderWidth;
 
       wrapper.style.width = `${((1 - mouseX / sliderWidth) * 100).toFixed(4)}%`;
-    
+
       handle.style.left = `calc(${((mouseX / sliderWidth) * 100).toFixed(
-        4
+          4
       )}% - ${sliderHandleWidth / 2}px)`;
-    
+
     },
     sliderMouseDown() {
       if (this.isSliderLocked) this.isSliderLocked = false;
@@ -1797,12 +1673,6 @@ export default {
 * {
   font-family: SimHei sans-serif;
 }
-.icon-shuaxin:hover {
-  color: rgb(64, 158, 255);
-}
-.icon-shuaxin {
-  transition: all 0.3s;
-}
 .list {
   text-align: center;
   cursor: pointer;
@@ -1814,7 +1684,7 @@ export default {
 }
 .list-number:hover::after {
   width: 100%;
-  background: rgb(64, 158, 255);
+  background: var(--theme--color);
 }
 .list-number::after {
   position: absolute;
@@ -1832,8 +1702,6 @@ export default {
 }
 .list-number {
   z-index: 1;
-}
-.list-number {
   overflow: hidden;
   margin: 0 auto;
   width: auto;
@@ -1848,14 +1716,6 @@ export default {
   position: relative;
   max-height: 280px;
   min-height: 240px;
-  .swiper-lbtn {
-    opacity: 0.6;
-    left: 0;
-    height: 100%;
-    z-index: 100;
-    position: absolute;
-  }
-
   .img-box {
     flex: 1;
     height: 100%;
@@ -1866,16 +1726,10 @@ export default {
     justify-content: space-between;
   }
 }
-.el-upload-dragger {
-  border: 3px dashed var(--el-border-color);
-  height: 180px;
-  margin-top: 10px;
+#sub-title{
+  font-size: 25px;
 }
-.result {
-  width: 100%;
-  height: auto;
-}
-#subtitle:hover:after {
+#sub-title:hover:after {
   left: 0;
   right: 0;
   width: 220px;
@@ -1885,7 +1739,7 @@ export default {
     // width: 100%;
     max-height: 600px;
     overflow: hidden;
-    
+
   }
   .render-style {
     height: auto;
@@ -1895,6 +1749,118 @@ export default {
   display: block;
   height: auto;
   text-align: center;
+}
+
+.style-title {
+  text-align: center;
+  font-size: 22px;
+  font-family: "幼圆", sans-serif;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.img-index {
+  text-align: center;
+  height: 428px;
+  align-content: center;
+  line-height: 428px;
+}
+.index-number {
+  font-family: Yu Gothic Medium;
+  font-style: oblique;
+  font-size: 30px;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+.img-infor {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.clear-queue {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  z-index: 100;
+}
+.render-border {
+  border: var(--theme--color) 0.5rem solid;
+}
+
+#image-slider {
+  position: relative;
+  max-width:100%;
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 1em;
+  cursor: col-resize;
+  display: inline-block;
+}
+
+#image-slider img {
+  display: block;
+  height: 100%;
+  max-width:550px;
+  max-height: 550px;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+#image-slider .img-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#image-slider .img-wrapper img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+#image-slider .handle {
+  border: 0 solid red;
+  position: absolute;
+  top: 0;
+  left: calc(50% - var(--image-slider-handle-width) / 2);
+  width: var(--image-slider-handle-width);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  z-index: 2;
+}
+
+#image-slider .handle-circle {
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#image-slider .handle-line {
+  width: 2px;
+  flex-grow: 1;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --image-slider-width: 90vw;
+  }
+}
+.el-row{
+  position: inherit;
 }
 .style-words {
   line-height: 30px;
@@ -1908,7 +1874,7 @@ export default {
   color: white;
 }
 .normal:hover {
-  background-color: rgb(64, 158, 255);
+  background-color: var(--theme--color);
 }
 .woods:hover {
   background-image: linear-gradient(#9be15d, #00e3ae 100%);
@@ -1936,138 +1902,5 @@ export default {
 }
 .active-aurora {
   background-image: linear-gradient(#011142, #00bbc9 100%);
-}
-.style-title {
-  text-align: center;
-  font-size: 22px;
-  font-family: "幼圆", sans-serif;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-.img-index {
-  text-align: center;
-  height: 428px;
-  align-content: center;
-  line-height: 428px;
-}
-.index-number {
-  font-family: Yu Gothic Medium;
-  font-style: oblique;
-  font-size: 30px;
-  margin-left: 5px;
-  margin-right: 10px;
-}
-.img-infor {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-.icon-xiazai {
-  margin-left: 5px;
-  font-size: 24px;
-}
-.icon-fankui {
-  margin-left: 15px;
-  font-size: 24px;
-  color: skyblue;
-}
-.his-words {
-  margin-top: 15px;
-  margin-bottom: 10px;
-  font-size: 22px;
-  text-align: center;
-  font-weight: 600;
-  font-family: Microsoft JhengHei UI, sans-serif;
-}
-.clearQ {
-  position: absolute;
-  left: 0;
-  top: 10%;
-  z-index: 100;
-}
-.render-border {
-  border: rgb(64, 158, 255) 0.5rem solid;
-}
-
-
-#image-slider {
-  position: relative;
-  max-width:100%;
-  max-height: 100%;
-  overflow: hidden;
-  border-radius: 1em;
-  // box-shadow: -4px 5px 10px 1px gray;
-  cursor: col-resize;
-  display: inline-block;
-}
-
-#image-slider img {
-  display: block;
-  height: 100%;
-  max-width:550px;
- max-height: 550px;
-  object-fit: cover;
-  pointer-events: none;
-  user-select: none;
-}
-
-#image-slider .img-wrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 50%;
-  overflow: hidden;
-  z-index: 1;
-}
-
-#image-slider .img-wrapper img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-
-  transform: scale(1.2);
-}
-
-#image-slider .handle {
-  border: 0 solid red;
-  position: absolute;
-  top: 0;
-  left: calc(50% - var(--image-slider-handle-width) / 2);
-  width: var(--image-slider-handle-width);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  z-index: 2;
-}
-
-#image-slider .handle-circle {
-
-  color: white;
-  border: 2px solid white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-#image-slider .handle-line {
-  width: 2px;
-  flex-grow: 1;
-  background: white;
-}
-
-@media (max-width: 768px) {
-  :root {
-    --image-slider-width: 90vw;
-  }
-}
-.el-row{
-  position: inherit;
 }
 </style>

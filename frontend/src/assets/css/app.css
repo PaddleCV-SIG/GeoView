@@ -1,3 +1,6 @@
+:root {
+  --theme--color: #409eff;
+}
 .el-header {
   box-shadow: 0 0 2rem 0 rgba(41, 48, 66, 0.1);
   margin-left: 0px;
@@ -6,19 +9,15 @@
   min-width: 400px;
   clear: both;
 }
-.el-header .iconfont {
-  cursor: pointer;
-}
 .el-header .iconfont:hover {
-  color: #409eff;
+  color: var(--theme--color);
 }
-.el-header .el-dropdown {
-  position: absolute;
-  line-height: 60px;
-  right: 5%;
+.el-upload-dragger {
+  border: 4px dashed var(--el-border-color);
+  transition: all 0.5s;
 }
-.el-menu .iconfont {
-  font-size: 20px;
+.el-upload-dragger:hover {
+  transform: scale(1.05);
 }
 .el-main .el-image {
   border-radius: 10px;
@@ -30,65 +29,22 @@
 .el-upload .iconfont {
   font-size: 100px;
 }
-#subtitle {
+#sub-title {
   margin-top: 20px;
   position: relative;
-  /* font-size: 20px; */
   font-weight: 1000;
   cursor: pointer;
 }
-#subtitle::after {
+#sub-title::after {
   content: "";
   width: 0px;
   height: 3px;
-  background: #409eff;
+  background: var(--theme--color);
   position: absolute;
   top: 100%;
   left: 50%;
   right: 50%;
   transition: all 0.5s;
-}
-#subtitle:hover:after {
-  left: 7%;
-  right: 7%;
-  width: 85%;
-}
-.el-upload-dragger {
-  border: 4px dashed var(--el-border-color);
-  transition: all 0.5s;
-}
-.el-upload-dragger:hover {
-  transform: scale(1.05);
-}
-.el-image {
-  cursor: pointer;
-}
-#imgPre {
-  height: 500px;
-}
-.el-pagination {
-  text-align: center;
-}
-a {
-  text-decoration: none;
-}
-.goweight {
-  font-weight: bold;
-}
-.iconfont {
-  cursor: pointer;
-}
-#pre-img {
-  height: 500px;
-}
-.el-dialog {
-  font-family: SimHei sans-serif;
-}
-.el-button {
-  font-family: SimHei sans-serif;
-}
-.el-table {
-  font-family: SimHei sans-serif;
 }
 .el-image {
   cursor: pointer;
@@ -96,8 +52,29 @@ a {
 img {
   cursor: pointer;
 }
+#pre-img {
+  height: 500px;
+}
+.el-pagination {
+  text-align: center;
+  margin: 20px 0 10px 0;
+}
+a {
+  text-decoration: none;
+}
+.go-bold {
+  font-weight: bold;
+}
+.iconfont {
+  cursor: pointer;
+}
+.el-dialog,
+.el-button,
+.el-table,
 .el-message {
   font-family: SimHei sans-serif;
+}
+.el-message {
   font-size: larger;
   font-weight: 600;
 }
@@ -108,7 +85,7 @@ img {
   line-height: 40px;
   border: none;
   border-radius: 5px;
-  background: #409eff;
+  background: var(--theme--color);
   color: #fff;
   text-align: center;
 }
@@ -152,7 +129,7 @@ img {
   line-height: 40px;
   border: none;
   border-radius: 5px;
-  background: #409eff;
+  background: var(--theme--color);
   color: #fff;
   text-align: center;
 }
@@ -191,12 +168,12 @@ img {
 .btn-animate__vibrate:hover::before {
   animation: vibrate2 0.3s 0.3s forwards;
 }
-.mylabel {
+.prehandle-label {
   vertical-align: middle;
-  margin-left: 30px;
+  margin: 0 10px 0 30px;
   position: relative;
 }
-.mylabel .label-words {
+.prehandle-label .label-words {
   display: inline-block;
   line-height: 30px;
   margin-left: 23px;
@@ -221,7 +198,7 @@ img {
 }
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #409eff;
+  background-color: var(--theme--color);
   transition: all 0.4s;
 }
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -245,25 +222,15 @@ img {
   transform: rotate(45deg);
   transition: all 0.6s;
 }
-#file1,
-#file2 {
+#upload-fileA,
+#upload-fileB,
+#folder {
   display: none;
 }
-.icon-wenjianshangchuan {
-  font-size: 20px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  transition: all 0.5s;
-  color: #409eff;
-}
-.icon-wenjianshangchuan:hover {
-  color: #409eff;
-  transform: scale(1.2);
-}
-.file1{
+.folder-uploadA {
   margin-right: 230px;
 }
-.file2{
+.folder-uploadB {
   margin-left: 230px;
 }
 .btn-animate2 {
@@ -275,7 +242,7 @@ img {
   font-size: 17px;
   border-radius: 5px;
   background: #ecf5ff;
-  color: #409eff;
+  color: var(--theme--color);
   text-align: center;
 }
 .btn-animate__surround::before,
@@ -284,7 +251,7 @@ img {
   position: absolute;
   right: 0;
   top: 0;
-  background: #409eff;
+  background: var(--theme--color);
   transition: all 0.4s ease;
 }
 .btn-animate__surround::before {
@@ -308,7 +275,7 @@ img {
   display: block;
 }
 .btn-animate__surround > span:hover {
-  color: #409eff;
+  color: var(--theme--color);
 }
 .btn-animate__surround > span:hover::before {
   height: 100%;
@@ -322,7 +289,7 @@ img {
   position: absolute;
   left: 0;
   bottom: 0;
-  background: #409eff;
+  background: var(--theme--color);
   transition: all 0.4s ease;
 }
 .btn-animate__surround > span:before {
@@ -334,5 +301,23 @@ img {
   height: 2px;
 }
 .icon-dabaoxiazai {
-  color: #409eff;
+  color: var(--theme--color);
+}
+.handle-words {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 600;
+  font-family: Microsoft JhengHei UI, sans-serif;
+}
+.el-drawer__body {
+  overflow: hidden;
+}
+.handle-button {
+  text-align: center;
+  margin-top: 12px;
+}
+.upload-card {
+  text-align: center;
 }

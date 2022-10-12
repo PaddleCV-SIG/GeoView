@@ -1,5 +1,4 @@
 import axios from "axios"
-import router from '../router'
 
 import global from '@/global'
 import { hideFullScreenLoading} from '@/utils/loading'
@@ -14,8 +13,6 @@ export function request(config) {
     },
     ({ response }) => {
       hideFullScreenLoading('#load')
-      hideFullScreenLoading(".changes-box");
-      hideFullScreenLoading(".fb-box")
       ElMessage.error('网络异常，请检查后端服务是否启动')
       return Promise.reject(error)
     },

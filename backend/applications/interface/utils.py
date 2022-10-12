@@ -5,7 +5,7 @@ import yaml
 from paddlers.transforms import build_transforms
 
 
-def load_transformer_from_file(model_dir, exclude=[]):
+def get_model_info(model_dir):
     if not osp.exists(model_dir):
         logging.error("Directory '{}' does not exist!".format(model_dir))
     if not osp.exists(osp.join(model_dir, "model.yml")):
@@ -13,6 +13,12 @@ def load_transformer_from_file(model_dir, exclude=[]):
             "There is no file named model.yml in {}.".format(model_dir))
     with open(osp.join(model_dir, "model.yml")) as f:
         model_info = yaml.load(f.read(), Loader=yaml.Loader)
+    return model_info
+
+
+def load_transformer_from_file(model_dir, exclude=None):
+    exclude = exclude or []
+    model_info = get_model_info(model_dir)
     if 'Transforms' in model_info:
         transform = []
         for t in model_info['Transforms']:

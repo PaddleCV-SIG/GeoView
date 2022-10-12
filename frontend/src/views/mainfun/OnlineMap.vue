@@ -16,7 +16,6 @@
       placeholder="请输入地址"
       class="input_style"
     />
-
     <div
       id="map"
       ref="imageTofile"
@@ -45,6 +44,13 @@
         >
           地物分类
         </el-radio>
+        <el-radio
+          v-model="funtype"
+          class="choose-item"
+          label="场景分类"
+        >
+          场景分类
+        </el-radio>
       </el-row>
       <el-row>
         <el-button
@@ -65,10 +71,76 @@
       top="6%"
     >
       <ImgShow
+        v-show="funtype!=='场景分类'"
         :before-img="beforeImg"
         :after-img="afterImg"
         :funtype="funtype"
       />
+      <el-row v-if="funtype==='场景分类'">
+        <el-col>
+          <el-card>
+            <el-row
+              :gutter="10"
+              justify="center"
+            >
+              <el-col
+                :lg="5"
+                :xl="5"
+              >
+                <div
+                  class="img-index hidden-sm-and-down"
+                  style=" height: 301px"
+                >
+                  <div>第<span class="index-number">1</span>组</div>
+                </div>
+              </el-col>
+              <el-col
+                :xs="20"
+                :sm="10"
+                :md="6"
+                :lg="6"
+                :xl="6"
+              >
+                <div
+                  style="position: relative;"
+                >
+                  <el-image
+                    ref="tableTab"
+                    :src="beforeList[0]"
+                    :fit="fit"
+                    :lazy="true"
+                    class="custom-pic"
+                    :preview-src-list="[beforeList[0]]"
+                    :preview-teleported="true"
+                  />
+
+                  <div class="img-infor">
+                    <span>原图</span>
+                  </div>
+                  <span
+                    v-if="sceneKey"
+                    class="index-number hidden-md-and-up"
+                  >{{ sceneKey[0][0] }}:<span>{{ scene[0][sceneKey[0][0]] }}</span></span>
+                </div>
+              </el-col>
+              <el-col
+                :lg="5"
+                :xl="5"
+              >
+                <div
+                  class="img-index hidden-sm-and-down"
+                  style="height:301px"
+                >
+                  <span
+                    v-if="scene"
+                    class="index-number "
+                  >{{ Object.keys(scene[0])[0] }}:{{ scene[0][Object.keys(scene[0])[0]] }}</span>
+                </div>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row justify="center">
         <el-button
           type="primary"
@@ -81,40 +153,36 @@
     </el-dialog>
   </div>
 </template>
- 
+
 <script>
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {
-  createSrc,
-  classifyUpload,
-  detectTargetsUpload,
-} from "@/api/upload";
-import { getUploadImg } from "@/utils/getUploadImg";
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
-import { historyGetPage } from "@/api/history";
+import {classifyUpload, createSrc, detectTargetsUpload, sceneClassifyUpload,} from "@/api/upload";
+import {hideFullScreenLoading, showFullScreenLoading} from "@/utils/loading";
+import {historyGetPage} from "@/api/history";
 
 export default {
   name: "Onlinemap",
-
   components: {  ImgShow },
   data() {
     return {
       beforeImg: [],
+      beforeList:[],
       afterImg: [],
+      fit:'fill',
       isShow: false,
       tmpFile: "",
-   
       choose: false,
       funtype: "目标检测",
       address_detail: null, //详细地址
       userlocation: { lng: "", lat: "" },
-
       lng: "",
       lat: "",
       htmlUrl: "",
       uploadSrc: { list: [], prehandle: 0, denoise: 0 },
+      scene:[{}],
+      sceneKey:[['']]
     };
   },
   mounted() {
@@ -125,10 +193,10 @@ export default {
     map.setMapType(BMAP_HYBRID_MAP);
     // map.centerAndZoom：第一个参数可以是根据之前创建好的一个点为中心，创建出地图，也可以根据城市地区的中文名称创建地图。第二个参数是地图缩放级别，最大为19，最小为0
     map.addControl(
-      //添加地图类型控件
-      new BMap.MapTypeControl({
-        mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
-      })
+        //添加地图类型控件
+        new BMap.MapTypeControl({
+          mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
+        })
     );
     map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
     map.enableScrollWheelZoom(true);
@@ -144,7 +212,6 @@ export default {
       // let point = new BMap.Point(117.155827, 36.695916); // 创建点坐标，汉得公司的经纬度坐标
       // map.centerAndZoom(point, 15);
       // map.enableScrollWheelZoom();
-      // eslint-disable-next-line no-undef
       let ac = new BMap.Autocomplete({
         //建立一个自动完成的对象
         input: "suggestId",
@@ -155,11 +222,11 @@ export default {
         //鼠标点击下拉列表后的事件
         let _value = e.item.value;
         myValue =
-          _value.province +
-          _value.city +
-          _value.district +
-          _value.street +
-          _value.business;
+            _value.province +
+            _value.city +
+            _value.district +
+            _value.street +
+            _value.business;
         th.address_detail = myValue;
         setPlace();
       });
@@ -194,13 +261,10 @@ export default {
     createSrc,
     classifyUpload,
     detectTargetsUpload,
-    getUploadImg,
-    showFullScreenLoading,
-    hideFullScreenLoading,
+    sceneClassifyUpload,
     historyGetPage,
     goUpload(type) {
       showFullScreenLoading("#load");
-  
       let formData = new FormData();
       formData.append("files", this.tmpFile);
       formData.append("type", type);
@@ -209,6 +273,8 @@ export default {
           return item.src;
         });
         if (type === "目标检测") {
+          this.uploadSrc.prehandle = 0
+          this.uploadSrc.denoise = 0
           this.detectTargetsUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
@@ -228,6 +294,8 @@ export default {
           });
         }
         if (type === "地物分类") {
+          this.uploadSrc.prehandle = 0
+          this.uploadSrc.denoise = 0
           this.classifyUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
@@ -242,6 +310,23 @@ export default {
                   id: item.id,
                 };
               });
+              this.isShow = true;
+            });
+          });
+        }
+        if (type === "场景分类") {
+          delete(this.uploadSrc.denoise)
+          delete (this.uploadSrc.prehandle)
+          this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+            hideFullScreenLoading("#load");
+            this.$message.success("上传成功！");
+            this.choose = false;
+            this.historyGetPage(1, 1, "场景分类").then((res) => {
+              this.beforeList=res.data.data.map((item)=>{
+                return global.BASEURL + item.before_img
+              })
+              this.scene = res.data.data.map(item=>item.data)     //场景键值对数组,[{'a':0.8},{‘b’:0.6},{'c':0.8}]
+              this.sceneKey = this.scene.map(item=>Object.keys(item))  //构成场景键数组的数组，[['a'],['b'],['c']]
               this.isShow = true;
             });
           });
@@ -275,8 +360,7 @@ export default {
         // toDataURL 图片格式转成 base64
         let dataURL = canvas.toDataURL("image/png");
         // this.downloadImage(dataURL)
-        const File = this.base64toFile(dataURL);
-        this.tmpFile = File;
+        this.tmpFile = this.base64toFile(dataURL);
       });
     },
     base64toFile(dataurl) {
@@ -300,10 +384,6 @@ export default {
 };
 </script>
 <style  scoped>
-#allmap {
-  width: 100%;
-  height: 100%;
-}
 .button-dalod {
   position: absolute;
   top: 55vh;
@@ -318,5 +398,32 @@ export default {
 }
 .choose-item {
   font-size: 25px;
+}
+.img-index {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.index-number {
+  font-family: Yu Gothic Medium;
+  font-style: oblique;
+  font-size: 30px;
+
+}
+.img-infor {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 256px;
+  height: 30px;
+  font-weight: 500;
+  font-family: Microsoft JhengHei UI, sans-serif;
+}
+.custom-pic{
+  width: 256px;
+  height: 256px;
 }
 </style>

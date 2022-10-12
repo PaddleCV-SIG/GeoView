@@ -1,10 +1,7 @@
-
 <script>
-
-const BASEURL = "http://127.0.0.1:5008/"
-
+const BASEURL = "http://"+process.env.VUE_APP_BACKEND_IP+":"+process.env.VUE_APP_BACKEND_PORT+"/"
 export default {
-  BASEURL, // 暴露全局常量
+  BASEURL, 
 };
 </script>
 

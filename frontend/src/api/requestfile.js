@@ -1,5 +1,4 @@
 import axios from "axios"
-import router from '../router'
 
 import global from '@/global'
 export function requestfile(config) {
