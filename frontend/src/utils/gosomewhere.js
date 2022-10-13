@@ -5,24 +5,24 @@ function goDetectChanges() {
         this.$message.success('您已经在该界面了哦')
     } else this.$router.push("detectchanges");
 }
-function goDetectTargets() {
+function goDetectObjects() {
     this.isNavigator = false;
-    if (this.$route.path === "/detecttargets") {
+    if (this.$route.path === "/detectobjects") {
         this.$message.success('您已经在该界面了哦')
-    } else this.$router.push("detecttargets");
+    } else this.$router.push("detectobjects");
 }
-function goClassify() {
+function goSegmentation() {
     this.isNavigator = false;
-    if (this.$route.path === "/classify") {
+    if (this.$route.path === "/segmentation") {
         this.$message.success('您已经在该界面了哦')
-    } else this.$router.push("classify");
+    } else this.$router.push("segmentation");
 }
 
-function goClassifyScenes() {
+function goClassification() {
     this.isNavigator = false;
-    if (this.$route.path === "/classifyscenes") {
+    if (this.$route.path === "/classification") {
         this.$message.success('您已经在该界面了哦')
-    } else this.$router.push("classifyscenes");
+    } else this.$router.push("classification");
 }
 
 function goRestoreImgs() {
@@ -46,4 +46,4 @@ function goHistory() {
 
         });
 }
-export { goDetectChanges, goDetectTargets, goClassify,goClassifyScenes,goRestoreImgs,goOnlineMap,goHistory }
+export { goDetectChanges, goDetectObjects, goSegmentation,goClassification,goRestoreImgs,goOnlineMap,goHistory }

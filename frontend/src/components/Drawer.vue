@@ -37,24 +37,24 @@
           </h3>
         </el-menu-item>
         <el-menu-item
-          index="/detecttargets"
-          @click="goDetectTargets"
+          index="/detectobjects"
+          @click="goDetectObjects"
         >
           <h3>
             <i class="iconfont icon-mubiaojiance" />目标检测
           </h3>
         </el-menu-item>
         <el-menu-item
-          index="/classify"
-          @click="goClassify"
+          index="/segmentation"
+          @click="goSegmentation"
         >
           <h3>
             <i class="iconfont icon-erfenleibianhuajiance16px" />地物分类
           </h3>
         </el-menu-item>
         <el-menu-item
-          index="/classifyscenes"
-          @click="goClassifyScenes"
+          index="/classification"
+          @click="goClassification"
         >
           <h3>
             <i class="iconfont icon-changjingguanli" />场景分类
@@ -66,17 +66,6 @@
         >
           <h3>
             <i class="iconfont icon-jishu" />图像复原
-          </h3>
-        </el-menu-item>
-        <el-menu-item
-          index="/restoreimgs"
-          @click="goRestoreImgs"
-        >
-          <h3>
-            <i
-              class="iconfont icon-jishu"
-              style="font-size: 22px"
-            />图像复原
           </h3>
         </el-menu-item>
         <el-menu-item
@@ -95,9 +84,9 @@
 <script>
 import {
   goDetectChanges,
-  goDetectTargets,
-  goClassify,
-  goClassifyScenes,
+  goDetectObjects,
+  goSegmentation,
+  goClassification,
   goRestoreImgs,
   goOnlineMap
 } from "@/utils/gosomewhere.js";
@@ -122,9 +111,9 @@ export default {
   },
   methods: {
     goDetectChanges,
-    goDetectTargets,
-    goClassify,
-    goClassifyScenes,
+    goDetectObjects,
+    goSegmentation,
+    goClassification,
     goRestoreImgs,
     goOnlineMap,
   },
