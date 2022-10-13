@@ -40,7 +40,6 @@
           :xl="5"
         >
           <div>
-            {{ uploadSrc }}
             <br>
             <el-button
               type="primary"
@@ -88,6 +87,7 @@ import {
   SegmentationUpload,
   detectObjectsUpload,
   classificationUpload,
+  restoreImgsUpload
 } from "@/api/upload";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import { getUploadImg, upload, goCompress } from "@/utils/getUploadImg";
@@ -122,10 +122,6 @@ export default {
     file: {
       type: Object,
       default:()=>{}
-    },
-    length: {
-      type:Number,
-      default:0
     },
   },
   emits: ["finish", "cut-changed",'child-refresh'],
@@ -184,6 +180,7 @@ export default {
     SegmentationUpload,
     detectObjectsUpload,
     classificationUpload,
+    restoreImgsUpload,
     getUploadImg,
     upload,
     goCompress,
@@ -218,29 +215,6 @@ export default {
           this.uploadSrc.list = res.data.data.map((item) => {
             return item.src;
           });
-          if (this.length >= 20) {
-            this.$confirm(
-              "上传图片过多，是否压缩?",
-              "提示",
-              {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning",
-              }
-            )
-              .then(() => {
-                this.historyGetPage(1, 99999, funtype).then((res) => {
-                  this.atchDownload(
-                    res.data.data.map((item) => {
-                      return { after_img: item.after_img, id: item.id };
-                    })
-                  );
-                });
-              })
-              .catch(() => {
-            
-              });
-          }
           if (funtype === "地物分类") {
             this.SegmentationUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
@@ -260,6 +234,16 @@ export default {
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
             this.classificationUpload(this.uploadSrc).then((res) => {
+              this.fileList = [];
+              hideFullScreenLoading("#load");
+              this.$message.success("上传成功！");
+              this.$emit('child-refresh')
+            });
+          }
+          else if(funtype === "图像复原"){
+            delete this.uploadSrc.prehandle
+            delete this.uploadSrc.denoise
+            this.restoreImgsUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               hideFullScreenLoading("#load");
               this.$message.success("上传成功！");

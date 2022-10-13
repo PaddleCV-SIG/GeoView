@@ -403,7 +403,6 @@
         :fileimg="fileimg"
         :funtype="funtype"
         :file="file"
-        :length="afterImg.length"
         :child-prehandle="uploadSrc.prehandle"
         :child-denoise="uploadSrc.denoise"
         :child-model-path="uploadSrc.model_path"
@@ -476,7 +475,6 @@ export default {
     uploadSrc: {
       handler(newVal, oldVal) {
         this.uploadSrc = newVal
-        console.log(this.uploadSrc)
       },
       deep: true,
       immediate: true

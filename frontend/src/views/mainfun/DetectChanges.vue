@@ -1188,7 +1188,7 @@ export default {
                       this.isUpload = true;
                       this.getMore();
                       hideFullScreenLoading("#load");
-                      if (this.afterImg.length >= 20) {
+                      if (this.upload.list.length >= 10) {
                         this.$confirm(
                             "上传图片过多，是否压缩?",
                             "提示",

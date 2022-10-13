@@ -156,7 +156,6 @@
         :fileimg="fileimg"
         :funtype="funtype"
         :file="file"
-        :length="afterImg.length"
         :child_prehandle="uploadSrc.prehandle"
         :child_denoise="uploadSrc.denoise"
         :child-model-path="uploadSrc.model_path"

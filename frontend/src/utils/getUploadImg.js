@@ -101,7 +101,7 @@ function upload(type) {
           this.getMore()
         })
       }
-      if (this.afterImg.length >= 20 && type!=='场景分类') {
+      if (this.uploadSrc.list.length >= 10 && type!=='场景分类') {
         this.$confirm("上传图片过多，是否压缩?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
