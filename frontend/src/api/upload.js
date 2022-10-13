@@ -22,7 +22,7 @@ export function restoreImgsUpload(data) {
     })
 }
 
-export function sceneClassifyUpload(data) {
+export function classificationUpload(data) {
     return request({
         method: 'POST',
         url: '/api/analysis/classification',
@@ -30,14 +30,14 @@ export function sceneClassifyUpload(data) {
     })
 }
 
-export function classifyUpload(data) {
+export function SegmentationUpload(data) {
     return request({
         method: 'POST',
         url: '/api/analysis/semantic_segmentation',
         data,
     })
 }
-export function detectTargetsUpload(data) {
+export function detectObjectsUpload(data) {
     return request({
         method: 'POST',
         url: '/api/analysis/object_detection',
@@ -74,5 +74,12 @@ export function prePhotoHandle(data){
         method:'POST',
         url:'/api/analysis/image_pre',
         data
+    })
+}
+
+export function getCustomModel(model_type){
+    return request({
+        method:'GET',
+        url:`/api/model/list/${model_type}`
     })
 }

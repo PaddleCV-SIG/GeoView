@@ -12,19 +12,11 @@
       </template>
     </Tabinfor>
     <el-divider />
-    <Tabinfor>
-      <template #left>
-        <p>
-          请上传包含<span class="go-bold">图片的文件夹</span><i
-            class="iconfont icon-wenjianjia"
-          />或者<span
-            class="go-bold"
-          >图片</span><i
-            class="iconfont icon-tupiantianjia"
-          />
-        </p>
-      </template>
-    </Tabinfor>
+    <p>
+      请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
+        class="go-bold"
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+    </p>
     <el-row
       type="flex"
       justify="center"
@@ -94,7 +86,21 @@
               </label>
             </p>
           </el-row>
-
+          <el-row justify="center">
+            <div class="custom-model">
+              可选训练模型：
+              <span v-if="modelPathArr.length===0">未检测到模型文件，请查看上传目录是否有误</span>
+              <el-radio
+                v-for="(item,index) in modelPathArr"
+                :key="index"
+                v-model="uploadSrc.model_path"
+                class="choose-item"
+                :label="item.model_path"
+              >
+                {{ item.model_name }}
+              </el-radio>
+            </div>
+          </el-row>
           <div class="handle-button">
             <el-button
               type="primary"
@@ -149,9 +155,9 @@
         :fileimg="fileimg"
         :funtype="funtype"
         :file="file"
-        :length="afterImg.length"
         :child_prehandle="uploadSrc.prehandle"
         :child_denoise="uploadSrc.denoise"
+        :child-model-path="uploadSrc.model_path"
         @cut-changed="notvisible"
         @child-refresh="getMore"
       />
@@ -254,6 +260,7 @@
           </div>
         </el-col>
       </el-row>
+
       <el-row class="swiper-img">
         <div
           v-for="(item, index) in 5"
@@ -273,7 +280,7 @@
   </div>
 </template>
 <script>
-import {createSrc, restoreImgsUpload} from "@/api/upload";
+import {createSrc, restoreImgsUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, goCompress, upload} from "@/utils/getUploadImg";
 import {atchDownload, downloadimgWithWords, getImgArrayBuffer} from "@/utils/download.js";
@@ -312,7 +319,9 @@ export default {
       fileList: [],
       uploadSrc: {
         list: [],
+        model_path:''
       },
+      modelPathArr:[],
       isSliderLocked: false,
       isExist: [],
       onRender: 0,
@@ -333,9 +342,14 @@ export default {
   },
   created() {
     this.getUploadImg("图像复原");
+    this.getCustomModel('image_restoration').then((res)=>{
+      this.modelPathArr = res.data.data
+      this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
+    })
   },
   methods: {
     restoreImgsUpload,
+    getCustomModel,
     historyGetPage,
     createSrc,
     getUploadImg,
@@ -625,20 +639,11 @@ export default {
   justify-content:center;
 }
 .swiper-img {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
   width: 100%;
   margin-top: 30px;
-  overflow: hidden;
-  position: relative;
-  max-height: 280px;
-  min-height: 240px;
-  .swiper-lbtn {
-    opacity: 0.6;
-    left: 0;
-    height: 100%;
-    z-index: 100;
-    position: absolute;
-  }
-
   .img-box {
     flex: 1;
     height: 100%;
@@ -651,5 +656,8 @@ export default {
 }
 .render-border {
   border: var(--theme--color) 0.5rem solid;
+}
+.el-radio /deep/{
+  height: 62px;
 }
 </style>

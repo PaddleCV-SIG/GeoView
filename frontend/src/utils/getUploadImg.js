@@ -70,7 +70,7 @@ function upload(type) {
         return item.src;
       });
       if (type === '地物分类') {
-        this.classifyUpload(this.uploadSrc).then((res) => {
+        this.SegmentationUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
@@ -78,7 +78,7 @@ function upload(type) {
         });
       }
       else if (type === '目标检测') {
-        this.detectTargetsUpload(this.uploadSrc).then((res) => {
+        this.detectObjectsUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
@@ -86,7 +86,7 @@ function upload(type) {
         })
       }
       else if (type === '场景分类') {
-        this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+        this.classificationUpload(this.uploadSrc).then((res) => {
           this.fileList = []
           hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
@@ -101,7 +101,7 @@ function upload(type) {
           this.getMore()
         })
       }
-      if (this.afterImg.length >= 20 && type!=='场景分类') {
+      if (this.uploadSrc.list.length >= 10 && type!=='场景分类') {
         this.$confirm("上传图片过多，是否压缩?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",

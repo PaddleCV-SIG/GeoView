@@ -26,9 +26,10 @@
     <p style="text-decoration: underline">
       <i
         class="iconfont icon-zhuyi"
-      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
+      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据, <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
     </p>
-    <el-card style="border: 4px dashed var(--el-border-color)">
+
+    <el-card style="border: 4px dashed var(--el-border-color);position: relative">
       <div
         v-if="fileList1.length||fileList2.length"
         class="clear-queue"
@@ -41,82 +42,80 @@
           清空图片
         </el-button>
       </div>
-      <el-row
-        :gutter="20"
-        justify="space-evenly"
-      >
-        <el-upload
-          ref="uploadA"
-          v-model:file-list="fileList1"
-          drag
-          action="#"
-          multiple
-          :auto-upload="false"
-          @change="checkFile1"
-        >
-          <i class="iconfont icon-yunduanshangchuan" />
-          <div class="el-upload__text">
-            将文件夹或图片拖到此处，或<em>点击上传</em>
-          </div>
-          <div
-            class="el-upload__tip"
-          >
-            只能上传一张或多张图片，请在下方上传文件夹
-          </div>
-        </el-upload>
-        <el-upload
-          ref="uploadB"
-          v-model:file-list="fileList2"
-          drag
-          action="#"
-          multiple
-          :auto-upload="false"
-          @change="checkFile2"
-        >
-          <i class="iconfont icon-yunduanshangchuan" />
-          <div class="el-upload__text">
-            将文件夹或图片拖到此处，或<em>点击上传</em>
-          </div>
-          <div
-            class="el-upload__tip"
-          >
-            只能上传一张或多张图片，请在下方上传文件夹
-          </div>
-        </el-upload>
-      </el-row>
-      <el-row justify="center">
-        <el-row class="folder-uploadA">
-          <input
-            id="upload-fileA"
-            ref="refFileA"
-            type="file"
-            webkitdirectory
-            directory
+      <div class="upload-box">
+        <div class="upload-item">
+          <el-upload
+            ref="uploadA"
+            v-model:file-list="fileList1"
+            drag
+            action="#"
             multiple
-            @change="uploadFirst"
+            :auto-upload="false"
+            @change="checkFile1"
           >
-          <i
-            class="iconfont icon-wenjianshangchuan"
-            @click="file1Click"
-          >上传文件夹</i>
-        </el-row>
-        <el-row class="folder-uploadB">
-          <input
-            id="upload-fileB"
-            ref="refFileB"
-            type="file"
-            webkitdirectory
-            directory
+            <i class="iconfont icon-yunduanshangchuan" />
+            <div class="el-upload__text">
+              将文件夹或图片拖到此处，或<em>点击上传</em>
+            </div>
+            <div
+              class="el-upload__tip"
+            >
+              只能上传一张或多张图片，请在下方上传文件夹
+            </div>
+          </el-upload>
+          <div>
+            <input
+              id="upload-fileA"
+              ref="refFileA"
+              type="file"
+              webkitdirectory
+              directory
+              multiple
+              @change="uploadFirst"
+            >
+            <i
+              class="iconfont icon-wenjianshangchuan"
+              @click="file1Click"
+            >上传文件夹</i>
+          </div>
+        </div>
+        <div class="upload-item">
+          <el-upload
+            ref="uploadB"
+            v-model:file-list="fileList2"
+            drag
+            action="#"
             multiple
-            @change="uploadSecond"
+            :auto-upload="false"
+            @change="checkFile2"
           >
-          <i
-            class="iconfont icon-wenjianshangchuan"
-            @click="file2Click"
-          >上传文件夹</i>
-        </el-row>
-      </el-row>
-
+            <i class="iconfont icon-yunduanshangchuan" />
+            <div class="el-upload__text">
+              将文件夹或图片拖到此处，或<em>点击上传</em>
+            </div>
+            <div
+              class="el-upload__tip"
+            >
+              只能上传一张或多张图片，请在下方上传文件夹
+            </div>
+          </el-upload>
+          <div>
+            <input
+              id="upload-fileB"
+              ref="refFileB"
+              type="file"
+              webkitdirectory
+              directory
+              multiple
+              @change="uploadSecond"
+            >
+            <i
+              class="iconfont icon-wenjianshangchuan"
+              @click="file2Click"
+            >上传文件夹</i>
+          </div>
+        </div>
+      </div>
       <el-row
         justify="center"
         align="middle"
@@ -175,7 +174,21 @@
           </label>
         </p>
       </el-row>
-
+      <el-row justify="center">
+        <div class="custom-model">
+          可选训练模型：
+          <span v-if="modelPathArr.length===0">未检测到模型文件，请查看上传目录是否有误</span>
+          <el-radio
+            v-for="(item,index) in modelPathArr"
+            :key="index"
+            v-model="upload.model_path"
+            class="choose-item"
+            :label="item.model_path"
+          >
+            {{ item.model_name }}
+          </el-radio>
+        </div>
+      </el-row>
       <el-row
         type="flex"
         justify="center"
@@ -594,6 +607,7 @@
             </div>
           </div>
         </el-col>
+
         <el-col
           v-show="preMode===2"
           :xs="8"
@@ -838,6 +852,7 @@ import {
   detectChangesUpload,
   holeHandle,
   histogramUpload,
+  getCustomModel
 } from "@/api/upload";
 import {
   downloadimgWithWords,
@@ -926,8 +941,9 @@ export default {
         ],
         prehandle: 0,
         denoise: 0,
+        model_path:''
       },
-
+      modelPathArr:[],
       //直方图处理
       uploadSrc3: [],
       uploadSrc4: [],
@@ -979,12 +995,17 @@ export default {
   },
   created() {
     this.getMore();
+    this.getCustomModel('change_detector').then((res)=>{
+      this.modelPathArr = res.data.data
+      this.upload.model_path = this.modelPathArr[0]?.model_path
+    })
   },
 
   methods: {
     downloadimgWithWords,
     historyGetPage,
     detectChangesUpload,
+    getCustomModel,
     createSrc,
     getImgArrayBuffer,
     atchDownload,
@@ -1167,7 +1188,7 @@ export default {
                       this.isUpload = true;
                       this.getMore();
                       hideFullScreenLoading("#load");
-                      if (this.afterImg.length >= 20) {
+                      if (this.upload.list.length >= 10) {
                         this.$confirm(
                             "上传图片过多，是否压缩?",
                             "提示",
@@ -1710,12 +1731,11 @@ export default {
   border-radius: 2px !important;
 }
 .swiper-img {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
   width: 100%;
   margin-top: 30px;
-  overflow: hidden;
-  position: relative;
-  max-height: 280px;
-  min-height: 240px;
   .img-box {
     flex: 1;
     height: 100%;
@@ -1778,9 +1798,9 @@ export default {
   margin-bottom: 10px;
 }
 .clear-queue {
-  position: absolute;
   left: 0;
-  top: 10%;
+  position: absolute;
+  top: 20%;
   z-index: 100;
 }
 .render-border {
@@ -1902,5 +1922,19 @@ export default {
 }
 .active-aurora {
   background-image: linear-gradient(#011142, #00bbc9 100%);
+}
+.el-radio /deep/{
+  height: 62px;
+}
+.folder-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.upload-box{
+  display: flex;
+  flex-direction:row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 </style>

@@ -1,9 +1,10 @@
 .icon-wenjianshangchuan {
+    text-align: center;
     font-size: 20px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin: 20px 0;
     transition: all 0.5s;
     color: var(--theme--color);
+    display: block;
 }
 .icon-wenjianshangchuan:hover {
     color: var(--theme--color);
@@ -93,4 +94,10 @@
 }
 .icon-caidan{
     margin-right:30px;font-size:32px
+}
+.icon-fuyuan{
+    font-size: 23px;
+}
+.icon-zidingyi{
+    color: var(--theme--color);
 }

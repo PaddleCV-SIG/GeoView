@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const Home = () => import('@/views/Home.vue')
 const DetectChanges = () => import('@/views/mainfun/DetectChanges.vue')
-const DetectTargets = () => import('@/views/mainfun/DetectTargets.vue')
-const Classify = () => import('@/views/mainfun/Classify.vue')
-const ClassifyScenes = ()=> import('@/views/mainfun/ClassifyScenes')
+const DetectObjects = () => import('@/views/mainfun/DetectObjects.vue')
+const Segmentation = () => import('@/views/mainfun/Segmentation.vue')
+const Classification = ()=> import('@/views/mainfun/Classification')
 const RestoreImgs = ()=> import('@/views/mainfun/RestoreImgs')
 const OnlineMap = () => import('@/views/mainfun/OnlineMap.vue')
 const History = () => import('@/views/history/History.vue')
@@ -16,31 +16,31 @@ const routes = [
   },
   {
     path: '/home',
-    name: 'home',
+    name: 'Home',
     component: Home,
     children: [
       {
         path: '/detectchanges',
-        name: 'detectchanges',
+        name: 'Detectchanges',
         component: DetectChanges,
 
       }, {
-        path: '/detecttargets',
-        name: 'detecttargets',
-        component: DetectTargets
+        path: '/detectobjects',
+        name: 'Detectobjects',
+        component: DetectObjects
       },  {
-        path: '/classify',
-        name: 'classify',
-        component: Classify
+        path: '/segmentation',
+        name: 'Segmentation',
+        component: Segmentation
       },
       {
-        path: '/classifyscenes',
-        name:'classifyscenes',
-        component:ClassifyScenes
+        path: '/classification',
+        name:'Classification',
+        component:Classification
       },
       {
         path:'/restoreimgs',
-        name:'restoreimgs',
+        name:'Restoreimgs',
         component:RestoreImgs
       },
       {
