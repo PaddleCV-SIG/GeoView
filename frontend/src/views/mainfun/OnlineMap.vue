@@ -158,7 +158,7 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {classifyUpload, createSrc, detectTargetsUpload, sceneClassifyUpload,} from "@/api/upload";
+import {SegmentationUpload, createSrc, detectObjectsUpload, classificationUpload ,} from "@/api/upload";
 import {hideFullScreenLoading, showFullScreenLoading} from "@/utils/loading";
 import {historyGetPage} from "@/api/history";
 
@@ -259,9 +259,9 @@ export default {
   },
   methods: {
     createSrc,
-    classifyUpload,
-    detectTargetsUpload,
-    sceneClassifyUpload,
+    SegmentationUpload,
+    detectObjectsUpload,
+    classificationUpload,
     historyGetPage,
     goUpload(type) {
       showFullScreenLoading("#load");
@@ -275,7 +275,7 @@ export default {
         if (type === "目标检测") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.detectTargetsUpload(this.uploadSrc).then((res) => {
+          this.detectObjectsUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;
@@ -296,7 +296,7 @@ export default {
         if (type === "地物分类") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.classifyUpload(this.uploadSrc).then((res) => {
+          this.SegmentationUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;
@@ -317,7 +317,7 @@ export default {
         if (type === "场景分类") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.sceneClassifyUpload(this.uploadSrc).then((res) => {
+          this.classificationUpload(this.uploadSrc).then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;

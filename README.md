@@ -97,3 +97,7 @@ npm install
 #### 启动Web前端
 
 运行`npm run serve`，即可启动Web前端。启动后，可在浏览器中输入`http://127.0.0.1:3000`访问系统。
+
+## 致谢
+
+特别感谢来自开源社区的开发者对本项目的贡献：（以下排名不分先后）[曹凌铭](https://github.com/terayco)，[卢利栋](https://github.com/jscslld)，[易博坤](https://github.com/yibaikuai)。
