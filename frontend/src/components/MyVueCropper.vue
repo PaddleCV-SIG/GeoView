@@ -90,7 +90,7 @@ import {
   restoreImgsUpload
 } from "@/api/upload";
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
-import { getUploadImg, upload, goCompress } from "@/utils/getUploadImg";
+import { upload, goCompress } from "@/utils/getUploadImg";
 import { getImgArrayBuffer, atchDownload } from "@/utils/download";
 import { historyGetPage } from "@/api/history";
 
@@ -181,7 +181,6 @@ export default {
     detectObjectsUpload,
     classificationUpload,
     restoreImgsUpload,
-    getUploadImg,
     upload,
     goCompress,
     getImgArrayBuffer,

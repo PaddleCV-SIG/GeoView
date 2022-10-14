@@ -163,75 +163,7 @@
         @child-refresh="getMore"
       />
     </el-dialog>
-
-    <el-row>
-      <el-col>
-        <el-card style="margin-bottom: 10px">
-          <el-empty
-            v-if="beforeImg.length === 0"
-            :image-size="200"
-          />
-          <el-row
-            :gutter="10"
-            justify="center"
-          >
-            <el-col
-              :lg="5"
-              :xl="5"
-            >
-              <div
-                v-for="(item,index) in scene"
-                :key="index"
-                class="img-index hidden-sm-and-down"
-                :style="{ height: 301 + 'px' }"
-              >
-                <div>第<span class="index-number">{{ index + 1 }}</span>组</div>
-              </div>
-            </el-col>
-            <el-col
-              :xs="20"
-              :sm="10"
-              :md="6"
-              :lg="6"
-              :xl="6"
-            >
-              <div
-                v-for="(item, index) in beforeList"
-                :key="index"
-              >
-                <el-image
-                  ref="tableTab"
-                  :src="beforeList[index]"
-                  :fit="fit"
-                  :lazy="true"
-                  class="custom-pic"
-                  :preview-src-list="[beforeList[index]]"
-                  :preview-teleported="true"
-                />
-                <div class="img-infor">
-                  <span>原图</span>
-                </div>
-                <span class="index-number hidden-md-and-up">{{ sceneKey[index][0] }}:<span>{{ scene[index][sceneKey[index][0]] }}</span></span>
-              </div>
-            </el-col>
-            <el-col
-              :lg="5"
-              :xl="5"
-            >
-              <div
-                v-for="(item,index) in scene"
-                :key="index"
-                class="img-index hidden-sm-and-down"
-                :style="{ height: 301 + 'px' }"
-              >
-                <span class="index-number ">{{ Object.keys(item)[0] }}:{{ item[Object.keys(item)[0]] }}</span>
-              </div>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-    </el-row>
-    
+    <ImgShow :img-arr="imgArr" />
     <Bottominfor />
   </div>
 </template>
@@ -239,6 +171,7 @@
 import {createSrc, classificationUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, upload} from "@/utils/getUploadImg";
+import ImgShow from '@/components/ImgShow'
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
 import MyVueCropper from "@/components/MyVueCropper";
@@ -249,6 +182,7 @@ export default {
     Tabinfor,
     Bottominfor,
     MyVueCropper,
+    ImgShow
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -281,6 +215,7 @@ export default {
       scene:[],
       //构成场景键数组的数组，[['a'],['b'],['c']]
       sceneKey:[],
+      imgArr:[]
     };
   },
   watch:{

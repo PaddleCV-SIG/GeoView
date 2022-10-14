@@ -343,9 +343,7 @@
       />
     </el-dialog>
     <ImgShow
-      :before-img="beforeImg"
-      :after-img="afterImg"
-      :funtype="funtype"
+      :img-arr="imgArr"
     />
     <Bottominfor />
   </div>
@@ -401,7 +399,8 @@ export default {
         list:[],
         prehandle:0,
         type:4
-      }
+      },
+      imgArr:[]
     };
   },
   watch:{
@@ -480,10 +479,6 @@ export default {
     select() {
       this.isNotCut = this.$refs.cut.checked;
     },
-    goRenderThis() {},
-    goRenderThese() {},
- 
-    setNormalWay(){}
   },
 };
 </script>

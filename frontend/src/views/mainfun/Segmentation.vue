@@ -411,9 +411,7 @@
       />
     </el-dialog>
     <ImgShow
-      :before-img="beforeImg"
-      :after-img="afterImg"
-      :funtype="funtype"
+      :img-arr="imgArr"
     />
     <Bottominfor />
   </div>
@@ -469,6 +467,7 @@ export default {
         prehandle: 0,
         type: 4
       },
+      imgArr:[]
     };
   },
   watch: {
