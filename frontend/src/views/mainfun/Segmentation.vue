@@ -411,9 +411,7 @@
       />
     </el-dialog>
     <ImgShow
-      :before-img="beforeImg"
-      :after-img="afterImg"
-      :funtype="funtype"
+      :img-arr="imgArr"
     />
     <Bottominfor />
   </div>
@@ -458,9 +456,7 @@ export default {
       funtype: "地物分类",
       scrollTop: "",
       fit: "fill",
-      beforeImg: [],
-      afterImg: [],
-      afterList: [],
+
       uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
       modelPathArr:[],
 
@@ -469,6 +465,7 @@ export default {
         prehandle: 0,
         type: 4
       },
+      imgArr:[]
     };
   },
   watch: {

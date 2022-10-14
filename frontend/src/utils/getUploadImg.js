@@ -6,11 +6,17 @@ function getUploadImg(type) {
   showFullScreenLoading("#load");
   historyGetPage(1, 20, type).then((res) => {
     hideFullScreenLoading("#load")
+    this.imgArr = res.data.data.forEach((item)=>{
+      item['before_img1']=global.BASEURL+item.before_img1
+      item['before_img'] = global.BASEURL+item.before_img
+      item['after_img'] = global.BASEURL+item.after_img
+    })
+    this.imgArr = res.data.data
     this.beforeImg = res.data.data.map((item) => {
-      return { before_img: global.BASEURL + item.before_img };
+      return { before_img:  item.before_img };
     });
     this.beforeList=res.data.data.map((item)=>{
-      return global.BASEURL + item.before_img
+      return  item.before_img
     })
     if (type === '变化检测') {
       this.beforeImg1 = res.data.data.map((item) => {
@@ -21,15 +27,11 @@ function getUploadImg(type) {
         this.setNormalWay()
       }
     }
-    if (type === '场景分类') {
-      this.scene = res.data.data.map(item=>item.data)     //场景键值对数组,[{'a':0.8},{‘b’:0.6},{'c':0.8}]
-      this.sceneKey = this.scene.map(item=>Object.keys(item))  //构成场景键数组的数组，[['a'],['b'],['c']]
-    }
     this.afterImg = res.data.data.map((item) => {
-      return { after_img: global.BASEURL + item.after_img, id: item.id };
+      return { after_img:  item.after_img, id: item.id };
     });
     this.afterList = res.data.data.map((item) => {
-      return global.BASEURL + item.after_img
+      return  item.after_img
     });
     if(type === '图像复原') {
       this.idList = res.data.data.map((item) => {
@@ -43,8 +45,8 @@ function getUploadImg(type) {
   })
 }
 
-function goCompress(type) {
-  this.historyGetPage(1, 99999, type).then((res) => {
+function goCompress(type,num) {
+  this.historyGetPage(1, num, type).then((res) => {
     this.atchDownload(
         res.data.data.map((item) => {
           return { after_img: item.after_img, id: item.id };
@@ -110,7 +112,7 @@ function upload(type) {
             .then(() => {
 
               showFullScreenLoading('#load','压缩中')
-              this.goCompress(type)
+              this.goCompress(type,this.uploadSrc.list.length)
             }).catch(() => {
 
         })
