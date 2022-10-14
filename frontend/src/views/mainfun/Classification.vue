@@ -201,20 +201,14 @@ export default {
       funtype: "场景分类",
       scrollTop: "",
       fit: "fill",
-      beforeImg: [],
-      beforeList:[],
-      afterList:[],   //未使用到，防止在getUploadImg.js里报错
-      afterImg: [],
+
+
       fileList: [],
       uploadSrc: {
         list: [],
         model_path:''
       },
       modelPathArr:[],
-      //场景键值对数组,[{'a':0.8},{},{}]
-      scene:[],
-      //构成场景键数组的数组，[['a'],['b'],['c']]
-      sceneKey:[],
       imgArr:[]
     };
   },

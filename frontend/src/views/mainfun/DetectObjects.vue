@@ -385,8 +385,7 @@ export default {
       funtype: "目标检测",
       scrollTop: "",
       fit: "fill",
-      beforeImg: [],
-      afterImg: [],
+
       fileList: [],
       uploadSrc: {
         list: [],
