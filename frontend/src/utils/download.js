@@ -1,9 +1,9 @@
 //https://blog.csdn.net/tattoo_jie/article/details/122251905压缩打包功能
 import JSZIP from "jszip"
 import FileSaver from 'file-saver'
-import {  showFullScreenLoading, hideFullScreenLoading} from "@/utils/loading";
 
 import global from '@/global'
+import {hideFullScreenLoading} from "@/utils/loading";
 function downloadimgWithWords(index, src, funtype) {
   fetch(src)
     .then((response) => response.blob())//链式编程
@@ -64,16 +64,16 @@ function atchDownload(compressImg) {
   Promise.all(promises)
     .then(() => {
       zip.generateAsync({ type: "blob" }).then((content) => {
- 
+
         // 生成Blob二进制流
         FileSaver.saveAs(content, "打包图片"); // 利用file-saver保存文件  自定义文件名
         _this.$message.success("压缩完成！");
-        hideFullScreenLoading("#load")
+        hideFullScreenLoading()
       });
     })
     .catch((res) => {
+        hideFullScreenLoading()
       _this.$message.error('压缩失败！')
-        hideFullScreenLoading("body")
     });
 }
 

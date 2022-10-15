@@ -846,7 +846,6 @@
 
 
 <script>
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import {
   createSrc,
   detectChangesUpload,
@@ -998,7 +997,7 @@ export default {
     this.getCustomModel('change_detector').then((res)=>{
       this.modelPathArr = res.data.data
       this.upload.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
 
   methods: {
@@ -1119,7 +1118,6 @@ export default {
       ) {
         this.$message.error("请按照要求上传文件夹或图片！");
       } else {
-        showFullScreenLoading("#load");
         let formData1 = new FormData();
         let formData2 = new FormData();
         for (const item of this.fileList1) {
@@ -1137,14 +1135,14 @@ export default {
             this.createSrc(formData1).then((res) => {
               this.uploadSrc1 = res.data.data;
               resolve();
-            });
+            }).catch((rej)=>{})
           }, 200);
         });
         let upload2 = new Promise((resolve, reject) => {
           this.createSrc(formData2).then((res) => {
             this.uploadSrc2 = res.data.data;
             resolve();
-          });
+          }).catch((rej)=>{})
         });
         Promise.all([upload1, upload2])
             .then((val) => {
@@ -1171,7 +1169,6 @@ export default {
                 this.$message.error(
                     "检测到命名对应失败的图片，请检查您的文件命名"
                 );
-                hideFullScreenLoading("#load");
               } else {
                 this.getList(this.uploadSrc);
                 this.detectChangesUpload(this.upload)
@@ -1187,7 +1184,6 @@ export default {
                       this.$message.success("上传成功");
                       this.isUpload = true;
                       this.getMore();
-                      hideFullScreenLoading("#load");
                       if (this.upload.list.length >= 10) {
                         this.$confirm(
                             "上传图片过多，是否压缩?",
@@ -1204,14 +1200,10 @@ export default {
                             .catch(() => {});
                       }
                     })
-                    .catch((rej) => {
-                      hideFullScreenLoading("#load");
-                    });
+                    .catch((rej) => {});
               }
             })
-            .catch((rej) => {
-              hideFullScreenLoading("#load");
-            });
+            .catch((rej) => {});
       }
     },
     getList(beforeData) {
@@ -1245,13 +1237,11 @@ export default {
               return { after_img: item.after_img, id: item.id };
             })
         );
-      });
+      }).catch((rej)=>{})
     },
     getMore() {
-      showFullScreenLoading("body");
       this.historyGetPage(1, 20, "变化检测")
           .then((res) => {
-            hideFullScreenLoading("body");
             this.beforeImg = res.data.data.map((item) => {
               return global.BASEURL + item.before_img;
             });
@@ -1299,9 +1289,7 @@ export default {
               this.setNormalWay(this.onRender);
             }
           })
-          .catch((rej) => {
-            hideFullScreenLoading("body");
-          });
+          .catch((rej) => {});
     },
     uploadFirst() {
       this.checkFile1(...this.$refs.refFileA.files);
@@ -1370,7 +1358,7 @@ export default {
                 return global.BASEURL + item.src;
               });
               resolve();
-            });
+            }).catch((rej)=>{})
           });
           let upload4 = new Promise((resolve, reject) => {
             this.createSrc(formData2).then((res) => {
@@ -1379,7 +1367,7 @@ export default {
                 return global.BASEURL + item.src;
               });
               resolve();
-            });
+            }).catch((rej)=>{})
           });
           Promise.all([upload3, upload4]).then((val) => {
             this.histogramSrc = this.uploadSrc3.concat(this.uploadSrc4);
@@ -1407,7 +1395,6 @@ export default {
               this.$message.error(
                   "检测到命名对应失败的图片，请检查您的文件命名"
               );
-              hideFullScreenLoading("#load");
               this.Img1 = [];
               this.Img3 = [];
             } else {
@@ -1417,9 +1404,9 @@ export default {
                   return global.BASEURL + item;
                 });
                 this.Img2 = this.Img2.splice(0, 3);
-              });
+              }).catch((rej)=>{})
             }
-          });
+          }).catch((rej)=>{})
         }
       } else {
         this.$message.success("取消直方图处理");
@@ -1493,7 +1480,7 @@ export default {
                 return global.BASEURL + item.src;
               });
               resolve();
-            });
+            }).catch((rej)=>{})
           });
           let upload2 = new Promise((resolve, reject) => {
             this.createSrc(formData2).then((res) => {
@@ -1502,7 +1489,7 @@ export default {
                 return global.BASEURL + item.src;
               });
               resolve();
-            });
+            }).catch((rej)=>{})
           });
           Promise.all([upload1, upload2]).then((val) => {
             this.sharpenSrc = this.sharpenSrc1.concat(this.sharpenSrc2);
@@ -1528,7 +1515,6 @@ export default {
               this.$message.error(
                   "检测到命名对应失败的图片，请检查您的文件命名"
               );
-              hideFullScreenLoading("#load");
               this.Img1 = [];
               this.Img3 = [];
             } else {
@@ -1543,7 +1529,7 @@ export default {
                 });
               });
             }
-          });
+          }).catch((rej)=>{})
         }
       }
     },
@@ -1602,7 +1588,7 @@ export default {
         this.hole.id = this.idList[this.currentIndex];
         this.holeHandle(this.hole).then((res) => {
           this.getMore();
-        });
+        }).catch((rej)=>{})
       }
     },
     dealExample() {
