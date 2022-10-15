@@ -1,95 +1,67 @@
 <template>
-  <el-row>
-    <el-col>
-      <el-card style="margin-bottom: 10px">
-        <el-empty
-          v-if="beforeImg.length === 0"
-          :image-size="200"
-        />
-        <el-row :gutter="10">
-          <el-col
-            :lg="5"
-            :xl="5"
-          >
-            <div
-              v-for="index in beforeList.length"
-              :key="index"
-              class="img-index hidden-sm-and-down"
-            >
-              第<span class="index-number">{{ index }}</span>组
-            </div>
-          </el-col>
-          <el-col
-            :xs="20"
-            :sm="10"
-            :md="6"
-            :lg="6"
-            :xl="6"
-          >
-            <div
-              v-for="(item, index) in beforeList"
-              :key="index"
-              style="position: relative;"
-            >
-              <el-image
-                ref="tableTab"
-                :src="beforeList[index]"
-                :fit="fit"
-                :lazy="true"
-                :preview-src-list="[beforeList[index]]"
-                :preview-teleported="true"
-              />
-         
-              <div class="img-infor">
-                <span>原图</span>
-              </div>
-            </div>
-          </el-col>
-          <el-col
-            :xs="1"
-            :sm="1"
-            :md="2"
-            :lg="2"
-            :xl="2"
+  <el-card style="margin-bottom: 10px">
+    <el-empty
+      v-if="childImgArr.length === 0"
+      :image-size="200"
+    />
+    <div class="img-display-box">
+      <div
+        v-for="(item,index) in childImgArr"
+        :key="index"
+        class="img-display-item"
+      >
+        <el-divider class="img-divider">
+          第<span class="index-number">{{ item.id }}</span>组
+        </el-divider>
+        <div>
+          <el-image
+            ref="tableTab"
+            class="img-display"
+            :src="item.before_img"
+            :fit="fit"
+            :lazy="true"
+            :preview-src-list="[item.before_img]"
+            :preview-teleported="true"
           />
-          <el-col
-            :xs="20"
-            :sm="10"
-            :md="6"
-            :lg="6"
-            :xl="6"
-          >
-            <div
-              v-for="(item, index) in afterList"
-              :key="index"
-              style="position: relative"
-            >
-              <el-image
-                ref="tableTab"
-                :src="afterList[index]"
-                :fit="fit"
-                :lazy="true"
-                :preview-src-list="[afterList[index]]"
-                :preview-teleported="true"
-              />
-              <div class="img-infor">
-                <span>预测结果</span>
-                <span
-                  @click="
-                    downloadimgWithWords(
-                      index + 1,
-                      afterList[index],
-                      `${funtype}结果图.png`
-                    )
-                  "
-                ><i class="iconfont icon-xiazai" /></span>
-              </div>
+         
+          <div class="img-infor">
+            <span>原图</span>
+          </div>
+        </div>
+        <div>
+          <div v-if="item.type!=='场景分类'">
+            <el-image
+              ref="tableTab"
+              class="img-display"
+              :src="item.after_img"
+              :fit="fit"
+              :lazy="true"
+              :preview-src-list="[item.after_img]"
+              :preview-teleported="true"
+            />
+            <div class="img-infor">
+              <span>预测结果</span>
+              <span
+                @click="
+                  downloadimgWithWords(
+                    item.id,
+                    item.after_img,
+                    `${item.type}结果图.png`
+                  )
+                "
+              ><i class="iconfont icon-xiazai" /></span>
             </div>
-          </el-col>
-        </el-row>
-      </el-card>
-    </el-col>
-  </el-row>
+          </div>
+          <div
+            v-else
+            class="img-index"
+          >
+            <span class="index-number ">{{ Object.keys(item.data)[0] }}:{{ item.data[Object.keys(item.data)] }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </el-card>
 </template>
 
 <script>
@@ -98,56 +70,24 @@ import { downloadimgWithWords } from "@/utils/download.js";
 export default {
   name: "Imgshow",
   props: {
-    beforeImg: {
+    imgArr:{
       type:Array,
-      default() {
-        return [];
-      }
-    },
-    afterImg: {
-      type:Array,
-      default() {
-        return [];
-      }
-    },
-    funtype: {
-      type:String,
-      default() {
-        return '';
+      default(){
+        return []
       }
     },
   },
   data() {
     return {
-      indexHeight:'',
-      beforeList: [],
-      afterList: [],
       fit: "fill",
+      childImgArr:[]
     };
   },
-  created() {
-        if(this.funtype === '地物分类'){
-      this.indexHeight = 19
-    }
-    if(this.funtype === '目标检测'){
-      this.indexHeight = 23.4375
-    }
-  },
   mounted() {
-      this.beforeList = this.beforeImg.map((item) => {
-        return item.before_img;
-      });
-      this.afterList = this.afterImg.map((item) => {
-        return item.after_img;
-      });
+    this.childImgArr = this.imgArr
   },
   updated() {
-      this.beforeList = this.beforeImg.map((item) => {
-        return item.before_img;
-      });
-      this.afterList = this.afterImg.map((item) => {
-        return item.after_img;
-      });
+    this.childImgArr = this.imgArr
   },
   methods: {
     downloadimgWithWords,
@@ -158,13 +98,6 @@ export default {
 <style scoped lang="less">
 * {
   font-family: SimHei sans-serif;
-}
-
-.img-index {
-  text-align: center;
-  align-content: center;
-  height: 376px;
-  line-height: 376px
 }
 .index-number {
   font-family: Yu Gothic Medium;
@@ -179,8 +112,31 @@ export default {
   margin-top: 5px;
   margin-bottom: 10px;
   height: 30px;
+  line-height: 30px;
   font-weight: 500;
   font-family: Microsoft JhengHei UI, sans-serif;
 }
-
+.img-display-box{
+  display: flex;
+  flex-direction: column;
+  .img-display-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    .img-index{
+      line-height: 21rem;
+    }
+  .img-display{
+    width:21rem;
+    height: 21rem;
+  }
+    .img-divider{
+      align-items: center;
+    }
+  }
+}
+.el-divider /deep/{
+  background-color: white;
+}
 </style>

@@ -1199,7 +1199,7 @@ export default {
                             }
                         )
                             .then(() => {
-                              this.goCompress();
+                              this.goCompress(this.upload.list.length);
                             })
                             .catch(() => {});
                       }
@@ -1237,9 +1237,9 @@ export default {
 
       this.upload.list = afterData;
     },
-    goCompress() {
-      this.$message.success("正在将所有图片下载压缩");
-      this.historyGetPage(1, 9999, "变化检测").then((res) => {
+    goCompress(num) {
+      this.$message.success("正在下载压缩");
+      this.historyGetPage(1, num, "变化检测").then((res) => {
         this.atchDownload(
             res.data.data.map((item) => {
               return { after_img: item.after_img, id: item.id };

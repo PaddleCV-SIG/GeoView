@@ -259,10 +259,6 @@ export default {
   color: rgb(140, 157, 182)
 }
 
-.el-divider__text {
-  background-color: rgb(247, 246, 242) !important;
-}
-
 #platform-title {
   position: relative;
   font-size: 20px;
@@ -286,6 +282,9 @@ export default {
   left: 7%;
   right: 7%;
   width: 85%;
+}
+.el-menu .el-divider__text{
+  background-color: rgb(247,246,242);
 }
 </style>
  
