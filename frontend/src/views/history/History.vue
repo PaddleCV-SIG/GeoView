@@ -523,7 +523,7 @@ export default {
   z-index: 100;
   background: rgb(252, 252, 252);
   color: #000;
-  top: 350px;
+  top: 250px;
   right: 0;
   width: 34px;
   height: 120px;

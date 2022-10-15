@@ -1,5 +1,4 @@
 <template>
-  <Drawer :active-index="activeIndex" />
   <el-container>
     <el-aside width="auto">
       <AsideVue
@@ -46,7 +45,6 @@
 import "@/assets/css/app.css";
 import AsideVue from "@/components/AsideVue";
 import Tablogin from "@/components/Tablogin";
-import Drawer from "@/components/Drawer.vue";
 import BackTop from "@/components/BackTop";
 
 export default {
@@ -54,7 +52,6 @@ export default {
   components: {
     AsideVue,
     Tablogin,
-    Drawer,
     BackTop,
   },
   data() {
