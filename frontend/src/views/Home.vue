@@ -24,7 +24,7 @@
             mode="out-in"
           >
             <keep-alive
-              include="Detectobjects,Detectchanges,Segmentation,Classification,Restoreimgs"
+              include="Detectobjects,Segmentation,Classification,Restoreimgs"
             >
               <component :is="Component" />
             </keep-alive>

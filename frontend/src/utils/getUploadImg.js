@@ -18,15 +18,6 @@ function getUploadImg(type) {
     this.beforeList=res.data.data.map((item)=>{
       return  item.before_img
     })
-    if (type === '变化检测') {
-      this.beforeImg1 = res.data.data.map((item) => {
-        return { before_img1: global.BASEURL + item.before_img1 };
-      });
-      this.checkUpload();
-      if(!this.isUpload){
-        this.setNormalWay()
-      }
-    }
     this.afterImg = res.data.data.map((item) => {
       return { after_img:  item.after_img, id: item.id };
     });

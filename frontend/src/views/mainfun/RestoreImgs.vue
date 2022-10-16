@@ -15,7 +15,7 @@
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
-      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">image_restoration文件夹</span>
     </p>
     <el-row
       type="flex"
