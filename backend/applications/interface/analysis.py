@@ -115,7 +115,6 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
             data=data,
             checked=str(step1) + "," + str(step2))
         i += 1
-        pass
     print("变化检测----------------->end")
 
 
@@ -125,8 +124,7 @@ def hole_handle(data_path, out_dir, names):
     res = handle(fun_type_8, names, data_path, out_dir)
     # 4.检测渲染
     res1 = handle(fun_type_6, res, out_dir, out_dir)
-    return generate_url + res[0], json.dumps(res1[0])
-    pass
+    return generate_url + res[0], res1[0]
 
 
 def url_handle(imgs):
@@ -134,7 +132,6 @@ def url_handle(imgs):
     for pair in imgs:
         imgs[j] = img_url_handle(pair)
         j += 1
-    pass
 
 
 def object_detection(model_path, data_path, out_dir, names, step1, step2,
@@ -178,7 +175,6 @@ def object_detection(model_path, data_path, out_dir, names, step1, step2,
             pic2="",
             data="",
             checked=str(step1) + "," + str(step2))
-        pass
     print("目标检测----------------->end")
 
 
@@ -222,7 +218,6 @@ def terrain_classification(model_path, data_path, out_dir, names, step1, step2,
             pic2="",
             data="",
             checked=str(step1) + "," + str(step2))
-        pass
     print("地物分类----------------->end")
 
 
@@ -249,7 +244,6 @@ def classification(model_path, data_path, names, type):
         for j in range(0, len(result[i]["label_names_map"])):
             ret[result[i]["label_names_map"][j]] = result[i]["scores_map"][j]
         save_analysis(type, first_, "", pic2="", data=json.dumps(ret))
-        pass
     print("场景分类----------------->end")
 
 
@@ -274,7 +268,6 @@ def image_restoration(model_path, data_path, out_dir, names, type_):
         first_ = up_url + pair
         retPic = retPics[i]
         save_analysis(type_, first_, retPic, pic2="", data="")
-        pass
     print("图像复原----------------->end")
 
 
@@ -317,5 +310,4 @@ def handle(fun_type, imgs, src_dir, save_dir):
         temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:
         temps = hole_fill(src_dir, save_dir, imgs)
-        pass
     return temps
