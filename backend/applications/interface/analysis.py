@@ -1,5 +1,8 @@
 import copy
 import json
+import os
+
+import cv2
 
 from applications.common.path_global import fun_type_1, fun_type_2, fun_type_3, fun_type_4, fun_type_5, \
     fun_type_6, fun_type_7, generate_url, fun_type_8, up_url
@@ -19,6 +22,8 @@ from applications.interface import classification as C
 from applications.interface import object_detection as OD
 from applications.interface import semantic_segmentation as SS
 from applications.interface import image_restoration as IR
+from applications.interface.compute_variation import compute_variation
+from applications.interface.draw_mask import draw_masks
 from applications.models.analysis import Analysis
 
 
@@ -82,9 +87,9 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         pair["second"] = resizes1[i]
         i += 1
     # 3.检测对比，带地址的文件名，纯文件名
-    retPics, temps1 = CD.execute(model_path, data_path, out_dir, names)
+    retPics, filenames = CD.execute(model_path, data_path, out_dir, names)
     # 4.检测渲染
-    res = handle(fun_type_6, temps1, out_dir, out_dir)
+    res = handle(fun_type_6, filenames, out_dir, out_dir)
     # 5.入库
     i = 0
     for pair in temp_names:
@@ -92,6 +97,15 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         first_ = up_url + resizes[i]
         second_ = pair['second']
         retPic = retPics[i]
+        mask, count = draw_masks(os.path.join(out_dir, filenames[i]))
+        cv2.imwrite(
+            os.path.join(out_dir,
+                         os.path.splitext(filenames[i])[0] + "_mask.png"), mask)
+        res[i]["mask"] = generate_url + os.path.splitext(filenames[i])[
+            0] + "_mask.png"
+        res[i]["count"] = count
+        res[i]["fractional_variation"] = compute_variation(
+            os.path.join(out_dir, filenames[i]))
         data = json.dumps(res[i])
         save_analysis(
             type_,
