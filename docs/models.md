@@ -12,4 +12,15 @@
  - 场景分类：classification
  - 图像复原: image_restoration
  ## 注意事项：用户应将模型放在一个文件夹中，之后再将此文件夹放在上述文件夹下。
- 以下是实例示范，将用于变化检测的bit模型放在change_detecion文件夹下
+ 以下是实例示范，将用于变化检测的bit模型放在change_detecion文件夹下(bit_256x256为自定义名称，此处对文件夹名称没有限制)
+  <p align="center">
+    <img src="../images/model1.png" align="middle" width = "600" />
+  </p>
+ 用户自定义的模型文件夹中应包含如下模型文件：
+  <p align="center">
+    <img src="../images/model2.png" align="middle" width = "600" />
+  </p>
+ 在放置好所有模型文件后，系统将自动检测，之后用户便可选择模型进行预测
+  <p align="center">
+    <img src="../images/model3.png" align="middle" width = "600" />
+  </p>
