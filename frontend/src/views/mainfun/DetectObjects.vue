@@ -168,7 +168,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="upload('目标检测')"
+              @click="upload('目标检测','object_detection')"
             >
               开始处理
             </el-button>
@@ -350,7 +350,7 @@
 </template>
 <script>
 import {atchDownload, downloadimgWithWords, getImgArrayBuffer} from "@/utils/download.js";
-import {createSrc, detectObjectsUpload,getCustomModel} from "@/api/upload";
+import {createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, goCompress, upload} from "@/utils/getUploadImg";
 import {selectClahe, selectFilter, selectSharpen, selectSmooth,} from "@/utils/preHandle";
@@ -422,7 +422,7 @@ export default {
     getImgArrayBuffer,
     atchDownload,
     downloadimgWithWords,
-    detectObjectsUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,

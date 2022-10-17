@@ -158,7 +158,7 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {SegmentationUpload, createSrc, detectObjectsUpload, classificationUpload ,} from "@/api/upload";
+import { createSrc, imgUpload} from "@/api/upload";
 import {hideFullScreenLoading, showFullScreenLoading} from "@/utils/loading";
 import {historyGetPage} from "@/api/history";
 
@@ -259,9 +259,7 @@ export default {
   },
   methods: {
     createSrc,
-    SegmentationUpload,
-    detectObjectsUpload,
-    classificationUpload,
+    imgUpload,
     historyGetPage,
     goUpload(type) {
       showFullScreenLoading("#load");
@@ -275,7 +273,7 @@ export default {
         if (type === "目标检测") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.detectObjectsUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'object_detection').then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;
@@ -296,7 +294,7 @@ export default {
         if (type === "地物分类") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.SegmentationUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'semantic_segmentation').then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;
@@ -317,7 +315,7 @@ export default {
         if (type === "场景分类") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.classificationUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'classification').then((res) => {
             hideFullScreenLoading("#load");
             this.$message.success("上传成功！");
             this.choose = false;

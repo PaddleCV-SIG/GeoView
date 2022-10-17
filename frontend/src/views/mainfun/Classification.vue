@@ -106,7 +106,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="upload('场景分类')"
+              @click="upload('场景分类','classification')"
             >
               开始处理
             </el-button>
@@ -168,7 +168,7 @@
   </div>
 </template>
 <script>
-import {createSrc, classificationUpload,getCustomModel} from "@/api/upload";
+import {createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, upload} from "@/utils/getUploadImg";
 import ImgShow from '@/components/ImgShow'
@@ -229,7 +229,7 @@ export default {
     })
   },
   methods: {
-    classificationUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,

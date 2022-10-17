@@ -166,7 +166,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="goUpload"
+              @click="upload('地物分类','semantic_segmentation')"
             >
               开始处理
             </el-button>
@@ -419,7 +419,7 @@
 
 <script>
 import { atchDownload, downloadimgWithWords, getImgArrayBuffer } from "@/utils/download.js";
-import { SegmentationUpload, createSrc ,getCustomModel } from "@/api/upload";
+import { imgUpload, createSrc ,getCustomModel } from "@/api/upload";
 import { historyGetPage } from "@/api/history";
 import { getUploadImg, goCompress, upload } from "@/utils/getUploadImg";
 import { selectClahe, selectFilter, selectSharpen, selectSmooth, } from "@/utils/preHandle";
@@ -487,7 +487,7 @@ export default {
   methods: {
     getImgArrayBuffer,
     atchDownload,
-    SegmentationUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
@@ -523,9 +523,6 @@ export default {
     },
     getMore() {
       this.getUploadImg("地物分类");
-    },
-    goUpload() {
-      this.upload("地物分类");
     },
     fileClick() {
       document.querySelector("#folder").click();

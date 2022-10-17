@@ -482,7 +482,7 @@
         class="render-img-box"
       >
         <div
-          v-if="preMode===1 && resultArr.length!==0"
+          v-if="preMode===1"
           class="display-modeA"
         >
           <div
@@ -493,17 +493,37 @@
             @mouseleave="sliderMouseLeave"
           >
             <img
-              :src="resultArr[currentIndex].data.mask"
+              v-if="resultArr[currentIndex]?.data.mask"
+              :src="resultArr[currentIndex].data.mask "
               alt="mask"
               class="mask-img"
             >
             <img
-              :src="resultArr[currentIndex].before_img"
+              v-if="!resultArr[currentIndex]?.data.mask"
+              :src="exampleArr[0].data.mask "
+              alt="mask"
+              class="mask-img"
+            >
+
+            <img
+              v-if="resultArr[currentIndex]?.before_img"
+              :src="resultArr[currentIndex].before_img "
+              alt=""
+            >
+            <img
+              v-if="!resultArr[currentIndex]?.before_img"
+              :src="exampleArr[0].before_img "
               alt=""
             >
             <div class="img-wrapper">
               <img
+                v-if="resultArr[currentIndex]?.before_img1"
                 :src="resultArr[currentIndex].before_img1"
+                alt=""
+              >
+              <img
+                v-if="!resultArr[currentIndex]?.before_img1"
+                :src="exampleArr[0].before_img1"
                 alt=""
               >
             </div>
@@ -518,7 +538,7 @@
         </div>
 
         <div
-          v-if="preMode===2 && resultArr"
+          v-if="preMode===2 "
           class="display-modeB"
         >
           <div class="render-img modeB-item">
@@ -526,9 +546,17 @@
               第一时期
             </p>
             <el-image
+              v-if="resultArr[currentIndex]?.before_img"
               :preview-src-list="[resultArr[currentIndex].before_img]"
               :preview-teleported="true"
               :src="resultArr[currentIndex].before_img"
+              fit="cover"
+            />
+            <el-image
+              v-if="!resultArr[currentIndex]?.before_img"
+              :preview-src-list="[exampleArr[0].before_img]"
+              :preview-teleported="true"
+              :src="exampleArr[0].before_img"
               fit="cover"
             />
           </div>
@@ -538,11 +566,18 @@
               第二时期
             </p>
             <el-image
+              v-if="resultArr[currentIndex]?.before_img1"
               :preview-src-list="[resultArr[currentIndex].before_img1]"
               :preview-teleported="true"
               :src="resultArr[currentIndex].before_img1"
               fit="cover"
-              style="width: 100%"
+            />
+            <el-image
+              v-if="!resultArr[currentIndex]?.before_img1"
+              :preview-src-list="[exampleArr[0].before_img1]"
+              :preview-teleported="true"
+              :src="exampleArr[0].before_img1"
+              fit="cover"
             />
           </div>
 
@@ -551,9 +586,18 @@
               预测结果
             </p>
             <el-image
+              v-if="onRenderResult"
               :preview-src-list="[onRenderResult]"
               :preview-teleported="true"
               :src="onRenderResult"
+              fit="cover"
+              style="width: 100%"
+            />
+            <el-image
+              v-if="!onRenderResult"
+              :preview-src-list="[onRenderExample]"
+              :preview-teleported="true"
+              :src="onRenderExample"
               fit="cover"
               style="width: 100%"
             />
@@ -575,27 +619,27 @@
                 <div
                   class="style-words normal"
                   :class="{ 'active-normal': renderstyle === '原图' }"
-                  @click="setOneWay('原图')"
+                  @click="setOneWay('原图',resultArr.length===0)"
                 >原图</div>
                 <div
                   class="style-words woods"
                   :class="{ 'active-woods': renderstyle === '森林' }"
-                  @click="setOneWay('森林')"
+                  @click="setOneWay('森林',resultArr.length===0)"
                 >森林</div>
                 <div
                   class="style-words neon"
                   :class="{ 'active-neon': renderstyle === '霓虹' }"
-                  @click="setOneWay('霓虹')"
+                  @click="setOneWay('霓虹',resultArr.length===0)"
                 >霓虹</div>
                 <div
                   class="style-words flash"
                   :class="{ 'active-flash': renderstyle === '闪电' }"
-                  @click="setOneWay('闪电')"
+                  @click="setOneWay('闪电',resultArr.length===0)"
                 >闪电</div>
                 <div
                   class="style-words aurora"
                   :class="{ 'active-aurora': renderstyle === '极光' }"
-                  @click="setOneWay('极光')"
+                  @click="setOneWay('极光',resultArr.length===0)"
                 >极光</div>
               </div>
             </label>
@@ -604,49 +648,52 @@
           <div class="style-title">
             选择图片
           </div>
-
-          <div
-            v-for="(item, index) in Math.ceil(resultArr.length / 5)"
-            :key="index"
-            class="list"
-          >
+          <div v-if="resultArr.length">
             <div
-              class="list-number"
-              @click="goRenderThese(index)"
+              v-for="(item, index) in Math.ceil(resultArr.length / 5)"
+              :key="index"
+              class="list"
             >
-              <div>
-                {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+              <div
+                class="list-number"
+                @click="goRenderThese(index)"
+              >
+                <div>
+                  {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            v-if="isUpload"
-            style="text-align:center"
-          >
-            下载此图片：<el-button
-              type="primary"
-              style="width:60px"
-              class="btn-animate btn-animate__shiny"
-              @click="
-                downloadimgWithWords(
-                  resultArr[currentIndex].id,
-                  onRenderResult,
-                  `变化检测${renderstyle}渲染结果图.png`
-                )
-              "
+            <div
+              style="text-align:center"
             >
-              下载
-            </el-button>
+              下载此图片：<el-button
+                type="primary"
+                style="width:60px"
+                class="btn-animate btn-animate__shiny"
+                @click="
+                  downloadimgWithWords(
+                    resultArr[currentIndex].id,
+                    onRenderResult,
+                    `变化检测${renderstyle}渲染结果图.png`
+                  )
+                "
+              >
+                下载
+              </el-button>
+            </div>
+            <p
+              style="text-align:center"
+            >
+              <span> <i
+                class="iconfont icon-dabaoxiazai"
+                @click="goCompress"
+              >所有结果图打包</i></span>
+            </p>
           </div>
-          <p
-            v-if="isUpload"
-            style="text-align:center"
-          >
-            <span> <i
-              class="iconfont icon-dabaoxiazai"
-              @click="goCompress"
-            >所有结果图打包</i></span>
-          </p>
+          <el-empty
+            v-else
+            :image-size="100"
+          />
         </div>
       </div>
 
@@ -674,7 +721,7 @@
 import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import {
   createSrc,
-  detectChangesUpload,
+  imgUpload,
   holeHandle,
   histogramUpload,
   getCustomModel
@@ -783,7 +830,20 @@ export default {
       },
       resultArr:[],
       devidedArr:[],
-      onRenderResult:''
+      onRenderResult:'',
+      exampleArr:[{
+          before_img : require("@/assets/image/example/test_50_1.png"),
+          before_img1: require("@/assets/image/example/test_50_2.png"),
+          after_img:require('@/assets/image/example/normal.png'),
+          data:{
+              0:require('@/assets/image/example/flash.png'),
+              1:require('@/assets/image/example/aurora.png'),
+              2:require('@/assets/image/example/woods.png'),
+              3:require('@/assets/image/example/neon.png'),
+            mask:require('@/assets/image/example/mask.png')
+          }
+      }],
+      onRenderExample:require('@/assets/image/example/normal.png')
     };
   },
   created() {
@@ -797,7 +857,7 @@ export default {
   methods: {
     downloadimgWithWords,
     historyGetPage,
-    detectChangesUpload,
+    imgUpload,
     getCustomModel,
     createSrc,
     getImgArrayBuffer,
@@ -820,8 +880,18 @@ export default {
       this.currentIndex = 5 * index;
       this.goRenderThis(0);
     },
-    setOneWay(style) {
+    setOneWay(style,isShowExample) {
       this.renderstyle = style;
+      if(isShowExample){
+        switch (style){
+          case '原图': this.onRenderExample = this.exampleArr[0].after_img;break
+          case '森林': this.onRenderExample = this.exampleArr[0].data[2];break
+          case '霓虹': this.onRenderExample = this.exampleArr[0].data[3];break
+          case '闪电': this.onRenderExample = this.exampleArr[0].data[0];break
+          case '极光': this.onRenderExample = this.exampleArr[0].data[1];break
+        }
+        return
+      }
       switch (style){
         case '原图': this.onRenderResult = this.resultArr[this.currentIndex].after_img;break
         case '森林': this.onRenderResult = this.resultArr[this.currentIndex].data[2];break
@@ -891,7 +961,7 @@ export default {
                 hideFullScreenLoading("#load");
               } else {
                 this.upload.list = this.getList(this.uploadSrc);
-                this.detectChangesUpload(this.upload)
+                this.imgUpload(this.upload,'change_detection')
                     .then((res) => {
                       this.$refs.uploadA.clearFiles();
                       this.$refs.uploadB.clearFiles();
@@ -961,7 +1031,7 @@ export default {
     },
     getMore() {
       showFullScreenLoading("body");
-      this.historyGetPage(1, 20, "变化检测")
+      this.historyGetPage(1, 9999, "变化检测")
           .then((res) => {
             hideFullScreenLoading("body");
             res.data.data.forEach((item)=>{
