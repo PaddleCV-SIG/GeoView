@@ -458,6 +458,7 @@ export default {
       fit: "fill",
 
       uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
+
       modelPathArr:[],
 
       prePhoto: {
@@ -482,7 +483,7 @@ export default {
     this.getCustomModel('semantic_segmentation').then(res=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     getImgArrayBuffer,

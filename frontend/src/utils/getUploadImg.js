@@ -1,11 +1,9 @@
 import { historyGetPage } from "@/api/history"
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import global from '@/global'
+import {showFullScreenLoading} from "@/utils/loading";
 
 function getUploadImg(type) {
-  showFullScreenLoading("#load");
   historyGetPage(1, 20, type).then((res) => {
-    hideFullScreenLoading("#load")
     this.imgArr = res.data.data.forEach((item)=>{
       item['before_img1']=global.BASEURL+item.before_img1
       item['before_img'] = global.BASEURL+item.before_img
@@ -40,9 +38,7 @@ function getUploadImg(type) {
       this.goShowThese(0)
     }
     this.checkUpload();
-  }).then((rej)=>{
-    hideFullScreenLoading("#load");
-  })
+  }).catch((rej)=>{})
 }
 
 function goCompress(type,num) {
@@ -52,14 +48,13 @@ function goCompress(type,num) {
           return { after_img: item.after_img, id: item.id };
         })
     );
-  });
+  }).catch((rej)=>{});
 }
 
 function upload(type) {
   if (this.fileList.length === 0) {
     this.$message.error("请上传图片！");
   } else {
-    showFullScreenLoading("#load");
     let formData = new FormData();
     let _this = this;
 
@@ -74,51 +69,45 @@ function upload(type) {
       if (type === '地物分类') {
         this.SegmentationUpload(this.uploadSrc).then((res) => {
           this.fileList = []
-          hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
           this.getMore()
-        });
+        }).catch((rej)=>{})
       }
       else if (type === '目标检测') {
         this.detectObjectsUpload(this.uploadSrc).then((res) => {
           this.fileList = []
-          hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
           this.getMore()
-        })
+        }).catch((rej)=>{})
       }
       else if (type === '场景分类') {
         this.classificationUpload(this.uploadSrc).then((res) => {
           this.fileList = []
-          hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
           this.getMore()
-        })
+        }).catch((rej)=>{})
       }
       else if (type === '图像复原') {
         this.restoreImgsUpload(this.uploadSrc).then((res) => {
           this.fileList = []
-          hideFullScreenLoading("#load")
           this.$message.success("上传成功！");
           this.getMore()
-        })
+        }).catch((rej)=>{})
       }
-      if (this.uploadSrc.list.length >= 10 && type!=='场景分类') {
+      if (this.uploadSrc.list.length >= 2 && type!=='场景分类') {
         this.$confirm("上传图片过多，是否压缩?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         })
             .then(() => {
-
               showFullScreenLoading('#load','压缩中')
               this.goCompress(type,this.uploadSrc.list.length)
             }).catch(() => {
-
         })
       }
       _this.$refs.upload.clearFiles();
-    });
+    }).catch((rej)=>{});
   }
 }
 

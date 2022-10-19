@@ -1,6 +1,8 @@
 import axios from "axios"
 
 import global from '@/global'
+import {ElMessage} from "element-plus";
+import {hideFullScreenLoading} from "@/utils/loading";
 export function requestfile(config) {
   const instance = axios.create({
     // timeout: 5000,
@@ -24,13 +26,15 @@ export function requestfile(config) {
   instance.interceptors.response.use(
     (response) => {
 
-
+        if(response.data.code!==0){
+            hideFullScreenLoading('#load')
+            ElMessage.error(response.data.msg)
+            return Promise.reject()
+        }
       return response
     },
     ({ response }) => {
-      const { status, data } = response
-      const { message } = data
-      alert('网络异常，请重试！')
+
       return Promise.reject(error)
     },
   )

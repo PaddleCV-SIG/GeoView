@@ -324,7 +324,7 @@
 </template>
 
 <script>
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
+
 import { historyGetPage, historyDelete } from "@/api/history";
 import {
   previewOnePic,
@@ -382,17 +382,15 @@ export default {
         type: "warning",
       })
         .then(() => {
-          showFullScreenLoading(".his-box");
           this.delete.ids.push(row.id);
           this.historyDelete(this.delete).then((res) => {
             this.tableData.splice(index, 1);
             this.getTabelInfo();
-            hideFullScreenLoading(".his-box");
             this.$message({
               type: "success",
               message: "删除成功!",
             });
-          });
+          }).catch((rej)=>{})
         })
         .catch(() => {
           this.$message({
@@ -411,7 +409,6 @@ export default {
           type: "warning",
         })
           .then(() => {
-            showFullScreenLoading(".his-box");
             this.delete.ids = this.multipleSelection.map((item) => {
               return item.id;
             });
@@ -422,13 +419,12 @@ export default {
                 return this.multipleSelection.every((item2) => {
                   return item.id !== item2.id;
                 });
-              });
-              hideFullScreenLoading(".his-box");
+              })
               this.$message({
                 type: "success",
                 message: "删除成功!",
               });
-            });
+            }).catch((rej)=>{})
           })
           .catch(() => {
             this.$message({
@@ -475,13 +471,10 @@ export default {
       this.getTabelInfo();
     },
     getTabelInfo() {
-      showFullScreenLoading(".his-box");
-
       this.historyGetPage(this.currentPage, 10, this.type).then((res) => {
-        hideFullScreenLoading(".his-box");
         this.total = res.data.count;
         this.tableData = res.data.data;
-      });
+      }).catch((rej)=>{})
     },
     goNextPage() {
       this.getTabelInfo();

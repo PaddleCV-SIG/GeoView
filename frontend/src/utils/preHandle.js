@@ -43,7 +43,7 @@ function selectSharpen(type) {
             return global.BASEURL + item
           })
         })
-      });
+      }).catch((rej)=>{})
     }
   }
   }
@@ -87,8 +87,8 @@ function selectSharpen(type) {
             this.claheImg = res.data.data.map((item)=>{
               return global.BASEURL + item
             })
-          })
-        });
+          }).catch((rej)=>{})
+        }).catch((rej)=>{})
       }
     }
   }
