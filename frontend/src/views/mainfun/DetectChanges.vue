@@ -839,6 +839,21 @@
           />
         </div>
       </el-row>
+      <div v-show="dragShow">
+        <DraggableItem @child-vannish="vanishDrag">
+          <el-color-picker
+            v-model="setColor"
+            @change="changeColor"
+          />
+        </DraggableItem>>
+      </div>
+      <div
+        v-show="!dragShow"
+        style="position: absolute;right: 10px;top: 400px"
+        @click="dragShow=true"
+      >
+        ===
+      </div>
     </el-card>
     <Bottominfor />
   </div>
@@ -862,12 +877,14 @@ import {
 import { historyGetPage } from "@/api/history";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
+import DraggableItem from "@/components/DraggableItem";
 import global from "@/global";
 export default {
   name: "Detectchanges",
   components: {
     Tabinfor,
     Bottominfor,
+    DraggableItem
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -876,6 +893,8 @@ export default {
   },
   data() {
     return {
+      setColor:'#bfa',
+      dragShow:true,
       isSliderLocked: false,
       preMode: 1,
       pairs: [],
@@ -1000,7 +1019,6 @@ export default {
       this.upload.model_path = this.modelPathArr[0]?.model_path
     })
   },
-
   methods: {
     downloadimgWithWords,
     historyGetPage,
@@ -1011,6 +1029,12 @@ export default {
     atchDownload,
     holeHandle,
     histogramUpload,
+    changeColor(val){
+      console.log(val)
+    },
+    vanishDrag(){
+      this.dragShow = false
+    },
     clearQueue() {
       this.fileList1 = [];
       this.fileList2 = [];
