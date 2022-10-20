@@ -115,7 +115,7 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import { createSrc, imgUploadrestoreImgsUpload,getCustomModel} from "@/api/upload";
+import { createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 
 export default {
@@ -313,7 +313,7 @@ export default {
         else if (type === "图像复原") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.restoreImgsUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'image_restoration').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "图像复原").then((res) => {
