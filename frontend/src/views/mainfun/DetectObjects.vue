@@ -416,7 +416,7 @@ export default {
     this.getCustomModel('object_detector').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     getImgArrayBuffer,

@@ -201,8 +201,6 @@ export default {
       funtype: "场景分类",
       scrollTop: "",
       fit: "fill",
-
-
       fileList: [],
       uploadSrc: {
         list: [],
@@ -226,7 +224,7 @@ export default {
     this.getCustomModel('classification').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     imgUpload,

@@ -332,7 +332,7 @@ export default {
     this.getCustomModel('image_restoration').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     imgUpload,
