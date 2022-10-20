@@ -115,7 +115,7 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {SegmentationUpload, createSrc, detectObjectsUpload, classificationUpload ,restoreImgsUpload,getCustomModel} from "@/api/upload";
+import { createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 
 export default {
@@ -238,10 +238,7 @@ export default {
 
   methods: {
     createSrc,
-    SegmentationUpload,
-    detectObjectsUpload,
-    classificationUpload,
-    restoreImgsUpload,
+    imgUpload,
     historyGetPage,
     getCustomModel,
     selectFun(val){
@@ -269,7 +266,7 @@ export default {
         if (type === "目标检测") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.detectObjectsUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'object_detection').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "目标检测").then((res) => {
@@ -285,7 +282,7 @@ export default {
         if (type === "地物分类") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.SegmentationUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'semantic_segmentation').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "地物分类").then((res) => {
@@ -301,7 +298,7 @@ export default {
         if (type === "场景分类") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.classificationUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'classification').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "场景分类").then((res) => {
@@ -316,7 +313,7 @@ export default {
         else if (type === "图像复原") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.restoreImgsUpload(this.uploadSrc).then((res) => {
+          this.imgUpload(this.uploadSrc,'image_restoration').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "图像复原").then((res) => {

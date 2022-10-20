@@ -15,7 +15,7 @@
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
-      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">image_restoration文件夹</span>
     </p>
     <el-row
       type="flex"
@@ -105,7 +105,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="upload('图像复原')"
+              @click="upload('图像复原','image_restoration')"
             >
               开始处理
             </el-button>
@@ -164,18 +164,10 @@
     </el-dialog>
 
     <el-card>
-      <el-row
-        justify="center"
-        :gutter="20"
+      <div
+        class="restore-img-box"
       >
-        <el-col
-          :xs="22"
-          :sm="22"
-          :md="22"
-          :lg="22"
-          :xl="22"
-          class="restore-img"
-        >
+        <div>
           <el-empty
             v-if="!isUpload"
             :image-size="300"
@@ -189,12 +181,12 @@
             @mouseleave="sliderMouseLeave"
           >
             <img
-              :src="beforeList[currentIndex]"
+              :src="imgArr[currentIndex]?.before_img"
               alt=""
             >
             <div class="img-wrapper">
               <img
-                :src="afterList[currentIndex]"
+                :src="imgArr[currentIndex]?.after_img"
                 alt=""
               >
             </div>
@@ -206,18 +198,19 @@
               <div class="handle-line" />
             </div>
           </div>
-          <div class="choose-restore">
-            <el-divider style="margin-top:0" />
-            <div class="style-title">
-              选择图片
-            </div>
-
-            <el-empty
-              v-if="beforeImg.length === 0"
-              :image-size="100"
-            />
+        </div>
+        <div class="choose-restore">
+          <el-divider style="margin-top:0" />
+          <div class="style-title">
+            选择图片
+          </div>
+          <el-empty
+            v-if="!isUpload"
+            :image-size="100"
+          />
+          <div v-else>
             <div
-              v-for="(item, index) in Math.ceil(beforeImg.length / 5)"
+              v-for="(item, index) in Math.ceil(imgArr.length / 5)"
               :key="index"
               class="list"
             >
@@ -229,18 +222,16 @@
               </div>
             </div>
             <div
-              v-show="beforeImg.length !== 0"
               style="text-align:center"
             >
               下载此图片：<el-button
-                v-if="isUpload"
                 type="primary"
                 style="width:60px"
                 class="btn-animate btn-animate__shiny"
                 @click="
                   downloadimgWithWords(
-                    idList[currentIndex],
-                    afterList[currentIndex],
+                    imgArr[currentIndex].id,
+                    imgArr[currentIndex].after_img,
                     `图像复原结果图.png`
                   )
                 "
@@ -248,7 +239,6 @@
                 下载
               </el-button>
               <p
-                v-if="isUpload"
                 style="text-align:center"
               >
                 <span> <i
@@ -258,9 +248,8 @@
               </p>
             </div>
           </div>
-        </el-col>
-      </el-row>
-
+        </div>
+      </div>
       <el-row class="swiper-img">
         <div
           v-for="(item, index) in 5"
@@ -268,8 +257,8 @@
           class="img-box"
         >
           <el-image
-            v-if="isExist[index]"
-            :src="showingList[index]"
+            v-if="imgArr[currentQroup+index]?.after_img"
+            :src="imgArr[currentQroup+index]?.after_img"
             :class="{'render-border':onRender===index}"
             @click="goShowThis(index)"
           />
@@ -280,7 +269,7 @@
   </div>
 </template>
 <script>
-import {createSrc, restoreImgsUpload,getCustomModel} from "@/api/upload";
+import {createSrc,imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 import {getUploadImg, goCompress, upload} from "@/utils/getUploadImg";
 import {atchDownload, downloadimgWithWords, getImgArrayBuffer} from "@/utils/download.js";
@@ -302,9 +291,7 @@ export default {
   },
   data() {
     return {
-      isUpload:true,
       canUpload:true,
-      before:[],
       fileimg: "",
       file: {},
       isNotCut: true,
@@ -312,10 +299,6 @@ export default {
       funtype: "图像复原",
       scrollTop: "",
       fit: "fill",
-      beforeImg: [],
-      beforeList:[],
-      afterList:[],
-      afterImg: [],
       fileList: [],
       uploadSrc: {
         list: [],
@@ -323,12 +306,11 @@ export default {
       },
       modelPathArr:[],
       isSliderLocked: false,
-      isExist: [],
       onRender: 0,
-      showingList:[],
       currentIndex:0,
       currentQroup:0,
-      idList:[]
+      imgArr:[],
+      isUpload:false
     };
   },
   watch:{
@@ -338,17 +320,22 @@ export default {
       },
       deep:true,
       immediate:true
+    },
+    isUpload:{
+      handler(newVal, oldVal) {
+        this.isUpload = newVal
+      }
     }
   },
   created() {
-    this.getUploadImg("图像复原");
+    this.getUploadImg("图像复原")
     this.getCustomModel('image_restoration').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
     }).catch((rej)=>{})
   },
   methods: {
-    restoreImgsUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
@@ -358,9 +345,6 @@ export default {
     getImgArrayBuffer,
     atchDownload,
     goCompress,
-    checkUpload() {
-      this.isUpload = this.beforeImg.length !== 0;
-    },
     clearQueue() {
       this.fileList = [];
       this.$message.success("清除成功");
@@ -371,6 +355,8 @@ export default {
     },
     getMore() {
       this.getUploadImg("图像复原");
+      this.goShowThese(0)
+      console.log(this.imgArr.length)
     },
     uploadMore() {
       this.beforeUpload(...this.$refs.uploadFile.files)
@@ -403,11 +389,6 @@ export default {
     select() {
       this.isNotCut = this.$refs.cut.checked;
     },
-    checkExist(val) {
-      this.isExist = val.map((item) => {
-        return typeof item != "undefined";
-      });
-    },
     goShowThis(index) {
       this.currentIndex = this.currentQroup;
       this.currentIndex += index;
@@ -416,14 +397,8 @@ export default {
     goShowThese(index) {
       this.currentQroup = 5 * index;
       this.currentIndex = 5 * index;
-      this.showingList = []
-      for (let i = 0; i <= 4; i++) {
-        this.showingList.push(this.afterList[this.currentIndex++]);
-      }
-      this.checkExist(this.showingList);
       this.goShowThis(0)
     },
-    setNormalWay(){},
     sliderMouseMove(event) {
       const slider = document.querySelector("#image-slider");
       const wrapper = document.querySelector(".img-wrapper");
@@ -576,10 +551,10 @@ export default {
   background: white;
 }
 
-.el-row{
-  position: inherit;
-  //获取滑窗容器的左偏移量
-}
+//.el-row{
+//  position: inherit;
+//  //获取滑窗容器的左偏移量
+//}
 .restore-img{
   display: flex;
   flex-direction: row;
@@ -631,13 +606,7 @@ export default {
   position: relative !important;
   border-radius: 2px !important;
 }
-.choose-restore{
-  width: 250px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content:center;
-}
+
 .swiper-img {
   display: flex;
   flex-wrap: nowrap;
@@ -659,5 +628,18 @@ export default {
 }
 .el-radio /deep/{
   height: 62px;
+}
+.restore-img-box{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  flex-direction: row;
+  .choose-restore{
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content:center;
+  }
 }
 </style>

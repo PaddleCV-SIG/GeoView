@@ -84,10 +84,7 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import {
   createSrc,
-  SegmentationUpload,
-  detectObjectsUpload,
-  classificationUpload,
-  restoreImgsUpload
+  imgUpload
 } from "@/api/upload";
 import { upload, goCompress } from "@/utils/getUploadImg";
 import { getImgArrayBuffer, atchDownload } from "@/utils/download";
@@ -176,10 +173,7 @@ export default {
   },
   methods: {
     createSrc,
-    SegmentationUpload,
-    detectObjectsUpload,
-    classificationUpload,
-    restoreImgsUpload,
+    imgUpload,
     upload,
     goCompress,
     getImgArrayBuffer,
@@ -213,13 +207,13 @@ export default {
             return item.src;
           });
           if (funtype === "地物分类") {
-            this.SegmentationUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'semantic_segmentation').then((res) => {
               this.fileList = [];
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
             }).catch((rej)=>{})
           } else if (funtype === "目标检测") {
-            this.detectObjectsUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'object_detection').then((res) => {
               this.fileList = [];
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
@@ -228,7 +222,7 @@ export default {
           else if (funtype === "场景分类") {
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
-            this.classificationUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'classification').then((res) => {
               this.fileList = [];
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
@@ -237,7 +231,7 @@ export default {
           else if(funtype === "图像复原"){
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
-            this.restoreImgsUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
               this.$message.success("上传成功！");
               this.$emit('child-refresh')

@@ -26,7 +26,7 @@
     <p style="text-decoration: underline">
       <i
         class="iconfont icon-zhuyi"
-      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据, <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据, <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
     </p>
 
     <el-card style="border: 4px dashed var(--el-border-color);position: relative">
@@ -189,23 +189,20 @@
           </el-radio>
         </div>
       </el-row>
-      <el-row
-        type="flex"
-        justify="center"
-      >
-        <div class="handle-button">
-          <el-button
-            type="primary"
-            class=" btn-animate btn-animate__shiny"
-            @click="uploadfile"
-          >
-            开始处理
-          </el-button>
-        </div>
-      </el-row>
+
+      <div class="handle-button">
+        <el-button
+          type="primary"
+          class=" btn-animate btn-animate__shiny"
+          @click="uploadfile"
+        >
+          开始处理
+        </el-button>
+      </div>
+
       <el-divider v-if="!upload.prehandle" />
       <div v-if="upload.prehandle">
-        <div v-if="upload.prehandle===1">
+        <div v-show="upload.prehandle===1">
           <div
             id="sub-title"
           >
@@ -289,7 +286,7 @@
             </el-col>
           </el-row>
         </div>
-        <div v-else-if="upload.prehandle === 4">
+        <div v-show="upload.prehandle === 4">
           <div
             id="sub-title"
           >
@@ -430,12 +427,15 @@
       </template>
       <template #mid>
         <p v-if="isUpload">
-          <label class="prehandle-label container">
+          <label
+            v-if="resultArr.length!==0"
+            class="prehandle-label container"
+          >
             <input
               ref="hole"
               type="checkbox"
-              :checked="isHole[currentIndex]"
-              @click="dealAfterImg(currentIndex)"
+              :checked="resultArr[currentIndex].is_hole"
+              @click="dealAfterImg()"
             >
             <span class="checkmark" />
             <span class="go-bold label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
@@ -470,7 +470,7 @@
         <p>
           <span class="go-bold"><i
             class="iconfont icon-shuaxin"
-            style="padding-right:33px"
+            style=" padding-right: 55px;"
             @click="getMore"
           ><span class="hidden-sm-and-down">点击刷新</span></i></span>
         </p>
@@ -478,23 +478,14 @@
     </Tabinfor>
 
     <el-card class="render-box">
-      <el-row
-        justify="center"
-        :gutter="20"
+      <div
+        class="render-img-box"
       >
-        <el-col
-          v-show="preMode===1"
-          :xs="12"
-          :sm="12"
-          :md="12"
-          :lg="10"
-          :xl="10"
+        <div
+          v-if="preMode===1"
+          class="display-modeA"
         >
-          <p class="handle-words">
-            上传第一时期和第二时期图
-          </p>
           <div
-            v-if="!isUpload"
             id="image-slider"
             @mousemove="sliderMouseMove"
             @mousedown="sliderMouseDown"
@@ -502,38 +493,37 @@
             @mouseleave="sliderMouseLeave"
           >
             <img
-              :src="require('@/assets/image/example/test_50_1.png')"
-              alt="预设"
+              v-if="resultArr[currentIndex]?.data.mask"
+              :src="resultArr[currentIndex].data.mask "
+              alt="mask"
+              class="mask-img"
             >
-            <div class="img-wrapper">
-              <img
-                :src="require('@/assets/image/example/test_50_2.png')"
-                alt="预设"
-              >
-            </div>
-            <div class="handle">
-              <div class="handle-line" />
-              <div class="handle-circle">
-                &#171;&#187;
-              </div>
-              <div class="handle-line" />
-            </div>
-          </div>
-          <div
-            v-else
-            id="image-slider"
-            @mousemove="sliderMouseMove"
-            @mousedown="sliderMouseDown"
-            @mouseup="sliderMouseUp"
-            @mouseleave="sliderMouseLeave"
-          >
             <img
-              :src="beforeImg[currentIndex]"
+              v-if="!resultArr[currentIndex]?.data.mask"
+              :src="exampleArr[0].data.mask "
+              alt="mask"
+              class="mask-img"
+            >
+
+            <img
+              v-if="resultArr[currentIndex]?.before_img"
+              :src="resultArr[currentIndex].before_img "
+              alt=""
+            >
+            <img
+              v-if="!resultArr[currentIndex]?.before_img"
+              :src="exampleArr[0].before_img "
               alt=""
             >
             <div class="img-wrapper">
               <img
-                :src="beforeImg1[currentIndex]"
+                v-if="resultArr[currentIndex]?.before_img1"
+                :src="resultArr[currentIndex].before_img1"
+                alt=""
+              >
+              <img
+                v-if="!resultArr[currentIndex]?.before_img1"
+                :src="exampleArr[0].before_img1"
                 alt=""
               >
             </div>
@@ -545,300 +535,182 @@
               <div class="handle-line" />
             </div>
           </div>
-        </el-col>
-        <el-col
-          v-show="preMode === 1"
-          :xs="12"
-          :sm="12"
-          :md="12"
-          :lg="10"
-          :xl="10"
-        >
-          <div class="render-img">
-            <p class="handle-words">
-              预测结果
-            </p>
-            <el-image
-              v-if="afterImg.length !== 0"
-              :preview-src-list="[showingList[currentIndex]]"
-              :preview-teleported="true"
-              :src="src"
-              fit="cover"
-              style="width: 100%"
-            />
-            <div v-else>
-              <el-image
-                v-if="renderstyle==='原图'"
-                :preview-src-list="[require('@/assets/image/example/normal.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/normal.png')"
-                fit="cover"
-                style="width: 100%"
-              />
-              <el-image
-                v-else-if="renderstyle==='森林'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/woods.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='霓虹'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/neon.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='闪电'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/flash.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='极光'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/aurora.png')"
-                fit="cover"
-                style="width: 100%"
-              />
-            </div>
-          </div>
-        </el-col>
+        </div>
 
-        <el-col
-          v-show="preMode===2"
-          :xs="8"
-          :sm="8"
-          :md="8"
-          :lg="6"
-          :xl="6"
+        <div
+          v-if="preMode===2 "
+          class="display-modeB"
         >
-          <div class="render-img">
+          <div class="render-img modeB-item">
             <p class="handle-words">
               第一时期
             </p>
             <el-image
-              v-if="afterImg.length !== 0"
-              :preview-src-list="[beforeImg[currentIndex]]"
+              v-if="resultArr[currentIndex]?.before_img"
+              :preview-src-list="[resultArr[currentIndex].before_img]"
               :preview-teleported="true"
-              :src="beforeImg[currentIndex]"
+              :src="resultArr[currentIndex].before_img"
               fit="cover"
-              style="width: 100%"
             />
             <el-image
-              v-else
-              :preview-src-list="[require('@/assets/image/example/test_50_1.png')]"
+              v-if="!resultArr[currentIndex]?.before_img"
+              :preview-src-list="[exampleArr[0].before_img]"
               :preview-teleported="true"
-              :src="require('@/assets/image/example/test_50_1.png')"
+              :src="exampleArr[0].before_img"
               fit="cover"
-              style="width: 100%"
             />
           </div>
-        </el-col>
-        <el-col
-          v-show="preMode===2"
-          :xs="8"
-          :sm="8"
-          :md="8"
-          :lg="6"
-          :xl="6"
-        >
-          <div class="render-img">
+    
+          <div class="render-img modeB-item">
             <p class="handle-words">
               第二时期
             </p>
             <el-image
-              v-if="afterImg.length !== 0"
-              :preview-src-list="[beforeImg1[currentIndex]]"
+              v-if="resultArr[currentIndex]?.before_img1"
+              :preview-src-list="[resultArr[currentIndex].before_img1]"
               :preview-teleported="true"
-              :src="beforeImg1[currentIndex]"
+              :src="resultArr[currentIndex].before_img1"
               fit="cover"
-              style="width: 100%"
             />
             <el-image
-              v-else
-              :preview-src-list="[require('@/assets/image/example/test_50_2.png')]"
+              v-if="!resultArr[currentIndex]?.before_img1"
+              :preview-src-list="[exampleArr[0].before_img1]"
               :preview-teleported="true"
-              :src="require('@/assets/image/example/test_50_2.png')"
+              :src="exampleArr[0].before_img1"
               fit="cover"
-              style="width: 100%"
             />
           </div>
-        </el-col>
-        <el-col
-          v-show="preMode === 2"
-          :xs="8"
-          :sm="8"
-          :md="8"
-          :lg="6"
-          :xl="6"
-        >
-          <div class="render-img">
+
+          <div class="render-img modeB-item">
             <p class="handle-words">
               预测结果
             </p>
             <el-image
-              v-if="afterImg.length !== 0"
-              :preview-src-list="[showingList[currentIndex]]"
+              v-if="onRenderResult"
+              :preview-src-list="[onRenderResult]"
               :preview-teleported="true"
-              :src="src"
+              :src="onRenderResult"
               fit="cover"
               style="width: 100%"
             />
-            <div v-else>
-              <el-image
-                v-if="renderstyle==='原图'"
-                :preview-src-list="[require('@/assets/image/example/normal.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/normal.png')"
-                fit="cover"
-                style="width: 100%"
-              />
-              <el-image
-                v-else-if="renderstyle==='森林'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/woods.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='霓虹'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/neon.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='闪电'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/flash.png')"
-                fit="cover"
-                style="width: 100%"
-              />    <el-image
-                v-else-if="renderstyle==='极光'"
-                :preview-src-list="[require('@/assets/image/example/aurora.png')]"
-                :preview-teleported="true"
-                :src="require('@/assets/image/example/aurora.png')"
-                fit="cover"
-                style="width: 100%"
-              />
-            </div>
+            <el-image
+              v-if="!onRenderResult"
+              :preview-src-list="[onRenderExample]"
+              :preview-teleported="true"
+              :src="onRenderExample"
+              fit="cover"
+              style="width: 100%"
+            />
           </div>
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="24"
-          :lg="4"
-          :xl="4"
-        >
-          <div class="rendr-style">
+        </div>
+        
+        <div class="render-select-box">
+          <div
+            v-show="preMode===2"
+            class="rendr-style"
+          >
             <el-divider />
             <div class="style-title">
               结果图渲染
             </div>
 
             <label class="cl-checkbox">
-              <el-row justify="center">
-                <el-col><div
-                          class="style-words normal"
-                          :class="{ 'active-normal': renderstyle === '原图' }"
-                          @click="setNormalWay(onRender)"
-                        >原图</div>
-                  <div
-                    class="style-words woods"
-                    :class="{ 'active-woods': renderstyle === '森林' }"
-                    @click="setWoods(onRender)"
-                  >森林</div>
-                  <div
-                    class="style-words neon"
-                    :class="{ 'active-neon': renderstyle === '霓虹' }"
-                    @click="setneon(onRender)"
-                  >霓虹</div>
-                  <div
-                    class="style-words flash"
-                    :class="{ 'active-flash': renderstyle === '闪电' }"
-                    @click="setFlash(onRender)"
-                  >闪电</div>
-                  <div
-                    class="style-words aurora"
-                    :class="{ 'active-aurora': renderstyle === '极光' }"
-                    @click="setAurora(onRender)"
-                  >极光</div></el-col>
-              </el-row>
+              <div class="render-select">
+                <div
+                  class="style-words normal"
+                  :class="{ 'active-normal': renderstyle === '原图' }"
+                  @click="setOneWay('原图',resultArr.length===0)"
+                >原图</div>
+                <div
+                  class="style-words woods"
+                  :class="{ 'active-woods': renderstyle === '森林' }"
+                  @click="setOneWay('森林',resultArr.length===0)"
+                >森林</div>
+                <div
+                  class="style-words neon"
+                  :class="{ 'active-neon': renderstyle === '霓虹' }"
+                  @click="setOneWay('霓虹',resultArr.length===0)"
+                >霓虹</div>
+                <div
+                  class="style-words flash"
+                  :class="{ 'active-flash': renderstyle === '闪电' }"
+                  @click="setOneWay('闪电',resultArr.length===0)"
+                >闪电</div>
+                <div
+                  class="style-words aurora"
+                  :class="{ 'active-aurora': renderstyle === '极光' }"
+                  @click="setOneWay('极光',resultArr.length===0)"
+                >极光</div>
+              </div>
             </label>
           </div>
           <el-divider style="margin-top:0" />
           <div class="style-title">
             选择图片
           </div>
-
-          <el-empty
-            v-if="showingList.length === 0"
-            :image-size="100"
-          />
-          <div
-            v-for="(item, index) in Math.ceil(showingList.length / 5)"
-            :key="index"
-            class="list"
-          >
+          <div v-if="resultArr.length">
             <div
-              class="list-number"
-              @click="goRenderThese(index)"
+              v-for="(item, index) in Math.ceil(resultArr.length / 5)"
+              :key="index"
+              class="list"
             >
-              <div>
-                {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+              <div
+                class="list-number"
+                @click="goRenderThese(index)"
+              >
+                <div>
+                  {{ 5 * index + 1 }}-----{{ 5 * (index + 1) }}
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            v-if="isUpload"
-            style="text-align:center"
-          >
-            下载此图片：<el-button
-              type="primary"
-              style="width:60px"
-              class="btn-animate btn-animate__shiny"
-              @click="
-                downloadimgWithWords(
-                  idList[currentIndex],
-                  showingList[currentIndex],
-                  `变化检测${renderstyle}渲染结果图.png`
-                )
-              "
+            <div
+              style="text-align:center"
             >
-              下载
-            </el-button>
+              下载此图片：<el-button
+                type="primary"
+                style="width:60px"
+                class="btn-animate btn-animate__shiny"
+                @click="
+                  downloadimgWithWords(
+                    resultArr[currentIndex].id,
+                    onRenderResult,
+                    `变化检测${renderstyle}渲染结果图.png`
+                  )
+                "
+              >
+                下载
+              </el-button>
+            </div>
+            <p
+              style="text-align:center"
+            >
+              <span> <i
+                class="iconfont icon-dabaoxiazai"
+                @click="goCompress"
+              >所有结果图打包</i></span>
+            </p>
           </div>
-          <p
-            v-if="isUpload"
-            style="text-align:center"
-          >
-            <span> <i
-              class="iconfont icon-dabaoxiazai"
-              @click="goCompress"
-            >所有结果图打包</i></span>
-          </p>
-        </el-col>
-      </el-row>
-      <el-row class="swiper-img">
+          <el-empty
+            v-else
+            :image-size="100"
+          />
+        </div>
+      </div>
+
+      <div class="swiper-img">
         <div
           v-for="(item, index) in 5"
           :key="index"
           class="img-box"
         >
           <el-image
-            v-if="isExist[index]"
-            :src="srcs[index]"
+            v-if="resultArr[currentQroup+index]?.after_img"
+            :src="resultArr[currentQroup+index]?.after_img"
             :class="{'render-border':onRender===index}"
             @click="goRenderThis(index)"
           />
         </div>
-      </el-row>
+      </div>
     </el-card>
     <Bottominfor />
   </div>
@@ -848,7 +720,7 @@
 <script>
 import {
   createSrc,
-  detectChangesUpload,
+  imgUpload,
   holeHandle,
   histogramUpload,
   getCustomModel
@@ -882,49 +754,16 @@ export default {
       shaPairs: [],
       canUpload: true,
       onRender: 0,
-      onRenderGroup: 0,
-      isHole: [],
       isUpload: true,
-      idIndex: 0,
-      isExist: [],
-      downnumber: 0,
       hisNum: 0,
       value:null,
       renderstyle: "原图",
       funtype: "变化检测",
       scrollTop: "",
-      afterImg: [],
-      afterList: [],
-      woods: [],
-      neon: [],
-      flash: [],
-      aurora: [],
 
-      showingList: [],
-      beforeImg: [],
-      beforeImg1: [],
       currentQroup: 0,
-      src:'',
-      srcs: [
-      ],
-      example: {
-        outcome: [
-        ],
-        first: [
-        ],
-        second: [],
-        normal: [
-        ],
-        woods: [
-        ],
-        neon: [
-        ],
-        flash: [
-        ],
-        aurora: [
-        ],
-      },
       currentIndex: 0,
+
       fileList1: [],
       fileList2: [],
 
@@ -985,11 +824,25 @@ export default {
         ],
       },
 
-      idList: [],
       hole: {
         id: "",
       },
-
+      resultArr:[],
+      devidedArr:[],
+      onRenderResult:'',
+      exampleArr:[{
+          before_img : require("@/assets/image/example/test_50_1.png"),
+          before_img1: require("@/assets/image/example/test_50_2.png"),
+          after_img:require('@/assets/image/example/normal.png'),
+          data:{
+              0:require('@/assets/image/example/flash.png'),
+              1:require('@/assets/image/example/aurora.png'),
+              2:require('@/assets/image/example/woods.png'),
+              3:require('@/assets/image/example/neon.png'),
+            mask:require('@/assets/image/example/mask.png')
+          }
+      }],
+      onRenderExample:require('@/assets/image/example/normal.png')
     };
   },
   created() {
@@ -1003,7 +856,7 @@ export default {
   methods: {
     downloadimgWithWords,
     historyGetPage,
-    detectChangesUpload,
+    imgUpload,
     getCustomModel,
     createSrc,
     getImgArrayBuffer,
@@ -1015,100 +868,36 @@ export default {
       this.fileList2 = [];
       this.$message.success("清除成功");
     },
-    checkUpload() {
-      if (this.afterImg.length === 0) {
-        this.isUpload = false;
-      }
-    },
-    checkExist(val) {
-      this.isExist = val.map((item) => {
-        return typeof item != "undefined";
-      });
-    },
     goRenderThis(index) {
       this.currentIndex = this.currentQroup;
       this.currentIndex += index;
-      if (this.showingList.length !== 0) {
-        this.src = this.showingList[this.currentIndex];
-      } else {
-        this.src = this.srcs[index];
-      }
       this.onRender = index;
+      this.setOneWay(this.renderstyle)
     },
     goRenderThese(index) {
-
-      this.onRenderGroup = index;
-
       this.currentQroup = 5 * index;
       this.currentIndex = 5 * index;
-      this.srcs = [];
-
-      for (let i = 0; i <= 4; i++) {
-        this.srcs.push(this.showingList[this.currentIndex++]);
-      }
-      this.src = this.srcs[0];
-      this.idIndex = this.currentIndex;
       this.goRenderThis(0);
-      this.checkExist(this.srcs);
     },
-
-    setNormalWay(render) {
-      this.renderstyle = "原图";
-      this.showingList.splice(0, this.showingList.length);
-      if (this.isUpload === false) {
-        this.showingList.push(this.example.normal[0]);
-      } else {
-        this.showingList.push(...this.afterList);
+    setOneWay(style,isShowExample) {
+      this.renderstyle = style;
+      if(isShowExample){
+        switch (style){
+          case '原图': this.onRenderExample = this.exampleArr[0].after_img;break
+          case '森林': this.onRenderExample = this.exampleArr[0].data[2];break
+          case '霓虹': this.onRenderExample = this.exampleArr[0].data[3];break
+          case '闪电': this.onRenderExample = this.exampleArr[0].data[0];break
+          case '极光': this.onRenderExample = this.exampleArr[0].data[1];break
+        }
+        return
       }
-      this.goRenderThese(this.onRenderGroup);
-      this.goRenderThis(render);
-    },
-    setWoods(render) {
-      this.renderstyle = "森林";
-      this.showingList.splice(0, this.showingList.length);
-      if (this.isUpload === false) {
-        this.showingList.push(this.example.woods[0]);
-      } else {
-        this.showingList.push(...this.woods);
+      switch (style){
+        case '原图': this.onRenderResult = this.resultArr[this.currentIndex].after_img;break
+        case '森林': this.onRenderResult = this.resultArr[this.currentIndex].data[2];break
+        case '霓虹': this.onRenderResult = this.resultArr[this.currentIndex].data[3];break
+        case '闪电': this.onRenderResult = this.resultArr[this.currentIndex].data[0];break
+        case '极光': this.onRenderResult = this.resultArr[this.currentIndex].data[1];break
       }
-      this.goRenderThese(this.onRenderGroup);
-      this.goRenderThis(render);
-    },
-    setneon(render) {
-      this.renderstyle = "霓虹";
-
-      this.showingList.splice(0, this.showingList.length);
-      if (this.isUpload === false) {
-        this.showingList.push(this.example.neon[0]);
-      } else {
-        this.showingList.push(...this.neon);
-      }
-      this.goRenderThese(this.onRenderGroup);
-      this.goRenderThis(render);
-    },
-    setFlash(render) {
-      this.renderstyle = "闪电";
-
-      this.showingList.splice(0, this.showingList.length);
-      if (this.isUpload === false) {
-        this.showingList.push(this.example.flash[0]);
-      } else {
-        this.showingList.push(...this.flash);
-      }
-
-      this.goRenderThese(this.onRenderGroup);
-      this.goRenderThis(render);
-    },
-    setAurora(render) {
-      this.renderstyle = "极光";
-      this.showingList.splice(0, this.showingList.length);
-      if (this.isUpload === false) {
-        this.showingList.push(this.example.aurora[0]);
-      } else {
-        this.showingList.push(...this.aurora);
-      }
-      this.goRenderThese(this.onRenderGroup);
-      this.goRenderThis(render);
     },
     uploadfile() {
       this.uploadSrc = [];
@@ -1131,12 +920,10 @@ export default {
           formData2.append("type", "变化检测");
         }
         let upload1 = new Promise((resolve, reject) => {
-          setTimeout(() => {
             this.createSrc(formData1).then((res) => {
               this.uploadSrc1 = res.data.data;
               resolve();
             }).catch((rej)=>{})
-          }, 200);
         });
         let upload2 = new Promise((resolve, reject) => {
           this.createSrc(formData2).then((res) => {
@@ -1170,13 +957,9 @@ export default {
                     "检测到命名对应失败的图片，请检查您的文件命名"
                 );
               } else {
-                this.getList(this.uploadSrc);
-                this.detectChangesUpload(this.upload)
+                this.upload.list = this.getList(this.uploadSrc);
+                this.imgUpload(this.upload,'change_detection')
                     .then((res) => {
-                      if (res.data.code === 1) {
-                        this.$message.error(res.data.msg);
-                      }
-
                       this.$refs.uploadA.clearFiles();
                       this.$refs.uploadB.clearFiles();
                       this.fileList1 = [];
@@ -1226,8 +1009,7 @@ export default {
           break;
         }
       }
-
-      this.upload.list = afterData;
+      return  afterData;
     },
     goCompress(num) {
       this.$message.success("正在下载压缩");
@@ -1242,80 +1024,20 @@ export default {
     getMore() {
       this.historyGetPage(1, 20, "变化检测")
           .then((res) => {
-            this.beforeImg = res.data.data.map((item) => {
-              return global.BASEURL + item.before_img;
-            });
-            this.idList = res.data.data.map((item) => {
-              return item.id;
-            });
-            this.isHole = res.data.data.map((item) => {
-              return item.is_hole;
-            });
-            this.afterImg = res.data.data.map((item) => {
-              return {
-                after_img: global.BASEURL + item.after_img,
-                id: item.id,
-              };
-            });
-
-            this.afterList = res.data.data.map((item) => {
-              return global.BASEURL + item.after_img;
-            });
-            this.showingList = res.data.data.map((item) => {
-              return global.BASEURL + item.after_img;
-            });
-
-            if (this.afterList.length !== 0) {
-              this.goRenderThese(0);
-              this.goRenderThis(0);
-            }
-            this.beforeImg1 = res.data.data.map((item) => {
-              return global.BASEURL + item.before_img1;
-            });
-            this.woods = res.data.data.map((item) => {
-              return global.BASEURL + item.data[2];
-            });
-            this.neon = res.data.data.map((item) => {
-              return global.BASEURL + item.data[3];
-            });
-            this.flash = res.data.data.map((item) => {
-              return global.BASEURL + item.data[0];
-            });
-            this.aurora = res.data.data.map((item) => {
-              return global.BASEURL + item.data[1];
-            });
-            this.checkUpload();
-            if (!this.isUpload) {
-              this.setNormalWay(this.onRender);
-            }
+            res.data.data.forEach((item)=>{
+              item['before_img1']=global.BASEURL+item.before_img1
+              item['before_img'] = global.BASEURL+item.before_img
+              item['after_img'] = global.BASEURL+item.after_img
+              item.data[0] = global.BASEURL + item.data[0]
+              item.data[1] = global.BASEURL + item.data[1]
+              item.data[2] = global.BASEURL + item.data[2]
+              item.data[3] = global.BASEURL + item.data[3]
+              item.data['mask'] = global.BASEURL +item.data.mask
+            })
+            this.resultArr = res.data.data
+            this.onRenderResult = this.resultArr[this.currentIndex].after_img
           })
           .catch((rej) => {});
-    },
-    uploadFirst() {
-      this.checkFile1(...this.$refs.refFileA.files);
-      if (this.canUpload) {
-        this.fileList1.push(...this.$refs.refFileA.files);
-      } else {
-        setTimeout(() => {
-          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
-        }, 1000);
-      }
-    },
-    uploadSecond() {
-      this.checkFile2(...this.$refs.refFileB.files);
-      if (this.canUpload) {
-        this.fileList2.push(...this.$refs.refFileB.files);
-      } else {
-        setTimeout(() => {
-          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
-        }, 1000);
-      }
-    },
-    file1Click() {
-      document.querySelector("#upload-fileA").click();
-    },
-    file2Click() {
-      document.querySelector("#upload-fileB").click();
     },
     selectHistogram() {
       if (this.$refs.histogram.checked === true) {
@@ -1398,7 +1120,7 @@ export default {
               this.Img1 = [];
               this.Img3 = [];
             } else {
-              this.createHandelList(this.histogramSrc);
+              this.myhistogram.list = this.getList(this.histogramSrc);
               this.histogramUpload(this.myhistogram).then((res) => {
                 this.Img2 = res.data.data.map((item) => {
                   return global.BASEURL + item;
@@ -1413,26 +1135,6 @@ export default {
         this.upload.prehandle = 0;
         this.myhistogram.prehandle = 0;
       }
-    },
-    createHandelList(beforeData) {
-      let tempArr = [];
-      let afterData = [];
-      for (let i = 0; i < beforeData.length; i++) {
-        if (tempArr.indexOf(beforeData[i].filename) === -1) {
-          afterData.push(beforeData[i]);
-          tempArr.push(beforeData[i].filename);
-        } else {
-          for (let j = 0; j < afterData.length; j++) {
-            Reflect.deleteProperty(afterData[j], "photo_id");
-            // Reflect.deleteProperty(afterData[j], "filename");
-            afterData[j].first = afterData[j].src;
-            afterData[j].second = beforeData[i + j].src;
-            // Reflect.deleteProperty(afterData[j], "src");
-          }
-          break;
-        }
-      }
-      this.myhistogram.list = afterData;
     },
     selectSharpen() {
       if (
@@ -1518,7 +1220,7 @@ export default {
               this.Img1 = [];
               this.Img3 = [];
             } else {
-              this.createSharpenList(this.sharpenSrc);
+              this.mysharpen.list =  this.getList(this.sharpenSrc);
               this.histogramUpload(this.mysharpen).then((res) => {
                 this.sharpenImg1 = res.data.data.map((item) => {
                   return global.BASEURL + item.first;
@@ -1533,31 +1235,11 @@ export default {
         }
       }
     },
-    createSharpenList(beforeData) {
-      let tempArr = [];
-      let afterData = [];
-      for (let i = 0; i < beforeData.length; i++) {
-        if (tempArr.indexOf(beforeData[i].filename) === -1) {
-          afterData.push(beforeData[i]);
-          tempArr.push(beforeData[i].filename);
-        } else {
-          for (let j = 0; j < afterData.length; j++) {
-            Reflect.deleteProperty(afterData[j], "photo_id");
-            // Reflect.deleteProperty(afterData[j], "filename");
-            afterData[j].first = afterData[j].src;
-            afterData[j].second = beforeData[i + j].src;
-            // Reflect.deleteProperty(afterData[j], "src");
-          }
-          break;
-        }
-      }
-      this.mysharpen.list = afterData;
-    },
+
     selectFilter() {
       if (this.$refs.smooth.checked === true) {
         this.$refs.smooth.checked = false;
       }
-
       if (this.$refs.filter.checked === false) {
         this.$message.success("取消高斯滤波处理");
         this.upload.denoise = 0;
@@ -1570,7 +1252,6 @@ export default {
       if (this.$refs.filter.checked === true) {
         this.$refs.filter.checked = false;
       }
-
       if (this.$refs.smooth.checked === false) {
         this.$message.success("取消平滑处理");
         this.upload.denoise = 0;
@@ -1579,13 +1260,13 @@ export default {
         this.upload.denoise = 3;
       }
     },
-    dealAfterImg(currentIndex) {
-      if (this.isHole[currentIndex]) {
+    dealAfterImg() {
+      if (this.resultArr[this.currentIndex].is_hole) {
         this.$refs.hole.checked = true;
         this.$message.success("该图已经过处理");
       } else {
         this.$message.success("连通域滤波并填充孔洞处理");
-        this.hole.id = this.idList[this.currentIndex];
+        this.hole.id = this.resultArr[this.currentIndex].id;
         this.holeHandle(this.hole).then((res) => {
           this.getMore();
         }).catch((rej)=>{})
@@ -1595,9 +1276,34 @@ export default {
       this.$refs.hole1.checked = true;
       this.$message.success("该图已经过处理");
     },
+    uploadFirst() {
+      this.checkFile1(...this.$refs.refFileA.files);
+      if (this.canUpload) {
+        this.fileList1.push(...this.$refs.refFileA.files);
+      } else {
+        setTimeout(() => {
+          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
+        }, 1000);
+      }
+    },
+    uploadSecond() {
+      this.checkFile2(...this.$refs.refFileB.files);
+      if (this.canUpload) {
+        this.fileList2.push(...this.$refs.refFileB.files);
+      } else {
+        setTimeout(() => {
+          this.$message.error("检测到您上传的文件夹内存在不符合规范的图片类型");
+        }, 1000);
+      }
+    },
+    file1Click() {
+      document.querySelector("#upload-fileA").click();
+    },
+    file2Click() {
+      document.querySelector("#upload-fileB").click();
+    },
     checkFile1(file) {
       const whiteList = ["jpg", "jpeg", "png", "JPG", "JPEG"];
-
       const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
       if (whiteList.indexOf(fileSuffix) === -1) {
         this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
@@ -1672,6 +1378,7 @@ export default {
     sliderMouseLeave() {
       if (this.isSliderLocked) this.isSliderLocked = true;
     },
+
   },
 };
 </script>
@@ -1792,7 +1499,11 @@ export default {
 .render-border {
   border: var(--theme--color) 0.5rem solid;
 }
-
+.mask-img{
+  position: absolute;
+  top: 0;
+  z-index:2
+}
 #image-slider {
   position: relative;
   max-width:100%;
@@ -1806,8 +1517,8 @@ export default {
 #image-slider img {
   display: block;
   height: 100%;
-  max-width:550px;
-  max-height: 550px;
+  max-width:650px;
+  max-height: 650px;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
@@ -1842,7 +1553,7 @@ export default {
   justify-content: center;
   align-items: center;
   user-select: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 #image-slider .handle-circle {
@@ -1922,5 +1633,33 @@ export default {
   flex-direction:row;
   justify-content: space-evenly;
   flex-wrap: wrap;
+}
+.render-img-box{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  flex-direction: row;
+  .display-modeB{
+    display: flex;
+    flex-wrap: wrap ;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    .modeB-item{
+      margin: 10px;
+      width:31%;
+    }
+  }
+  .render-select-box{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.render-select{
+  display: flex;
+  flex-direction: column;
 }
 </style>
