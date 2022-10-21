@@ -12,7 +12,7 @@
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
-      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">semantic_segmentation文件夹</span>
     </p>
 
     <el-row
@@ -166,7 +166,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="goUpload"
+              @click="upload('地物分类','semantic_segmentation')"
             >
               开始处理
             </el-button>
@@ -419,7 +419,7 @@
 
 <script>
 import { atchDownload, downloadimgWithWords, getImgArrayBuffer } from "@/utils/download.js";
-import { SegmentationUpload, createSrc ,getCustomModel } from "@/api/upload";
+import { imgUpload, createSrc ,getCustomModel } from "@/api/upload";
 import { historyGetPage } from "@/api/history";
 import { getUploadImg, goCompress, upload } from "@/utils/getUploadImg";
 import { selectClahe, selectFilter, selectSharpen, selectSmooth, } from "@/utils/preHandle";
@@ -458,6 +458,7 @@ export default {
       fit: "fill",
 
       uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
+
       modelPathArr:[],
 
       prePhoto: {
@@ -482,12 +483,12 @@ export default {
     this.getCustomModel('semantic_segmentation').then(res=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     getImgArrayBuffer,
     atchDownload,
-    SegmentationUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
@@ -523,9 +524,6 @@ export default {
     },
     getMore() {
       this.getUploadImg("地物分类");
-    },
-    goUpload() {
-      this.upload("地物分类");
     },
     fileClick() {
       document.querySelector("#folder").click();

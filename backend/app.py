@@ -4,6 +4,7 @@ from flask import session
 from flask_migrate import Migrate
 
 from applications import create_app
+from applications.common.utils.http import fail_api
 from applications.extensions import db
 
 app = create_app()
@@ -13,6 +14,11 @@ app = create_app()
 def before():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=20)
+
+
+@app.errorhandler(Exception)
+def error_handler(e):
+    return fail_api("后端出现异常：{}".format(str(e)))
 
 
 migrate = Migrate(app, db)
