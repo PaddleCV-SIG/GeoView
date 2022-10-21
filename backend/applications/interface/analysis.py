@@ -47,13 +47,22 @@ def save_analysis(type_,
     db.session.commit()
 
 
-def change_detection(model_path, data_path, out_dir, names, step1, step2,
-                     type_):
+def change_detection(model_path,
+                     data_path,
+                     out_dir,
+                     names,
+                     step1,
+                     step2,
+                     type_,
+                     window_size=256,
+                     stride=128):
     """
     变化检测
     :param model_path: 静态图模型路径
     :param data_path: 图片数据路径，路径中有名称为A和B的两个文件夹分别存储不同时相的图片（1024，1024），且相应图片名称相同
     :param out_dir:图片保存路径
+    :param window_size:滑窗大小
+    :param stride:步长
     :return:
     """
     print("变化检测----------------->start")
@@ -87,7 +96,13 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         pair["second"] = resizes1[i]
         i += 1
     # 3.检测对比，带地址的文件名，纯文件名
-    retPics, filenames = CD.execute(model_path, data_path, out_dir, names)
+    retPics, filenames = CD.execute(
+        model_path,
+        data_path,
+        out_dir,
+        names,
+        window_size=window_size,
+        stride=stride)
     # 4.检测渲染
     res = handle(fun_type_6, filenames, out_dir, out_dir)
     # 5.入库

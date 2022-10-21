@@ -52,6 +52,8 @@ def show_result(type):
 def change_detection_api():
     req_json = request.json
     model_path = req_json["model_path"]
+    window_size = int(req_json.get("window_size", 256))
+    stride = int(req_json.get("stride", 128))
     try:
         model_info = get_model_info(model_path)
         if model_info["_Attributes"]["model_type"] != "change_detector":
@@ -75,7 +77,7 @@ def change_detection_api():
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
     change_detection(model_path, up_dir, generate_dir, list_, step1_, step2_,
-                     type_)
+                     type_, window_size, stride)
     return success_api()
 
 
