@@ -17,7 +17,6 @@ const app = createApp(App)
 app.use(router).use(ElementPlus,{locale: zhCn}).use(JSZIP).mount('#app')
 app.directive('drag',{
     mounted(el, binding, vnode, prevVnode) {
-        console.log(el)
         const mouseDown = (e) => {
             let X = e.clientX - el.offsetLeft
             let Y = e.clientY - el.offsetTop
