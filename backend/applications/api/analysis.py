@@ -54,6 +54,8 @@ def change_detection_api():
     model_path = req_json["model_path"]
     window_size = int(req_json.get("window_size", 256))
     stride = int(req_json.get("stride", 128))
+    if window_size < stride:
+        return fail_api("步长必须大于窗口大小")
     try:
         model_info = get_model_info(model_path)
         if model_info["_Attributes"]["model_type"] != "change_detector":
