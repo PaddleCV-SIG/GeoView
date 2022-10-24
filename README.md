@@ -85,7 +85,15 @@ MYSQL_PASSWORD=MYSQL密码
 运行`python app.py`，即可启动Web后端。启动后，系统会自动初始化数据库。
 
 ### Web前端的安装
-
+#### 安装Node.js
+##### Windows安装方法
+进入[Node.js官网](https://nodejs.org/en/)，选择16.18.0 LTS下载。下载后，按照安装向导进行安装，详细安装步骤可以参考[CSDN博文](https://blog.csdn.net/bbj12345678/article/details/106741758)。
+##### Linux安装方法
+Linux下建议使用nvm完成Node.js的安装，安装指令如下：
+``` bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+nvm use 16
+```
 #### 安装依赖
 
 进入`frontend`目录后，运行如下命令即可安装Web前端的所有依赖。
