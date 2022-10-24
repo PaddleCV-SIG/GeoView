@@ -5,7 +5,7 @@ import os
 import cv2
 
 from applications.common.path_global import fun_type_1, fun_type_2, fun_type_3, fun_type_4, fun_type_5, \
-    fun_type_6, fun_type_7, generate_url, fun_type_8, up_url
+    fun_type_6, fun_type_7, generate_url, fun_type_8, up_url, generate_dir
 from applications.common.utils.upload import img_url_handle
 from applications.extensions import db
 from applications.image_processing import histogram_match
@@ -121,6 +121,21 @@ def change_detection(model_path,
         res[i]["count"] = count
         res[i]["fractional_variation"] = compute_variation(
             os.path.join(out_dir, filenames[i]))
+        after_img, data = hole_handle(generate_dir, generate_dir + "hole/",
+                                      [retPic])
+        res[i]["hole"] = after_img
+        mask, count = draw_masks(
+            os.path.join(generate_dir + "hole/", os.path.basename(after_img)))
+        cv2.imwrite(
+            os.path.join(
+                generate_dir + "hole/",
+                os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
+            mask)
+        res[i]["mask_hole"] = generate_url + "hole/" + os.path.splitext(
+            os.path.basename(after_img))[0] + "_mask.png"
+        res[i]["count_hole"] = count
+        res[i]["fractional_variation_hole"] = compute_variation(
+            os.path.join(generate_dir + "hole/", os.path.basename(after_img)))
         data = json.dumps(res[i])
         save_analysis(
             type_,
@@ -128,7 +143,8 @@ def change_detection(model_path,
             retPic,
             pic2=second_,
             data=data,
-            checked=str(step1) + "," + str(step2))
+            checked=str(step1) + "," + str(step2),
+            is_hole=True)
         i += 1
     print("变化检测----------------->end")
 
@@ -139,7 +155,7 @@ def hole_handle(data_path, out_dir, names):
     res = handle(fun_type_8, names, data_path, out_dir)
     # 4.检测渲染
     res1 = handle(fun_type_6, res, out_dir, out_dir)
-    return generate_url + res[0], res1[0]
+    return generate_url + "hole/" + res[0], res1[0]
 
 
 def url_handle(imgs):
