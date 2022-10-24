@@ -52,6 +52,10 @@ def show_result(type):
 def change_detection_api():
     req_json = request.json
     model_path = req_json["model_path"]
+    window_size = int(req_json.get("window_size", 256))
+    stride = int(req_json.get("stride", 128))
+    if window_size < stride:
+        return fail_api("步长必须大于窗口大小")
     try:
         model_info = get_model_info(model_path)
         if model_info["_Attributes"]["model_type"] != "change_detector":
@@ -75,7 +79,7 @@ def change_detection_api():
     print("----------------->change_detection" + json.dumps(req_json))
     type_ = 1
     change_detection(model_path, up_dir, generate_dir, list_, step1_, step2_,
-                     type_)
+                     type_, window_size, stride)
     return success_api()
 
 
@@ -255,48 +259,3 @@ def image_pre():
         for i, img in enumerate(imgs):
             imgs[i] = generate_url + img
     return success_api(data=imgs)
-
-
-"""
-    孔洞处理
-"""
-
-
-@analysis_api.post('/hole')
-def hole_handle1():
-    req_json = request.json
-    analysis_id = req_json["id"]
-    if analysis_id is None:
-        return fail_api("参数异常")
-
-    analysis = Analysis.query.filter_by(id=analysis_id, type=1).first()
-    if not analysis:
-        return fail_api("这一组分析记录不存在")
-    if analysis.type != 1:
-        return fail_api("类型错误")
-    if analysis.is_hole:
-        return fail_api("这一组分析记录已经孔洞处理过")
-    temps = list()
-    temps.append(analysis.after_img)
-    after_img, data = hole_handle(generate_dir, generate_dir, temps)
-    old_data = json.loads(analysis.data)
-    old_data.update(data)
-    mask, count = draw_masks(
-        os.path.join(generate_dir, os.path.basename(after_img)))
-    cv2.imwrite(
-        os.path.join(
-            generate_dir,
-            os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
-        mask)
-    old_data["mask"] = generate_url + os.path.splitext(
-        os.path.basename(after_img))[0] + "_mask.png"
-    old_data["count"] = count
-    old_data["fractional_variation"] = compute_variation(
-        os.path.join(generate_dir, os.path.basename(after_img)))
-    Analysis.query.filter_by(id=analysis_id).update({
-        "after_img": after_img,
-        "data": json.dumps(old_data),
-        "is_hole": True
-    })
-    db.session.commit()
-    return success_api()
