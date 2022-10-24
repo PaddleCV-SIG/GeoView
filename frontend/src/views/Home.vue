@@ -23,11 +23,7 @@
             name="fade"
             mode="out-in"
           >
-            <keep-alive
-              include="Detectobjects,Detectchanges,Segmentation,Classification,Restoreimgs"
-            >
-              <component :is="Component" />
-            </keep-alive>
+            <component :is="Component" />
           </transition>
         </router-view>
         <el-backtop
@@ -45,14 +41,12 @@
 import "@/assets/css/app.css";
 import AsideVue from "@/components/AsideVue";
 import Tablogin from "@/components/Tablogin";
-import BackTop from "@/components/BackTop";
 
 export default {
   name: "Home",
   components: {
     AsideVue,
     Tablogin,
-    BackTop,
   },
   data() {
     return {

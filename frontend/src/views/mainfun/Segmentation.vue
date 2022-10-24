@@ -309,77 +309,6 @@
           <span><span class="go-bold">滑轮滚动</span>即可放大缩小</span>
         </p>
       </template>
-      <template #mid>
-        <el-row
-          justify="center"
-          align="middle"
-        >
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block road" />
-            道路
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block tree" />
-            树木
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block none" />
-            空地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block waste" />
-            荒地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block back" />
-            背景
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <p v-if="isUpload">
-              <i
-                class="iconfont icon-dabaoxiazai"
-                @click="goCompress('地物分类')"
-              >打包</i>
-            </p>
-          </el-col>
-        </el-row>
-      </template>
       <template #right>
         <div class="go-bold">
           <i
@@ -561,30 +490,6 @@ export default {
   left: 0;
   right: 0;
   width: 220px;
-}
-.lit-block {
-  width: 13px;
-  height: 13px;
-  display: inline-block;
-}
-.road {
-  background-color: blue;
-}
-
-.tree {
-  background-color: green;
-}
-
-.none {
-  background-color: red;
-}
-
-.waste {
-  background-color: orange;
-}
-
-.back {
-  background-color: black;
 }
 
 .clear-queue {
