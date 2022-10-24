@@ -26,9 +26,10 @@
     <p style="text-decoration: underline">
       <i
         class="iconfont icon-zhuyi"
-      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据, <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
+      />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
+    </p><p style="text-decoration: underline">
+      <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
     </p>
-
     <el-card style="border: 4px dashed var(--el-border-color);position: relative">
       <div
         v-if="fileList1.length||fileList2.length"
@@ -492,19 +493,20 @@
             @mouseup="sliderMouseUp"
             @mouseleave="sliderMouseLeave"
           >
-            <img
-              v-if="resultArr[currentIndex]?.data.mask"
-              :src="resultArr[currentIndex].data.mask "
-              alt="mask"
-              class="mask-img"
-            >
-            <img
-              v-if="!resultArr[currentIndex]?.data.mask"
-              :src="exampleArr[0].data.mask "
-              alt="mask"
-              class="mask-img"
-            >
-
+            <div v-show="!isHiddenMask">
+              <img
+                v-if="resultArr[currentIndex]?.data.mask"
+                :src="resultArr[currentIndex].data.mask "
+                alt="mask"
+                class="mask-img"
+              >
+              <img
+                v-if="!resultArr[currentIndex]?.data.mask"
+                :src="exampleArr[0].data.mask "
+                alt="mask"
+                class="mask-img"
+              >
+            </div>
             <img
               v-if="resultArr[currentIndex]?.before_img"
               :src="resultArr[currentIndex].before_img "
@@ -644,6 +646,9 @@
               </div>
             </label>
           </div>
+          <p v-if="resultArr.length===0">
+            此图为预设展示图，供参考
+          </p>
           <el-divider style="margin-top:0" />
           <div class="style-title">
             选择图片
@@ -694,6 +699,31 @@
             v-else
             :image-size="100"
           />
+          <div
+            v-show="dragShow && resultArr.length!==0"
+            class="drag-item"
+          >
+            <DraggableItem @child-vannish="vanishDrag">
+              <template #left-1>
+                绘制框个数：{{ resultArr[currentIndex]?.data.count }}
+              </template>
+              <template #rightIcon-1>
+                <i
+                  v-show="!isHiddenMask"
+                  class="iconfont icon-yanjing-kai"
+                  @click="hideMask"
+                />
+                <i
+                  v-show="isHiddenMask"
+                  class="iconfont icon-yanjing-guan"
+                  @click="hideMask"
+                />
+              </template>
+              <template #left-2>
+                两时期变化百分比：{{ resultArr[currentIndex]?.data.fractional_variation.toFixed(2) }}%
+              </template>
+            </DraggableItem>
+          </div>
         </div>
       </div>
 
@@ -710,6 +740,16 @@
             @click="goRenderThis(index)"
           />
         </div>
+      </div>
+
+      <div 
+        v-show="!dragShow"
+        class="drag-control hidden-md-and-down"
+        @click="dragShow=true"
+      >
+        <i
+          class="iconfont icon-cebianshouqi"
+        />
       </div>
     </el-card>
     <Bottominfor />
@@ -733,12 +773,14 @@ import {
 import { historyGetPage } from "@/api/history";
 import Tabinfor from "@/components/Tabinfor";
 import Bottominfor from "@/components/Bottominfor";
+import DraggableItem from "@/components/DraggableItem";
 import global from "@/global";
 export default {
   name: "Detectchanges",
   components: {
     Tabinfor,
     Bottominfor,
+    DraggableItem
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -842,7 +884,9 @@ export default {
             mask:require('@/assets/image/example/mask.png')
           }
       }],
-      onRenderExample:require('@/assets/image/example/normal.png')
+      onRenderExample:require('@/assets/image/example/normal.png'),
+      isHiddenMask:false,
+      dragShow:true
     };
   },
   created() {
@@ -1378,7 +1422,12 @@ export default {
     sliderMouseLeave() {
       if (this.isSliderLocked) this.isSliderLocked = true;
     },
-
+    vanishDrag(){
+      this.dragShow = false
+    },
+    hideMask(){
+      this.isHiddenMask = !this.isHiddenMask
+    }
   },
 };
 </script>
@@ -1655,6 +1704,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
   }
 }
 
@@ -1662,4 +1712,23 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.drag-control{
+  position: absolute;
+  right: 20px;
+  top: 400px;
+  width: 33px;
+  height: 20px;
+  text-align: center;
+  padding: 5px;
+  color: var(--theme--color);
+  background: rgb(237, 242, 245);
+  border-radius: 0.2rem;
+  .iconfont {
+    display: block;
+    &:hover{
+      background-color: rgb(228, 235, 240);
+    }
+  }
+}
+
 </style>
