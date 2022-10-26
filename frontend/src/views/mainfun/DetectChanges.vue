@@ -436,7 +436,7 @@
               ref="hole"
               type="checkbox"
               :checked="resultArr[currentIndex].is_hole"
-              @click="dealAfterImg()"
+              @click="toggleHoleStatus"
             >
             <span class="checkmark" />
             <span class="go-bold label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
@@ -587,14 +587,36 @@
             <p class="handle-words">
               预测结果
             </p>
-            <el-image
-              v-if="onRenderResult"
-              :preview-src-list="[onRenderResult]"
-              :preview-teleported="true"
-              :src="onRenderResult"
-              fit="cover"
-              style="width: 100%"
-            />
+            <transition
+              enter-active-class="animate__animated animate__bounceIn"
+              leave-active-class="animate__animated animate__hinge"
+            >
+              <div style="position: relative;">
+                <div v-if="holeShow">
+                  <el-image
+                    v-if="onRenderResult && holeShow"
+                    :preview-src-list="[onRenderResult]"
+                    :preview-teleported="true"
+                    :src="onRenderResult"
+                    fit="cover"
+                    style="width: 100%"
+                  />
+                </div>
+                <div
+                  v-else
+                  style="position: absolute;"
+                >
+                  <el-image
+                    v-if="onRenderResult"
+                    :preview-src-list="[resultArr[currentIndex].data['hole']]"
+                    :preview-teleported="true"
+                    :src="resultArr[currentIndex].data['hole']"
+                    fit="cover"
+                    style="width: 100%"
+                  />
+                </div>
+              </div>
+            </transition>
             <el-image
               v-if="!onRenderResult"
               :preview-src-list="[onRenderExample]"
@@ -605,7 +627,7 @@
             />
           </div>
         </div>
-        
+
         <div class="render-select-box">
           <div
             v-show="preMode===2"
@@ -789,6 +811,7 @@ export default {
   },
   data() {
     return {
+      holeShow:false,
       isSliderLocked: false,
       preMode: 1,
       pairs: [],
@@ -905,7 +928,6 @@ export default {
     createSrc,
     getImgArrayBuffer,
     atchDownload,
-    holeHandle,
     histogramUpload,
     clearQueue() {
       this.fileList1 = [];
@@ -1072,11 +1094,13 @@ export default {
               item['before_img1']=global.BASEURL+item.before_img1
               item['before_img'] = global.BASEURL+item.before_img
               item['after_img'] = global.BASEURL+item.after_img
+              item.data['hole'] = global.BASEURL + item.data['hole']
               item.data[0] = global.BASEURL + item.data[0]
               item.data[1] = global.BASEURL + item.data[1]
               item.data[2] = global.BASEURL + item.data[2]
               item.data[3] = global.BASEURL + item.data[3]
               item.data['mask'] = global.BASEURL +item.data.mask
+              item.data['mask_hole'] = global.BASEURL + item.data.mask_hole
             })
             this.resultArr = res.data.data
             this.onRenderResult = this.resultArr[this.currentIndex].after_img
@@ -1304,17 +1328,9 @@ export default {
         this.upload.denoise = 3;
       }
     },
-    dealAfterImg() {
-      if (this.resultArr[this.currentIndex].is_hole) {
-        this.$refs.hole.checked = true;
-        this.$message.success("该图已经过处理");
-      } else {
-        this.$message.success("连通域滤波并填充孔洞处理");
-        this.hole.id = this.resultArr[this.currentIndex].id;
-        this.holeHandle(this.hole).then((res) => {
-          this.getMore();
-        }).catch((rej)=>{})
-      }
+    toggleHoleStatus() {
+      this.resultArr[this.currentIndex].is_hole = !this.resultArr[this.currentIndex].is_hole
+      this.holeShow = !this.holeShow
     },
     dealExample() {
       this.$refs.hole1.checked = true;

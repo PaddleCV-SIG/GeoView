@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^8.5.0",
+    "animate.css": "^4.1.1",
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
     "element-plus": "2.1.10",

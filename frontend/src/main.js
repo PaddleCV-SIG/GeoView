@@ -9,6 +9,7 @@ import './assets/css/normalize.css'
 import '@/assets/css/app.css'
 import '@/assets/css/font.css'
 import 'element-plus/theme-chalk/display.css'
+import 'animate.css';
 
 import JSZIP from "jszip"
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
