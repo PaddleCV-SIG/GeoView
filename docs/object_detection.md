@@ -3,7 +3,7 @@
 ## 使用方法：用户上传文件夹或图片，确保格式正确，系统也会验证格式，用户在上传前可以选择编辑图片，能对图片进行裁剪、旋转、放大、缩小操作
 ## 效果展示：
   <p align="center">
-    <img src="../images/od.png" align="middle" width = "800" />
+    <img src="./images/od.png" align="middle" width = "800" />
   </p>
   
 1.默认模型支持识别的物体
