@@ -495,8 +495,14 @@
           >
             <div v-show="!isHiddenMask">
               <img
-                v-if="resultArr[currentIndex]?.data.mask"
+                v-if="resultArr[currentIndex]?.data.mask && holeShow"
                 :src="resultArr[currentIndex].data.mask "
+                alt="mask"
+                class="mask-img"
+              >
+              <img
+                v-if="resultArr[currentIndex]?.data.mask_hole && !holeShow"
+                :src="resultArr[currentIndex].data.mask_hole "
                 alt="mask"
                 class="mask-img"
               >
@@ -587,11 +593,11 @@
             <p class="handle-words">
               预测结果
             </p>
-            <transition
-              enter-active-class="animate__animated animate__bounceIn"
-              leave-active-class="animate__animated animate__hinge"
-            >
-              <div style="position: relative;">
+            <div style="position: relative">
+              <transition
+                enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__hinge"
+              >
                 <div v-if="holeShow">
                   <el-image
                     v-if="onRenderResult && holeShow"
@@ -602,12 +608,17 @@
                     style="width: 100%"
                   />
                 </div>
+              </transition>
+              <transition
+                enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__hinge"
+              >
                 <div
-                  v-else
-                  style="position: absolute;"
+                  v-if="!holeShow"
+                  style="position: absolute;top: 0;right: 0;"
                 >
                   <el-image
-                    v-if="onRenderResult"
+                    v-if="onRenderResult && !holeShow"
                     :preview-src-list="[resultArr[currentIndex].data['hole']]"
                     :preview-teleported="true"
                     :src="resultArr[currentIndex].data['hole']"
@@ -615,8 +626,8 @@
                     style="width: 100%"
                   />
                 </div>
-              </div>
-            </transition>
+              </transition>
+            </div>
             <el-image
               v-if="!onRenderResult"
               :preview-src-list="[onRenderExample]"
@@ -727,7 +738,9 @@
           >
             <DraggableItem @child-vannish="vanishDrag">
               <template #left-1>
-                绘制框个数：{{ resultArr[currentIndex]?.data.count }}
+                绘制框个数：<span v-show="holeShow">{{ resultArr[currentIndex]?.data.count }}</span><span v-show="!holeShow">
+                  {{ resultArr[currentIndex]?.data.count_hole }}
+                </span>
               </template>
               <template #rightIcon-1>
                 <i
@@ -742,7 +755,7 @@
                 />
               </template>
               <template #left-2>
-                两时期变化百分比：{{ resultArr[currentIndex]?.data.fractional_variation.toFixed(2) }}%
+                两时期变化百分比：<span v-show="holeShow">{{ resultArr[currentIndex]?.data.fractional_variation.toFixed(2) }}%</span><span v-show="!holeShow">{{ resultArr[currentIndex]?.data.fractional_variation_hole.toFixed(2) }}%</span>
               </template>
             </DraggableItem>
           </div>
@@ -783,7 +796,6 @@
 import {
   createSrc,
   imgUpload,
-  holeHandle,
   histogramUpload,
   getCustomModel
 } from "@/api/upload";
