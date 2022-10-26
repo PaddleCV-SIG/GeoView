@@ -12,10 +12,10 @@
 3.可选择的后处理：
  - 结果图渲染（用户可以选择自己的风格对预测结果图进行渲染）效果如下图所示：
   <p align="center">
-    <img src="../images/gif3.gif" align="middle" width = "600" />
+    <img src="./images/gif3.gif" align="middle" width = "600" />
   </p>
   
  - 连通域滤波+填充孔洞（去除伪变化噪声点以及填充建筑物内的孔洞，使结果更加接近真实情况）效果如下图所示：
   <p align="center">
-    <img src="../images/lvbo.png" align="middle" width = "600" />
+    <img src="./images/lvbo.png" align="middle" width = "600" />
   </p>
