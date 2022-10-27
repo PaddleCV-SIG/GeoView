@@ -116,22 +116,26 @@ def change_detection(model_path,
         cv2.imwrite(
             os.path.join(out_dir,
                          os.path.splitext(filenames[i])[0] + "_mask.png"), mask)
-        res[i]["mask"] = generate_url + os.path.splitext(filenames[i])[
+        res[i]["mask"] = out_dir + os.path.splitext(filenames[i])[
             0] + "_mask.png"
         res[i]["count"] = count
         res[i]["fractional_variation"] = compute_variation(
             os.path.join(out_dir, filenames[i]))
-        after_img, data = hole_handle(generate_dir, generate_dir + "hole/",
-                                      [retPic])
+        after_img, data = hole_handle(out_dir, out_dir + "hole/", [retPic])
         res[i]["hole"] = after_img
+        res[i]["hole_style"] = handle(
+            fun_type_6, [os.path.basename(after_img)],
+            out_dir + "hole/",
+            out_dir + "hole/",
+            prefix="hole")[0]
         mask, count = draw_masks(
-            os.path.join(generate_dir + "hole/", os.path.basename(after_img)))
+            os.path.join(out_dir + "hole/", os.path.basename(after_img)))
         cv2.imwrite(
             os.path.join(
-                generate_dir + "hole/",
+                out_dir + "hole/",
                 os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
             mask)
-        res[i]["mask_hole"] = generate_url + "hole/" + os.path.splitext(
+        res[i]["mask_hole"] = out_dir + "hole/" + os.path.splitext(
             os.path.basename(after_img))[0] + "_mask.png"
         res[i]["count_hole"] = count
         res[i]["fractional_variation_hole"] = compute_variation(
@@ -302,7 +306,7 @@ def image_restoration(model_path, data_path, out_dir, names, type_):
     print("图像复原----------------->end")
 
 
-def handle(fun_type, imgs, src_dir, save_dir):
+def handle(fun_type, imgs, src_dir, save_dir, prefix=""):
     """
 
     :param fun_type:
@@ -336,7 +340,7 @@ def handle(fun_type, imgs, src_dir, save_dir):
     elif fun_type == fun_type_5:
         temps = gaussian_blur(src_dir, save_dir, imgs)
     elif fun_type == fun_type_6:
-        temps = batch_render(src_dir, save_dir, imgs)
+        temps = batch_render(src_dir, save_dir, imgs, prefix)
     elif fun_type == fun_type_7:
         temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:

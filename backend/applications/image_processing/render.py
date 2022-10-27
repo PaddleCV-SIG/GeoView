@@ -50,11 +50,12 @@ def render(name, data_dir, save_dir,
 
 
 # 批量渲染
-def batch_render(data_dir, save_dir, imgs):
+def batch_render(data_dir, save_dir, imgs, prefix):
     temps = list()
     for img in imgs:
         maps = dict()
         for i in range(4):
-            maps[i] = generate_url + render(img, data_dir, save_dir, i)
+            maps[i] = generate_url + (prefix + "/" if prefix != "" else ""
+                                      ) + render(img, data_dir, save_dir, i)
         temps.append(maps)
     return temps
