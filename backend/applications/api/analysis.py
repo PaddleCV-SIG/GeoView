@@ -54,6 +54,8 @@ def change_detection_api():
     model_path = req_json["model_path"]
     window_size = int(req_json.get("window_size", 256))
     stride = int(req_json.get("stride", 128))
+    if window_size <= 0 or stride <= 0:
+        return fail_api("步长和窗口大小必须大于0")
     if window_size < stride:
         return fail_api("步长必须大于窗口大小")
     try:
