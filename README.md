@@ -5,6 +5,78 @@
 ![node.js version](https://img.shields.io/badge/nodejs-16+-orange.svg)
 ![support os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-yellow.svg)
 
+## 简介
+
+PP-GeoView是一款开源、轻量、功能丰富的遥感影像智能解译工具，致力于实现遥感领域深度学习模型在Web平台的快速部署。
+
+## 特性
+
+PP-GeoView支持5大遥感影像解译任务：
+
+- 变化检测
+- 场景分类
+- 目标检测
+- 图像复原
+- 地物分类
+
+此外，PP-GeoView提供以下辅助功能：
+
+- 遥感影像预处理
+- 解译结果后处理
+- 解译结果导出
+- 在线地图解译
+
+## 安装说明
+
+### 前置依赖安装
+
+在执行后续步骤之前，请确保您安装了如下依赖库：
+
+- MySQL >= 5.7
+- Node.js >= 16.0
+- PaddlePaddle >= 2.2.0
+
+其中，PaddlePaddle安装可以参考[PaddlePaddle官网](https://www.paddlepaddle.org.cn/)。这里给出安装CPU版本的例子：
+
+```shell
+pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+```
+
+### 项目下载与安装
+
+上述依赖安装完毕后，首先从GitHub将PP-GeoView项目克隆到本地：
+
+```shell
+git clone --recursive https://github.com/PaddleCV-SIG/PP-GeoView.git
+```
+
+运行如下命令安装PaddleRS：
+
+```shell
+pip install -r PaddleRS/requirements.txt
+pip install -e PaddleRS/
+```
+
+接着，运行如下命令以安装Web后端的所有依赖：
+
+```shell
+pip install -r backend/requirements.txt
+```
+
+最后，运行如下命令安装Web前端的所有依赖：
+
+```shell
+cd frontend
+npm install
+```
+
+至此，PP-GeoView安装完成。根据您的需求，您可以参考[开发者文档](./docs/dev.md)或[用户文档](./docs/user.md)进行PP-GeoView工具的使用。
+
+## 使用说明
+
+- 若您的需求是使用PP-GeoView部署和发布模型，请阅读[开发者文档](./docs/dev.md)。
+- 若您希望了解基于PP-GeoView发布的产品的使用方式，请阅读[用户文档](./docs/user.md)。
+
 ## 代码结构
 
 PP-GeoView目录树中关键部分如下：
@@ -17,87 +89,8 @@ PP-GeoView目录树中关键部分如下：
 └── frontend             # Web前端
 ```
 
-## 安装
+## 开源贡献
 
-### 前置条件
+PP-GeoView欢迎各种形式的开源贡献。
 
-- python >= 3.7
-
-- mysql >= 5.7
-
-- Node.js >= 16.0
-
-- PaddlePaddle >= 2.2.0
-
-- 操作系统: Linux, Windows, Mac OSX
-
-PP-GeoView依赖于PaddlePaddle和PaddleRS。PaddlePaddle安装可以参考[PaddlePaddle官网](https://www.paddlepaddle.org.cn/)，根据自己机器的情况进行选择。这里给出 cpu 版本示例，其它版本大家可以根据自己机器的情况进行安装。
-
-```bash
-pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-```
-
-paddleRS安装可以参考[PaddleRS文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/tutorials/train/README.md)。命令为
-
-``` bash
-cd PaddleRS
-pip install -r requirements.txt
-python setup.py install
-```
-
-### 修改端口号（可选）
-
-按以下规则编辑根目录下的`config.yaml`文件。
-``` yaml
-port:
-  backend: 后端端口号
-  frontend: 前端端口号
-host:
-  backend: 后端监听ip
-  frontend: 前端监听ip
-```
-
-### Web后端的安装
-
-#### 安装依赖
-
-进入`backend`目录后，运行如下命令即可安装Web后端的所有依赖。
-
-```bash
-pip install -r requirements.txt
-```
-
-#### 修改配置文件
-
-首先，将`.flaskenv_template`文件重命名为`.flaskenv`。在`.flaskenv`中，修改Mysql配置信息，具体为：
-
-```plain
-# MySql配置信息
-MYSQL_HOST=MYSQL服务器IP
-MYSQL_PORT=MYSQL服务器端口
-MYSQL_DATABASE=MYSQL数据库名
-MYSQL_USERNAME=MYSQL用户名
-MYSQL_PASSWORD=MYSQL密码
-```
-
-#### 启动Web后端
-
-运行`python app.py`，即可启动Web后端。启动后，系统会自动初始化数据库。
-
-### Web前端的安装
-
-#### 安装依赖
-
-进入`frontend`目录后，运行如下命令即可安装Web前端的所有依赖。
-
-```bash
-npm install
-```
-
-#### 启动Web前端
-
-运行`npm run serve`，即可启动Web前端。启动后，可在浏览器中输入`http://127.0.0.1:3000`访问系统。
-
-## 致谢
-
-特别感谢来自开源社区的开发者对本项目的贡献：（以下排名不分先后）[曹凌铭](https://github.com/terayco)，[卢利栋](https://github.com/jscslld)，[易博坤](https://github.com/yibaikuai)。
+特别感谢以下开发者对本项目的贡献：（排名不分先后）[曹凌铭](https://github.com/terayco)，[卢利栋](https://github.com/jscslld)，[易博坤](https://github.com/yibaikuai)。
