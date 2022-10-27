@@ -1,5 +1,8 @@
 import copy
 import json
+import os
+
+import cv2
 
 from applications.common.path_global import fun_type_1, fun_type_2, fun_type_3, fun_type_4, fun_type_5, \
     fun_type_6, fun_type_7, generate_url, fun_type_8, up_url
@@ -19,6 +22,8 @@ from applications.interface import classification as C
 from applications.interface import object_detection as OD
 from applications.interface import semantic_segmentation as SS
 from applications.interface import image_restoration as IR
+from applications.interface.compute_variation import compute_variation
+from applications.interface.draw_mask import draw_masks
 from applications.models.analysis import Analysis
 
 
@@ -82,9 +87,9 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         pair["second"] = resizes1[i]
         i += 1
     # 3.检测对比，带地址的文件名，纯文件名
-    retPics, temps1 = CD.execute(model_path, data_path, out_dir, names)
+    retPics, filenames = CD.execute(model_path, data_path, out_dir, names)
     # 4.检测渲染
-    res = handle(fun_type_6, temps1, out_dir, out_dir)
+    res = handle(fun_type_6, filenames, out_dir, out_dir)
     # 5.入库
     i = 0
     for pair in temp_names:
@@ -92,6 +97,15 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         first_ = up_url + resizes[i]
         second_ = pair['second']
         retPic = retPics[i]
+        mask, count = draw_masks(os.path.join(out_dir, filenames[i]))
+        cv2.imwrite(
+            os.path.join(out_dir,
+                         os.path.splitext(filenames[i])[0] + "_mask.png"), mask)
+        res[i]["mask"] = generate_url + os.path.splitext(filenames[i])[
+            0] + "_mask.png"
+        res[i]["count"] = count
+        res[i]["fractional_variation"] = compute_variation(
+            os.path.join(out_dir, filenames[i]))
         data = json.dumps(res[i])
         save_analysis(
             type_,
@@ -101,7 +115,6 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
             data=data,
             checked=str(step1) + "," + str(step2))
         i += 1
-        pass
     print("变化检测----------------->end")
 
 
@@ -111,8 +124,7 @@ def hole_handle(data_path, out_dir, names):
     res = handle(fun_type_8, names, data_path, out_dir)
     # 4.检测渲染
     res1 = handle(fun_type_6, res, out_dir, out_dir)
-    return generate_url + res[0], json.dumps(res1[0])
-    pass
+    return generate_url + res[0], res1[0]
 
 
 def url_handle(imgs):
@@ -120,7 +132,6 @@ def url_handle(imgs):
     for pair in imgs:
         imgs[j] = img_url_handle(pair)
         j += 1
-    pass
 
 
 def object_detection(model_path, data_path, out_dir, names, step1, step2,
@@ -164,7 +175,6 @@ def object_detection(model_path, data_path, out_dir, names, step1, step2,
             pic2="",
             data="",
             checked=str(step1) + "," + str(step2))
-        pass
     print("目标检测----------------->end")
 
 
@@ -208,7 +218,6 @@ def terrain_classification(model_path, data_path, out_dir, names, step1, step2,
             pic2="",
             data="",
             checked=str(step1) + "," + str(step2))
-        pass
     print("地物分类----------------->end")
 
 
@@ -235,7 +244,6 @@ def classification(model_path, data_path, names, type):
         for j in range(0, len(result[i]["label_names_map"])):
             ret[result[i]["label_names_map"][j]] = result[i]["scores_map"][j]
         save_analysis(type, first_, "", pic2="", data=json.dumps(ret))
-        pass
     print("场景分类----------------->end")
 
 
@@ -260,7 +268,6 @@ def image_restoration(model_path, data_path, out_dir, names, type_):
         first_ = up_url + pair
         retPic = retPics[i]
         save_analysis(type_, first_, retPic, pic2="", data="")
-        pass
     print("图像复原----------------->end")
 
 
@@ -303,5 +310,4 @@ def handle(fun_type, imgs, src_dir, save_dir):
         temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:
         temps = hole_fill(src_dir, save_dir, imgs)
-        pass
     return temps

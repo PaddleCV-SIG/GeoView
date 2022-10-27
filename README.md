@@ -36,10 +36,27 @@ PP-GeoView支持5大遥感影像解译任务：
 - Node.js >= 16.0
 - PaddlePaddle >= 2.2.0
 
-其中，PaddlePaddle安装可以参考[PaddlePaddle官网](https://www.paddlepaddle.org.cn/)。这里给出安装CPU版本的例子：
+#### PaddlePaddle 安装
+
+请参考[PaddlePaddle官网](https://www.paddlepaddle.org.cn/)安装。这里给出安装CPU版本的例子：
 
 ```shell
 pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+```
+
+#### Node.js 安装
+
+**Windows系统安装方法**
+
+进入[Node.js官网](https://nodejs.org/en/)，选择16.18.0 LTS版本下载。下载后，按照安装向导进行安装，详细安装步骤可以参考[CSDN博文](https://blog.csdn.net/bbj12345678/article/details/106741758)。
+
+**Linux系统安装方法**
+
+Linux下建议使用nvm完成Node.js的安装。安装指令如下：
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+nvm use 16
 ```
 
 ### 项目下载与安装
@@ -57,27 +74,36 @@ pip install -r PaddleRS/requirements.txt
 pip install -e PaddleRS/
 ```
 
-接着，运行如下命令以安装Web后端的所有依赖：
+### Web后端的安装
 
-```shell
-pip install -r backend/requirements.txt
+#### 安装依赖
+
+进入`backend`目录后，运行如下命令即可安装Web后端的所有依赖。
+
+```bash
+pip install -r requirements.txt
 ```
 
-最后，运行如下命令安装Web前端的所有依赖：
+#### 修改配置文件
 
-```shell
-cd frontend
-npm install
+首先，将`.flaskenv_template`文件重命名为`.flaskenv`。在`.flaskenv`中，修改Mysql配置信息，具体为：
+
+```plain
+# MySql配置信息
+MYSQL_HOST=MYSQL服务器IP
+MYSQL_PORT=MYSQL服务器端口
+MYSQL_DATABASE=MYSQL数据库名
+MYSQL_USERNAME=MYSQL用户名
+MYSQL_PASSWORD=MYSQL密码
 ```
 
-至此，PP-GeoView安装完成。根据您的需求，您可以参考[开发者文档](./docs/dev.md)或[用户文档](./docs/user.md)进行PP-GeoView工具的使用。
+#### 启动Web后端
 
-## 使用说明
+运行`python app.py`，即可启动Web后端。启动后，系统会自动初始化数据库。
 
-- 若您的需求是使用PP-GeoView部署和发布模型，请阅读[开发者文档](./docs/dev.md)。
-- 若您希望了解基于PP-GeoView发布的产品的使用方式，请阅读[用户文档](./docs/user.md)。
+### Web前端的安装
 
-## 代码结构
+#### 安装依赖
 
 PP-GeoView目录树中关键部分如下：
 

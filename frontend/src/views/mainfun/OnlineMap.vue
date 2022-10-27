@@ -29,11 +29,12 @@
       width="50%"
       top="12%"
     >
-      <el-row justify="center">
+      <div class="upload-fun-select">
         <el-radio
           v-model="funtype"
           class="choose-item"
           label="目标检测"
+          @change="selectFun"
         >
           目标检测
         </el-radio>
@@ -41,6 +42,7 @@
           v-model="funtype"
           class="choose-item"
           label="地物分类"
+          @change="selectFun"
         >
           地物分类
         </el-radio>
@@ -48,10 +50,33 @@
           v-model="funtype"
           class="choose-item"
           label="场景分类"
+          @change="selectFun"
         >
           场景分类
         </el-radio>
-      </el-row>
+        <el-radio
+          v-model="funtype"
+          class="choose-item"
+          label="图像复原"
+          @change="selectFun"
+        >
+          图像复原
+        </el-radio>
+      </div>
+      <div class="model-select">
+        <span>选择处理模型：</span>
+        <el-select
+          v-model="uploadSrc.model_path"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="(item,index) in onSelectModelArr"
+            :key="index"
+            :label="item.model_name"
+            :value="item.model_path"
+          />
+        </el-select>
+      </div>
       <el-row>
         <el-button
           type="primary"
@@ -71,76 +96,8 @@
       top="6%"
     >
       <ImgShow
-        v-show="funtype!=='场景分类'"
-        :before-img="beforeImg"
-        :after-img="afterImg"
-        :funtype="funtype"
+        :img-arr="imgArr"
       />
-      <el-row v-if="funtype==='场景分类'">
-        <el-col>
-          <el-card>
-            <el-row
-              :gutter="10"
-              justify="center"
-            >
-              <el-col
-                :lg="5"
-                :xl="5"
-              >
-                <div
-                  class="img-index hidden-sm-and-down"
-                  style=" height: 301px"
-                >
-                  <div>第<span class="index-number">1</span>组</div>
-                </div>
-              </el-col>
-              <el-col
-                :xs="20"
-                :sm="10"
-                :md="6"
-                :lg="6"
-                :xl="6"
-              >
-                <div
-                  style="position: relative;"
-                >
-                  <el-image
-                    ref="tableTab"
-                    :src="beforeList[0]"
-                    :fit="fit"
-                    :lazy="true"
-                    class="custom-pic"
-                    :preview-src-list="[beforeList[0]]"
-                    :preview-teleported="true"
-                  />
-
-                  <div class="img-infor">
-                    <span>原图</span>
-                  </div>
-                  <span
-                    v-if="sceneKey"
-                    class="index-number hidden-md-and-up"
-                  >{{ sceneKey[0][0] }}:<span>{{ scene[0][sceneKey[0][0]] }}</span></span>
-                </div>
-              </el-col>
-              <el-col
-                :lg="5"
-                :xl="5"
-              >
-                <div
-                  class="img-index hidden-sm-and-down"
-                  style="height:301px"
-                >
-                  <span
-                    v-if="scene"
-                    class="index-number "
-                  >{{ Object.keys(scene[0])[0] }}:{{ scene[0][Object.keys(scene[0])[0]] }}</span>
-                </div>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-      </el-row>
       <el-row justify="center">
         <el-button
           type="primary"
@@ -158,8 +115,7 @@
 import global from "@/global";
 import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
-import {SegmentationUpload, createSrc, detectObjectsUpload, classificationUpload ,} from "@/api/upload";
-import {hideFullScreenLoading, showFullScreenLoading} from "@/utils/loading";
+import { createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
 
 export default {
@@ -180,10 +136,32 @@ export default {
       lng: "",
       lat: "",
       htmlUrl: "",
-      uploadSrc: { list: [], prehandle: 0, denoise: 0 },
+      uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
       scene:[{}],
-      sceneKey:[['']]
+      sceneKey:[['']],
+      classificationModelArr:[],
+      detectObjectsModelArr:[],
+      segmentationModelArr:[],
+      onSelectModelArr:[],
+      restorationModelArr:[],
+      imgArr:[]
     };
+  },
+  created() {
+    this.getCustomModel('classification').then((res)=>{
+      this.classificationModelArr = res.data.data
+    })
+    this.getCustomModel('object_detector').then((res)=>{
+      this.detectObjectsModelArr = res.data.data
+      this.onSelectModelArr = this.detectObjectsModelArr
+      this.uploadSrc.model_path = this.onSelectModelArr[0]?.model_path
+    })
+    this.getCustomModel('semantic_segmentation').then((res)=>{
+      this.segmentationModelArr = res.data.data
+    })
+    this.getCustomModel('image_restoration').then((res)=>{
+      this.restorationModelArr = res.data.data
+    })
   },
   mounted() {
     // 创建Map实例
@@ -257,81 +235,98 @@ export default {
       }
     });
   },
+
   methods: {
     createSrc,
-    SegmentationUpload,
-    detectObjectsUpload,
-    classificationUpload,
+    imgUpload,
     historyGetPage,
+    getCustomModel,
+    selectFun(val){
+      switch (val){
+        case '地物分类':
+          this.onSelectModelArr = this.segmentationModelArr;break
+        case '目标检测':
+          this.onSelectModelArr = this.detectObjectsModelArr;break
+        case '场景分类':
+          this.onSelectModelArr = this.classificationModelArr;break
+        case '图像复原':
+          this.onSelectModelArr = this.restorationModelArr;break
+
+      }
+      this.uploadSrc.model_path = this.onSelectModelArr[0]?.model_path
+    },
     goUpload(type) {
-      showFullScreenLoading("#load");
       let formData = new FormData();
       formData.append("files", this.tmpFile);
       formData.append("type", type);
       this.createSrc(formData).then((res) => {
         this.uploadSrc.list = res.data.data.map((item) => {
           return item.src;
-        });
+        })
         if (type === "目标检测") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.detectObjectsUpload(this.uploadSrc).then((res) => {
-            hideFullScreenLoading("#load");
+          this.imgUpload(this.uploadSrc,'object_detection').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "目标检测").then((res) => {
-              this.beforeImg = res.data.data.map((item) => {
-                return { before_img: global.BASEURL + item.before_img };
-              });
-              this.afterImg = res.data.data.map((item) => {
-                return {
-                  after_img: global.BASEURL + item.after_img,
-                  id: item.id,
-                };
-              });
+              this.imgArr = res.data.data.forEach((item)=>{
+                item['before_img'] = global.BASEURL+item.before_img
+                item['after_img'] = global.BASEURL+item.after_img
+              })
+              this.imgArr = res.data.data
               this.isShow = true;
             });
-          });
+          }).catch((rej)=>{})
         }
         if (type === "地物分类") {
           this.uploadSrc.prehandle = 0
           this.uploadSrc.denoise = 0
-          this.SegmentationUpload(this.uploadSrc).then((res) => {
-            hideFullScreenLoading("#load");
+          this.imgUpload(this.uploadSrc,'semantic_segmentation').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "地物分类").then((res) => {
-              this.beforeImg = res.data.data.map((item) => {
-                return { before_img: global.BASEURL + item.before_img };
-              });
-              this.afterImg = res.data.data.map((item) => {
-                return {
-                  after_img: global.BASEURL + item.after_img,
-                  id: item.id,
-                };
-              });
+              this.imgArr = res.data.data.forEach((item)=>{
+                item['before_img'] = global.BASEURL+item.before_img
+                item['after_img'] = global.BASEURL+item.after_img
+              })
+              this.imgArr = res.data.data
               this.isShow = true;
-            });
-          });
+            }).catch((rej)=>{})
+          }).catch((rej)=>{})
         }
         if (type === "场景分类") {
           delete(this.uploadSrc.denoise)
           delete (this.uploadSrc.prehandle)
-          this.classificationUpload(this.uploadSrc).then((res) => {
-            hideFullScreenLoading("#load");
+          this.imgUpload(this.uploadSrc,'classification').then((res) => {
             this.$message.success("上传成功！");
             this.choose = false;
             this.historyGetPage(1, 1, "场景分类").then((res) => {
-              this.beforeList=res.data.data.map((item)=>{
-                return global.BASEURL + item.before_img
+              this.imgArr = res.data.data.forEach((item)=>{
+                item['before_img'] = global.BASEURL+item.before_img
               })
-              this.scene = res.data.data.map(item=>item.data)     //场景键值对数组,[{'a':0.8},{‘b’:0.6},{'c':0.8}]
-              this.sceneKey = this.scene.map(item=>Object.keys(item))  //构成场景键数组的数组，[['a'],['b'],['c']]
+              this.imgArr = res.data.data
               this.isShow = true;
-            });
-          });
+            }).catch((rej)=>{})
+          }).catch((rej)=>{})
         }
-      });
+        else if (type === "图像复原") {
+          delete(this.uploadSrc.denoise)
+          delete (this.uploadSrc.prehandle)
+          this.imgUpload(this.uploadSrc,'image_restoration').then((res) => {
+            this.$message.success("上传成功！");
+            this.choose = false;
+            this.historyGetPage(1, 1, "图像复原").then((res) => {
+              this.imgArr = res.data.data.forEach((item)=>{
+                item['before_img'] = global.BASEURL+item.before_img
+                item['after_img'] = global.BASEURL+item.after_img
+              })
+              this.imgArr = res.data.data
+              this.isShow = true;
+            }).catch((rej)=>{})
+          }).catch((rej)=>{})
+        }
+      }).catch((rej)=>{})
     },
     // 页面元素转图片
     toImage() {
@@ -383,7 +378,7 @@ export default {
   },
 };
 </script>
-<style  scoped>
+<style  scoped lang="less">
 .button-dalod {
   position: absolute;
   top: 55vh;
@@ -425,5 +420,17 @@ export default {
 .custom-pic{
   width: 256px;
   height: 256px;
+}
+.upload-fun-select{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.model-select{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -14,41 +14,10 @@ export function createSrc(formdata) {
         }
     })
 }
-export function restoreImgsUpload(data) {
-    return request({
-        method: 'POST',
-        url: '/api/analysis/image_restoration',
-        data,
-    })
-}
-
-export function classificationUpload(data) {
-    return request({
-        method: 'POST',
-        url: '/api/analysis/classification',
-        data,
-    })
-}
-
-export function SegmentationUpload(data) {
-    return request({
-        method: 'POST',
-        url: '/api/analysis/semantic_segmentation',
-        data,
-    })
-}
-export function detectObjectsUpload(data) {
-    return request({
-        method: 'POST',
-        url: '/api/analysis/object_detection',
-        data,
-    })
-}
-
-export function detectChangesUpload(data){
+export function imgUpload(data,funUrl){
     return request({
         method:'POST',
-        url:'/api/analysis/change_detection',
+        url:`/api/analysis/${funUrl}`,
         data
     })
 }

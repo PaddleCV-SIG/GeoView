@@ -1,5 +1,7 @@
 import json
+import os
 
+import cv2
 from flask import Blueprint, request
 from sqlalchemy import desc
 
@@ -14,6 +16,8 @@ from applications.extensions import db
 from applications.image_processing import histogram_match
 from applications.interface.analysis import change_detection, object_detection, terrain_classification, hole_handle, \
     handle, classification, image_restoration
+from applications.interface.compute_variation import compute_variation
+from applications.interface.draw_mask import draw_masks
 from applications.interface.utils import get_model_info
 from applications.models.analysis import Analysis
 from applications.schemas import AnalysisSchema
@@ -275,9 +279,23 @@ def hole_handle1():
     temps = list()
     temps.append(analysis.after_img)
     after_img, data = hole_handle(generate_dir, generate_dir, temps)
+    old_data = json.loads(analysis.data)
+    old_data.update(data)
+    mask, count = draw_masks(
+        os.path.join(generate_dir, os.path.basename(after_img)))
+    cv2.imwrite(
+        os.path.join(
+            generate_dir,
+            os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
+        mask)
+    old_data["mask"] = generate_url + os.path.splitext(
+        os.path.basename(after_img))[0] + "_mask.png"
+    old_data["count"] = count
+    old_data["fractional_variation"] = compute_variation(
+        os.path.join(generate_dir, os.path.basename(after_img)))
     Analysis.query.filter_by(id=analysis_id).update({
         "after_img": after_img,
-        "data": data,
+        "data": json.dumps(old_data),
         "is_hole": True
     })
     db.session.commit()

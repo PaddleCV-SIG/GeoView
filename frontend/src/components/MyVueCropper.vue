@@ -84,12 +84,8 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import {
   createSrc,
-  SegmentationUpload,
-  detectObjectsUpload,
-  classificationUpload,
-  restoreImgsUpload
+  imgUpload
 } from "@/api/upload";
-import { showFullScreenLoading, hideFullScreenLoading } from "@/utils/loading";
 import { upload, goCompress } from "@/utils/getUploadImg";
 import { getImgArrayBuffer, atchDownload } from "@/utils/download";
 import { historyGetPage } from "@/api/history";
@@ -177,10 +173,7 @@ export default {
   },
   methods: {
     createSrc,
-    SegmentationUpload,
-    detectObjectsUpload,
-    classificationUpload,
-    restoreImgsUpload,
+    imgUpload,
     upload,
     goCompress,
     getImgArrayBuffer,
@@ -204,7 +197,6 @@ export default {
     //上传图片（点击上传按钮）
     finish(funtype, cutVisible) {
       // 输出
-     showFullScreenLoading('#load')
       this.$refs.cropper.getCropData((data) => {
         const File = this.base64toFile(data, this.file.name);
         let formData = new FormData();
@@ -215,42 +207,38 @@ export default {
             return item.src;
           });
           if (funtype === "地物分类") {
-            this.SegmentationUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'semantic_segmentation').then((res) => {
               this.fileList = [];
-              hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
-            });
+            }).catch((rej)=>{})
           } else if (funtype === "目标检测") {
-            this.detectObjectsUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'object_detection').then((res) => {
               this.fileList = [];
-              hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
-            });
+            }).catch((rej)=>{})
           }
           else if (funtype === "场景分类") {
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
-            this.classificationUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc,'classification').then((res) => {
               this.fileList = [];
-              hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
-            });
+            }).catch((rej)=>{})
           }
           else if(funtype === "图像复原"){
             delete this.uploadSrc.prehandle
             delete this.uploadSrc.denoise
-            this.restoreImgsUpload(this.uploadSrc).then((res) => {
+            this.imgUpload(this.uploadSrc).then((res) => {
               this.fileList = [];
-              hideFullScreenLoading("#load");
               this.$message.success("上传成功！");
               this.$emit('child-refresh')
-            });
+            }).catch((rej)=>{})
           }
           this.$emit("cut-changed", false);
-        });
+        }).catch((rej)=>{})
       });
     },
     base64toFile(dataurl, filename) {

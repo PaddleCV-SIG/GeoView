@@ -12,7 +12,7 @@
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
-      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下<span class="go-bold">对应</span>功能区
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">semantic_segmentation文件夹</span>
     </p>
 
     <el-row
@@ -166,7 +166,7 @@
             <el-button
               type="primary"
               class="btn-animate btn-animate__shiny"
-              @click="goUpload"
+              @click="upload('地物分类','semantic_segmentation')"
             >
               开始处理
             </el-button>
@@ -309,77 +309,6 @@
           <span><span class="go-bold">滑轮滚动</span>即可放大缩小</span>
         </p>
       </template>
-      <template #mid>
-        <el-row
-          justify="center"
-          align="middle"
-        >
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block road" />
-            道路
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block tree" />
-            树木
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block none" />
-            空地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block waste" />
-            荒地
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <div class="lit-block back" />
-            背景
-          </el-col>
-          <el-col
-            :xs="4"
-            :sm="4"
-            :md="4"
-            :lg="4"
-            :xl="4"
-          >
-            <p v-if="isUpload">
-              <i
-                class="iconfont icon-dabaoxiazai"
-                @click="goCompress('地物分类')"
-              >打包</i>
-            </p>
-          </el-col>
-        </el-row>
-      </template>
       <template #right>
         <div class="go-bold">
           <i
@@ -419,7 +348,7 @@
 
 <script>
 import { atchDownload, downloadimgWithWords, getImgArrayBuffer } from "@/utils/download.js";
-import { SegmentationUpload, createSrc ,getCustomModel } from "@/api/upload";
+import { imgUpload, createSrc ,getCustomModel } from "@/api/upload";
 import { historyGetPage } from "@/api/history";
 import { getUploadImg, goCompress, upload } from "@/utils/getUploadImg";
 import { selectClahe, selectFilter, selectSharpen, selectSmooth, } from "@/utils/preHandle";
@@ -458,6 +387,7 @@ export default {
       fit: "fill",
 
       uploadSrc: { list: [], prehandle: 0, denoise: 0 ,model_path:''},
+
       modelPathArr:[],
 
       prePhoto: {
@@ -482,12 +412,12 @@ export default {
     this.getCustomModel('semantic_segmentation').then(res=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
-    })
+    }).catch((rej)=>{})
   },
   methods: {
     getImgArrayBuffer,
     atchDownload,
-    SegmentationUpload,
+    imgUpload,
     getCustomModel,
     historyGetPage,
     createSrc,
@@ -523,9 +453,6 @@ export default {
     },
     getMore() {
       this.getUploadImg("地物分类");
-    },
-    goUpload() {
-      this.upload("地物分类");
     },
     fileClick() {
       document.querySelector("#folder").click();
@@ -563,30 +490,6 @@ export default {
   left: 0;
   right: 0;
   width: 220px;
-}
-.lit-block {
-  width: 13px;
-  height: 13px;
-  display: inline-block;
-}
-.road {
-  background-color: blue;
-}
-
-.tree {
-  background-color: green;
-}
-
-.none {
-  background-color: red;
-}
-
-.waste {
-  background-color: orange;
-}
-
-.back {
-  background-color: black;
 }
 
 .clear-queue {
