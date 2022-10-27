@@ -5,7 +5,7 @@
   <p align="center">
     <img src="./images/od.png" align="middle" width = "800" />
   </p>
-  
+
 1.默认模型支持识别的物体
  - 1.操场
  - 2.飞机
