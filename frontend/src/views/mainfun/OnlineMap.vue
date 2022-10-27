@@ -117,6 +117,7 @@ import html2canvas from "html2canvas";
 import ImgShow from "@/components/ImgShow";
 import { createSrc, imgUpload,getCustomModel} from "@/api/upload";
 import {historyGetPage} from "@/api/history";
+import loadMap from '@/utils/loadMap'
 
 export default {
   name: "Onlinemap",
@@ -144,7 +145,7 @@ export default {
       segmentationModelArr:[],
       onSelectModelArr:[],
       restorationModelArr:[],
-      imgArr:[]
+      imgArr:[],
     };
   },
   created() {
@@ -164,76 +165,7 @@ export default {
     })
   },
   mounted() {
-    // 创建Map实例
-    let map = new BMap.Map("map");
-    // 初始化地图,设置中心点坐标和地图级别
-    map.centerAndZoom(new BMap.Point(104.07258, 30.550701), 20);
-    map.setMapType(BMAP_HYBRID_MAP);
-    // map.centerAndZoom：第一个参数可以是根据之前创建好的一个点为中心，创建出地图，也可以根据城市地区的中文名称创建地图。第二个参数是地图缩放级别，最大为19，最小为0
-    map.addControl(
-        //添加地图类型控件
-        new BMap.MapTypeControl({
-          mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
-        })
-    );
-    map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
-    map.enableScrollWheelZoom(true);
-
-    this.$nextTick(function () {
-      let th = this;
-      // 创建Map实例
-      // eslint-disable-next-line no-undef
-      // let map = new BMap.Map("map");
-      // // 初始化地图,设置中心点坐标，
-      // // eslint-disable-next-line no-undef
-      //     map.setMapType(BMAP_HYBRID_MAP);
-      // let point = new BMap.Point(117.155827, 36.695916); // 创建点坐标，汉得公司的经纬度坐标
-      // map.centerAndZoom(point, 15);
-      // map.enableScrollWheelZoom();
-      let ac = new BMap.Autocomplete({
-        //建立一个自动完成的对象
-        input: "suggestId",
-        location: map,
-      });
-      let myValue;
-      ac.addEventListener("onconfirm", function (e) {
-        //鼠标点击下拉列表后的事件
-        let _value = e.item.value;
-        myValue =
-            _value.province +
-            _value.city +
-            _value.district +
-            _value.street +
-            _value.business;
-        th.address_detail = myValue;
-        setPlace();
-      });
-
-      function setPlace() {
-        map.clearOverlays(); //清除地图上所有覆盖物
-        function myFun() {
-          th.userlocation = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
-          map.centerAndZoom(th.userlocation, 18);
-          // eslint-disable-next-line no-undef
-          map.addOverlay(new BMap.Marker(th.userlocation)); //添加标注
-          th.lng = th.userlocation.lng;
-          th.lat = th.userlocation.lat;
-        }
-
-        // eslint-disable-next-line no-undef
-        let local = new BMap.LocalSearch(map, {
-          //智能搜索
-          onSearchComplete: myFun,
-        });
-        local.search(myValue)
-        //测试输出坐标（指的是输入框最后确定地点的经纬度）
-        map.addEventListener("click", function () {
-          this.lng = th.userlocation.lng;
-
-          this.lat = th.userlocation.lat;
-        });
-      }
-    });
+  this.initMap()
   },
 
   methods: {
@@ -241,6 +173,74 @@ export default {
     imgUpload,
     historyGetPage,
     getCustomModel,
+    loadMap,
+    initMap() {
+      loadMap('LBgFajzXhdHS09BAfSQYLM6akvzr71QM')
+          .then(() => {
+            // 百度地图API功能
+            let myMap = new BMap.Map("map") // 创建Map实例
+            myMap.centerAndZoom(new BMap.Point(116.404, 39.915), 19) // 初始化地图,设置中心点坐标和地图级别
+            myMap.setMapType(BMAP_HYBRID_MAP);
+            //添加地图类型控件
+            myMap.addControl(
+                new BMap.MapTypeControl({
+                  mapTypes: [BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP],
+                })
+            )
+            myMap.setCurrentCity('北京') // 设置地图显示的城市 此项是必须设置的
+            myMap.enableScrollWheelZoom(true) //开启鼠标滚轮缩放
+
+            this.$nextTick(function () {
+              let th = this;
+              let ac = new BMap.Autocomplete({
+                //建立一个自动完成的对象
+                input: "suggestId",
+                location: this.myMap,
+              });
+              let myValue;
+              ac.addEventListener("onconfirm", function (e) {
+                //鼠标点击下拉列表后的事件
+                let _value = e.item.value;
+                myValue =
+                    _value.province +
+                    _value.city +
+                    _value.district +
+                    _value.street +
+                    _value.business;
+                th.address_detail = myValue;
+                setPlace();
+              });
+
+              function setPlace() {
+                myMap.clearOverlays(); //清除地图上所有覆盖物
+                function myFun() {
+                  th.userlocation = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+                  myMap.centerAndZoom(th.userlocation, 18);
+                  // eslint-disable-next-line no-undef
+                  myMap.addOverlay(new BMap.Marker(th.userlocation)); //添加标注
+                  th.lng = th.userlocation.lng;
+                  th.lat = th.userlocation.lat;
+                }
+
+                // eslint-disable-next-line no-undef
+                let local = new BMap.LocalSearch(myMap, {
+                  //智能搜索
+                  onSearchComplete: myFun,
+                });
+                local.search(myValue)
+                //测试输出坐标（指的是输入框最后确定地点的经纬度）
+                myMap.addEventListener("click", function () {
+                  this.lng = th.userlocation.lng;
+                  this.lat = th.userlocation.lat;
+                });
+              }
+            });
+
+          })
+          .catch(err => {
+            console.log('地图加载失败')
+          })
+    },
     selectFun(val){
       switch (val){
         case '地物分类':

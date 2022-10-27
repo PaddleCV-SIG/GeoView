@@ -27,7 +27,7 @@
       <i
         class="iconfont icon-zhuyi"
       />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
-    </p><p style="text-decoration: underline">
+    </p><p>
       <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
     </p>
     <el-card style="border: 4px dashed var(--el-border-color);position: relative">
@@ -119,7 +119,7 @@
       </div>
       <div class="slider-box">
         <div class="slider-item">
-          <div>自定义滑窗：</div>
+          <div>自定义窗口：</div>
           <el-slider
             v-model="upload.window_size"
             show-input
@@ -708,7 +708,7 @@
                   downloadimgWithWords(
                     resultArr[currentIndex].id,
                     onRenderResult,
-                    `变化检测${renderstyle}渲染结果图${holeShow ? '已孔洞处理' : '未孔洞处理'}.png`
+                    `变化检测${renderstyle}渲染结果图${holeShow ? '(已孔洞处理)' : '(未孔洞处理)'}.png`
                   )
                 "
               >
@@ -728,9 +728,9 @@
             v-else
             :image-size="100"
           />
+ 
           <div
             v-show="dragShow && resultArr.length!==0"
-            class="drag-item"
           >
             <DraggableItem @child-vannish="vanishDrag">
               <template #left-1>
