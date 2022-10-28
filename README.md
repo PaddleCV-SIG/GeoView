@@ -57,6 +57,15 @@ host:
   frontend: 前端监听ip
 ```
 
+### 填充百度地图Access Key
+
+在根目录下的`config.yaml`文件中百度地图配置处，将`<ACCESS_KEY>`替换为百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
+``` yaml
+baidu_map:
+  access_key: <ACCESS_KEY>
+```
+
+
 ### Web后端的安装
 
 #### 安装依赖
