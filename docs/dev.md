@@ -18,11 +18,14 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 
 **请注意**：每个预训练模型均有对应的输入波段数要求和适用场景，且仅在处理推荐的输入尺寸和空间分辨率范围内的图像时才能取得较好的效果。
 
-若您需要使用自定义模型，请参考[使用PaddleRS训练和导出模型](#（可选）使用PaddleRS训练和导出模型)。
+若您需要使用自定义模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md#11)
+。
 
 ### （可选）使用PaddleRS训练和导出模型
 
-请参考PaddleRS[模型训练文档](../PaddleRS/tutorials/train/README.md)与[模型导出文档](../PaddleRS/deploy/export/README.md)。
+请参考PaddleRS[模型训练文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/tutorials/train/README.md)
+与[模型导出文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)
+。
 
 ### 将模型导入到PP-GeoView
 
@@ -39,11 +42,11 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 
 如下展示了模型存放的例子：
 <p align="center">
-<img src="./images/model1.png" align="middle" width = "600" />
+<img src="https://user-images.githubusercontent.com/78073130/198609273-b301ab64-02c8-4b9f-9ead-df1b6ff93a10.png" align="middle" width = "600" />
 </p>
 模型目录中应包含如下文件：
 <p align="center">
-<img src="./images/model2.png" align="middle" width = "600" />
+<img src="https://user-images.githubusercontent.com/78073130/198609366-5f6e8f02-d249-44a1-bcaf-48ab8ec0db47.png" align="middle" width = "600" />
 </p>
 
 ## Web 前后端配置
