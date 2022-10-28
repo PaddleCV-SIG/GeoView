@@ -175,7 +175,7 @@ export default {
     getCustomModel,
     loadMap,
     initMap() {
-      loadMap('LBgFajzXhdHS09BAfSQYLM6akvzr71QM')
+      loadMap(process.env.VUE_APP_BAIDU_MAP_ACCESS_KEY)
           .then(() => {
             // 百度地图API功能
             let myMap = new BMap.Map("map") // 创建Map实例
