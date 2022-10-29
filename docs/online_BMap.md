@@ -17,13 +17,13 @@ baidu_map:
 ### 基本使用
 
 在输入框输入位置信息，选择搜索结果，定位到该地，可在地图右上角设置地图模式（混合地图模式和卫星地图模式），如图：
-<p>
+<p align="center">
     <img src="https://user-images.githubusercontent.com/90198481/198829346-67e8945d-d587-4feb-a9cb-dc787e267114.png" alt = "pic" width = "600" />
 </p>
 截取图片后，可选择上传功能区和训练模型，上传成功后即可查看效果，如图：
-<p>
+<p align="center">
     <img src="https://user-images.githubusercontent.com/90198481/198829708-61aed428-4a9d-4cc9-8619-b26164900011.png" alt = "pic" width="600" />
 </p>
-<p>
+<p align="center">
     <img src="https://user-images.githubusercontent.com/90198481/198829771-6d437401-d78e-4f30-b36e-1b5b6bf5fddf.png" alt = "pic" width="600" />
 </p>
