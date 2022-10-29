@@ -2,12 +2,12 @@
 ## 图像预处理功能说明：
 - 1.**直方图匹配**：直方图匹配又称为直方图规定化，是指将一幅图像的直方图变成规定形状的直方图而进行的图像增强方法。即将某幅影像或某一区域的直方图匹配到另一幅影像上。使两幅影像的色调保持一致。
 此功能可以减少因季节变化等外部原因造成图像风格差异较大对预测结果带来的影响，[详情参考请点这里](https://blog.csdn.net/mmmmmk_/article/details/82927411)。其效果如下图所示：
-  <p align="center">
-    <img src="https://user-images.githubusercontent.com/78073130/198608558-7f5a1b9c-c9c6-4686-871d-e22a69b6e235.png" align="middle" width = "600" />
+  <p>
+    <img src="https://user-images.githubusercontent.com/78073130/198608558-7f5a1b9c-c9c6-4686-871d-e22a69b6e235.png"  alt ='pic' width = "600" />
   </p>
 - 2.**CLAHE**： 即限制对比度自适应直方图均衡化，其功能是在增强图像对比度的同时限制噪声的放大，适用于图像背景与目标物比较难区分的场景，可以有效提高图像的对比度。[详情参考请点这里](https://blog.csdn.net/qq_43743037/article/details/107195117)其效果图如下所示:
-  <p align="center">
-    <img src="https://user-images.githubusercontent.com/78073130/198608351-671ef6c5-77c9-408a-a4d8-6cb4417b4293.png" align="middle" width = "600" />
+  <p>
+    <img src="https://user-images.githubusercontent.com/78073130/198608351-671ef6c5-77c9-408a-a4d8-6cb4417b4293.png"  alt ='pic' width = "600" />
   </p>
 - 3.**锐化**：锐化就是通过增强高频分量来减少图象中的模糊，因此又称为高通滤波。锐化处理在增强图象边缘的同时增加了图象的噪声。[详情参考请点这里](https://blog.csdn.net/qq_50559644/article/details/123925265)
 ## 图像降噪功能说明：
@@ -18,3 +18,9 @@
     <p align="center">
       <img src="https://user-images.githubusercontent.com/78073130/198609084-a9b27edb-b6ba-40da-9e14-782a134ddc33.png" align="middle" width = "600" />
     </p>
+
+# 导出编译结果功能说明
+## 图片下载功能说明：
+  可通过点击结果图下方的下载图标，获取下载图。
+## 图片压缩打包功能说明：
+  可点击“结果图打包”获取所有结果图的压缩文件，当一次上传图片超过10张时，将提示用户是否压缩图片，选择“是”，则将本次上传的所有结果图打包。

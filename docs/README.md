@@ -15,5 +15,6 @@
     - [目标检测功能使用说明](./object_detection.md)
     - [图像复原功能使用说明](./image_restoration.md)
     - [地物分类功能使用说明](./semantic_segmentation.md)
+    - [在线地图功能使用说明](./online_BMap.md)
 + **高级功能使用说明**
     - [图像预处理、后处理功能使用说明](./functions.md)
