@@ -89,28 +89,6 @@ git clone --recursive https://github.com/PaddleCV-SIG/PP-GeoView.git
 pip install -r PaddleRS/requirements.txt
 pip install -e PaddleRS/
 ```
-### 全局配置文件的修改
-
-#### 修改百度地图Access Key
-
-在根目录下的`config.yaml`文件中百度地图配置处，将`<ACCESS_KEY>`替换为百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
-``` yaml
-baidu_map:
-  access_key: <ACCESS_KEY>
-```
-
-#### 修改监听端口号（可选）
-
-按以下规则编辑根目录下的`config.yaml`文件。
-``` yaml
-port:
-  backend: 后端端口号
-  frontend: 前端端口号
-host:
-  backend: 后端监听ip
-  frontend: 前端监听ip
-```
-
 
 ### Web后端的安装
 
