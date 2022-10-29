@@ -22,10 +22,10 @@
 
 + 在进行变化检测后，可对结果图像进行后处理，备选项如下：
     - **结果图渲染**：效果如下图所示
-        <p align="center">
-            <img src="./images/gif3.gif" align="middle" width = "600" />
+        <p>
+            <img src="https://user-images.githubusercontent.com/90198481/198829771-6d437401-d78e-4f30-b36e-1b5b6bf5fddf.png" alt = "gif" width = "600" />
         </p>
     - **连通域滤波+填充孔洞**：去除伪变化噪声点以及填充建筑物内的孔洞，使结果更加接近真实情况，效果如下图所示
-        <p align="center">
-            <img src="./images/lvbo.png" align="middle" width = "600" />
+        <p>
+            <img src="https://user-images.githubusercontent.com/90198481/198829771-6d437401-d78e-4f30-b36e-1b5b6bf5fddf.png" alt = "gif" width = "600" />
         </p>
