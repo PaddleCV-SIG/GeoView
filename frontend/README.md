@@ -1,4 +1,4 @@
-# hhu-fishes
+# PP-GeoView
 
 ## Project setup
 ```
