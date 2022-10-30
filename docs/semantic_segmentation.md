@@ -4,6 +4,12 @@
 
 对图像进行语义分割，并使用不同颜色标注不同类别的地物。
 
+## 效果展示
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/78073130/198859512-df9b0040-b38b-45c3-9b17-470161c202c2.png" alt = "pic" width = "600" />
+</p>
+
 ## 使用方法
 
 ### 基本使用

@@ -4,6 +4,18 @@
 
 对同一地点不同时期的图像进行分析，判断该地点的建筑物变化情况，并将变化部分结果图返回给用户。
 
+## 效果展示
+
++ 方式一：滑窗浏览
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/78073130/198859495-2421f879-80ee-4766-9791-3f978c0c15e3.png" alt = "pic" width = "600" />
+</p>
+
++ 方式二：前后时期图片并排对比浏览
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/78073130/198859728-e702883e-d0e7-4ad8-9b1e-a3084b78371c.jpg" alt = "pic" width = "600" />
+</p>
+
 ## 使用方法：
 
 ### 基本使用
@@ -23,9 +35,9 @@
 + 在进行变化检测后，可对结果图像进行后处理，备选项如下：
     - **结果图渲染**：效果如下图所示
         <p align="center">
-            <img src="https://user-images.githubusercontent.com/90198481/198829771-6d437401-d78e-4f30-b36e-1b5b6bf5fddf.png" alt = "gif" width = "600" />
+            <img src="https://user-images.githubusercontent.com/78073130/198608703-71212c00-27f7-4fa6-8916-30dd837874fa.gif" alt = "gif" width = "600" />
         </p>
     - **连通域滤波+填充孔洞**：去除伪变化噪声点以及填充建筑物内的孔洞，使结果更加接近真实情况，效果如下图所示
         <p align="center">
-            <img src="https://user-images.githubusercontent.com/90198481/198829771-6d437401-d78e-4f30-b36e-1b5b6bf5fddf.png" alt = "gif" width = "600" />
+            <img src="https://user-images.githubusercontent.com/78073130/198609084-a9b27edb-b6ba-40da-9e14-782a134ddc33.png" alt = "gif" width = "600" />
         </p>

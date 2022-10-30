@@ -4,6 +4,12 @@
 
 对图像进行目标检测识别，并将图像中的目标物体用颜色框标记出来，最终将结果图呈现给用户。
 
+## 效果展示
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/78073130/198779545-7e585b34-8b7b-45b0-915c-c8afd3618c8f.png" alt = "pic" width = "600" />
+</p>
+
 ## 使用方法
 
 ### 基本使用
