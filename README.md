@@ -1,8 +1,10 @@
-<p>
-    <img src="https://user-images.githubusercontent.com/78073130/198640332-3edba236-db03-4eb0-b803-90a1053e87f3.png" alt="logo" width = "500" />
-</p>
+<div align="center">
+    <p align="center">
+        <img src="https://user-images.githubusercontent.com/78073130/198640332-3edba236-db03-4eb0-b803-90a1053e87f3.png" alt="logo" width = "500" />
+    </p>
+</div>
 
-![build status](https://github.com/PaddleCV-SIG/PP-GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/PP-GeoView/actions)
+[![build status](https://github.com/PaddleCV-SIG/PP-GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/PP-GeoView/actions)
 ![python version](https://img.shields.io/badge/python-3.7+-orange.svg)
 ![node.js version](https://img.shields.io/badge/nodejs-16+-orange.svg)
 ![support os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-yellow.svg)
@@ -29,6 +31,18 @@ PP-GeoView支持5大遥感影像解译任务：
 - 在线地图解译
 
 ## 安装说明
+
+### 项目目录结构
+
+PP-GeoView目录树中关键部分如下：
+
+``` plain
+├── backend              # Web后端
+│     ├── applications   # 后端核心代码
+│     ├── model          # 模型存放目录
+│     └── static         # 图像存储目录
+└── frontend             # Web前端
+```
 
 ### 前置依赖安装
 
@@ -99,6 +113,7 @@ MYSQL_USERNAME=MYSQL用户名
 MYSQL_PASSWORD=MYSQL密码
 ```
 
+
 #### 启动Web后端
 
 运行`python app.py`，即可启动Web后端。启动后，系统会自动初始化数据库。
@@ -107,15 +122,15 @@ MYSQL_PASSWORD=MYSQL密码
 
 #### 安装依赖
 
-PP-GeoView目录树中关键部分如下：
+进入`frontend`目录后，运行如下命令即可安装Web前端的所有依赖。
 
-``` plain
-├── backend              # Web后端
-│     ├── applications   # 后端核心代码
-│     ├── model          # 模型存放目录
-│     └── static         # 图像存储目录
-└── frontend             # Web前端
+```bash
+npm install
 ```
+
+#### 启动Web前端
+
+运行`npm run serve`，即可启动Web前端。启动后，可在浏览器中输入`http://127.0.0.1:3000`访问系统。
 
 ## 开源贡献
 
