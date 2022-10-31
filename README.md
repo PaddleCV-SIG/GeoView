@@ -90,6 +90,13 @@ pip install -r PaddleRS/requirements.txt
 pip install -e PaddleRS/
 ```
 
+### 百度地图Access Key的设置
+在根目录下的`config.yaml`文件中，按以下规则替换百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
+``` yaml
+baidu_map:
+  access_key: {百度地图ACCESS_KEY}
+```
+
 ### Web后端的安装
 
 #### 安装依赖
