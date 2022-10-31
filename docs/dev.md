@@ -21,13 +21,13 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 若您需要使用自定义模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md#11)
 。
 
-### （可选）使用PaddleRS训练和导出模型
+### （可选）使用 PaddleRS 训练和导出模型
 
 请参考PaddleRS[模型训练文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/tutorials/train/README.md)
 与[模型导出文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)
 。
 
-### 将模型导入到PP-GeoView
+### 将模型导入到 PP-GeoView
 
 请遵循如下步骤导入模型：
 
@@ -75,6 +75,15 @@ port:
 host:
   backend: {后端监听ip}
   frontend: {前端监听ip}
+```
+
+### 百度地图 Access Key 设置
+
+在项目根目录下的`config.yaml`文件中将`<ACCESS_KEY>`替换为百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
+
+``` yaml
+baidu_map:
+  access_key: <ACCESS_KEY>
 ```
 
 ## Web 前后端启动
