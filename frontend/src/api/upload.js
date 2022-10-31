@@ -30,13 +30,6 @@ export function histogramUpload(data){
     })
 }
 
-export function holeHandle(data){
-    return request({
-        method:'POST',
-        url:'api/analysis/hole',
-        data
-    })
-}
 
 export function prePhotoHandle(data){
     return request({
