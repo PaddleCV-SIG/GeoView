@@ -42,11 +42,11 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 
 如下展示了模型存放的例子：
 <p align="center">
-<img src="https://user-images.githubusercontent.com/78073130/198609273-b301ab64-02c8-4b9f-9ead-df1b6ff93a10.png" align="middle" width = "600" />
+<img src="https://user-images.githubusercontent.com/78073130/199014094-82d36df8-bb7c-4209-ac1f-b5f0cb2c0f2e.png" align="middle" width = "600" />
 </p>
 模型目录中应包含如下文件：
 <p align="center">
-<img src="https://user-images.githubusercontent.com/78073130/198609366-5f6e8f02-d249-44a1-bcaf-48ab8ec0db47.png" align="middle" width = "600" />
+<img src="https://user-images.githubusercontent.com/78073130/199014099-33d754a0-e89c-496a-a9fb-a38660f10ed1.png" align="middle" width = "600" />
 </p>
 
 ## Web 前后端配置
