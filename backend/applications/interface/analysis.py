@@ -5,7 +5,7 @@ import os
 import cv2
 
 from applications.common.path_global import fun_type_1, fun_type_2, fun_type_3, fun_type_4, fun_type_5, \
-    fun_type_6, fun_type_7, generate_url, fun_type_8, up_url
+    fun_type_6, fun_type_7, generate_url, fun_type_8, up_url, generate_dir
 from applications.common.utils.upload import img_url_handle
 from applications.extensions import db
 from applications.image_processing import histogram_match
@@ -47,13 +47,22 @@ def save_analysis(type_,
     db.session.commit()
 
 
-def change_detection(model_path, data_path, out_dir, names, step1, step2,
-                     type_):
+def change_detection(model_path,
+                     data_path,
+                     out_dir,
+                     names,
+                     step1,
+                     step2,
+                     type_,
+                     window_size=256,
+                     stride=128):
     """
     变化检测
     :param model_path: 静态图模型路径
     :param data_path: 图片数据路径，路径中有名称为A和B的两个文件夹分别存储不同时相的图片（1024，1024），且相应图片名称相同
     :param out_dir:图片保存路径
+    :param window_size:滑窗大小
+    :param stride:步长
     :return:
     """
     print("变化检测----------------->start")
@@ -87,7 +96,13 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         pair["second"] = resizes1[i]
         i += 1
     # 3.检测对比，带地址的文件名，纯文件名
-    retPics, filenames = CD.execute(model_path, data_path, out_dir, names)
+    retPics, filenames = CD.execute(
+        model_path,
+        data_path,
+        out_dir,
+        names,
+        window_size=window_size,
+        stride=stride)
     # 4.检测渲染
     res = handle(fun_type_6, filenames, out_dir, out_dir)
     # 5.入库
@@ -101,11 +116,30 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
         cv2.imwrite(
             os.path.join(out_dir,
                          os.path.splitext(filenames[i])[0] + "_mask.png"), mask)
-        res[i]["mask"] = generate_url + os.path.splitext(filenames[i])[
+        res[i]["mask"] = out_dir + os.path.splitext(filenames[i])[
             0] + "_mask.png"
         res[i]["count"] = count
         res[i]["fractional_variation"] = compute_variation(
             os.path.join(out_dir, filenames[i]))
+        after_img, data = hole_handle(out_dir, out_dir + "hole/", [retPic])
+        res[i]["hole"] = after_img
+        res[i]["hole_style"] = handle(
+            fun_type_6, [os.path.basename(after_img)],
+            out_dir + "hole/",
+            out_dir + "hole/",
+            prefix="hole")[0]
+        mask, count = draw_masks(
+            os.path.join(out_dir + "hole/", os.path.basename(after_img)))
+        cv2.imwrite(
+            os.path.join(
+                out_dir + "hole/",
+                os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
+            mask)
+        res[i]["mask_hole"] = out_dir + "hole/" + os.path.splitext(
+            os.path.basename(after_img))[0] + "_mask.png"
+        res[i]["count_hole"] = count
+        res[i]["fractional_variation_hole"] = compute_variation(
+            os.path.join(generate_dir + "hole/", os.path.basename(after_img)))
         data = json.dumps(res[i])
         save_analysis(
             type_,
@@ -113,7 +147,8 @@ def change_detection(model_path, data_path, out_dir, names, step1, step2,
             retPic,
             pic2=second_,
             data=data,
-            checked=str(step1) + "," + str(step2))
+            checked=str(step1) + "," + str(step2),
+            is_hole=True)
         i += 1
     print("变化检测----------------->end")
 
@@ -124,7 +159,7 @@ def hole_handle(data_path, out_dir, names):
     res = handle(fun_type_8, names, data_path, out_dir)
     # 4.检测渲染
     res1 = handle(fun_type_6, res, out_dir, out_dir)
-    return generate_url + res[0], res1[0]
+    return generate_url + "hole/" + res[0], res1[0]
 
 
 def url_handle(imgs):
@@ -271,7 +306,7 @@ def image_restoration(model_path, data_path, out_dir, names, type_):
     print("图像复原----------------->end")
 
 
-def handle(fun_type, imgs, src_dir, save_dir):
+def handle(fun_type, imgs, src_dir, save_dir, prefix=""):
     """
 
     :param fun_type:
@@ -305,7 +340,7 @@ def handle(fun_type, imgs, src_dir, save_dir):
     elif fun_type == fun_type_5:
         temps = gaussian_blur(src_dir, save_dir, imgs)
     elif fun_type == fun_type_6:
-        temps = batch_render(src_dir, save_dir, imgs)
+        temps = batch_render(src_dir, save_dir, imgs, prefix)
     elif fun_type == fun_type_7:
         temps = batch_render_seg(src_dir, save_dir, imgs)
     elif fun_type == fun_type_8:

@@ -28,7 +28,9 @@ if __name__ == '__main__':
     with open('../config.yaml') as file:
         config = yaml.load(file.read(), Loader=yaml.FullLoader)
     with open("../frontend/.env", 'w') as file:
-        file.write("VUE_APP_BACKEND_PORT = {}\nVUE_APP_BACKEND_IP = {}".format(
-            config["port"]["backend"], config["host"]["backend"]
-            if config["host"]["backend"] != "0.0.0.0" else "127.0.0.1"))
+        file.write(
+            "VUE_APP_BACKEND_PORT = {}\nVUE_APP_BACKEND_IP = {}\nVUE_APP_BAIDU_MAP_ACCESS_KEY = {}".
+            format(config["port"]["backend"], config["host"]["backend"]
+                   if config["host"]["backend"] != "0.0.0.0" else "127.0.0.1",
+                   config["baidu_map"]["access_key"]))
     app.run(host=config["host"]["backend"], port=config["port"]["backend"])

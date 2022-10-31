@@ -27,8 +27,8 @@
       <i
         class="iconfont icon-zhuyi"
       />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
-    </p><p style="text-decoration: underline">
-      <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
+    </p><p>
+      <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detection文件夹</span>
     </p>
     <el-card style="border: 4px dashed var(--el-border-color);position: relative">
       <div
@@ -115,6 +115,24 @@
               @click="file2Click"
             >上传文件夹</i>
           </div>
+        </div>
+      </div>
+      <div class="slider-box">
+        <div class="slider-item">
+          <div>自定义窗口：</div>
+          <el-slider
+            v-model="upload.window_size"
+            show-input
+            :max="512"
+          />
+        </div>
+        <div class="slider-item">
+          <span>自定义步长：</span>
+          <el-slider
+            v-model="upload.stride"
+            show-input
+            :max="upload.window_size"
+          />
         </div>
       </div>
       <el-row
@@ -427,45 +445,23 @@
         </p>
       </template>
       <template #mid>
-        <p v-if="isUpload">
-          <label
-            v-if="resultArr.length!==0"
-            class="prehandle-label container"
-          >
-            <input
-              ref="hole"
-              type="checkbox"
-              :checked="resultArr[currentIndex].is_hole"
-              @click="dealAfterImg()"
-            >
-            <span class="checkmark" />
-            <span class="go-bold label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
-          </label>
-
-          <span><i
-            class="iconfont icon-qiehuan"
-            @click="changePreMode"
-          >切换预览模式</i></span>
-        </p>
-
-        <p
-          v-else
+        <label
+          v-if="resultArr.length!==0"
+          class="prehandle-label container"
         >
-          <label class="prehandle-label container">
-            <input
-              ref="hole1"
-              type="checkbox"
-              :checked="true"
-              @click="dealExample()"
-            >
-            <span class="checkmark" />
-            <span class="go-bold label-words">开启连通域滤波并填充孔洞处理</span>
-          </label>
-          <span><i
-            class="iconfont icon-qiehuan"
-            @click="changePreMode"
-          >切换预览模式</i></span>
-        </p>
+          <input
+            ref="hole"
+            type="checkbox"
+            :checked="resultArr[currentIndex].is_hole"
+            @click="toggleHoleStatus"
+          >
+          <span class="checkmark" />
+          <span class="go-bold label-words"><span class="hidden-md-and-down">开启连通域滤波并填充</span>孔洞处理</span>
+        </label>
+        <span><i
+          class="iconfont icon-qiehuan"
+          @click="changePreMode"
+        >切换预览模式</i></span>
       </template>
       <template #right>
         <p>
@@ -495,8 +491,14 @@
           >
             <div v-show="!isHiddenMask">
               <img
-                v-if="resultArr[currentIndex]?.data.mask"
+                v-if="resultArr[currentIndex]?.data.mask && holeShow"
                 :src="resultArr[currentIndex].data.mask "
+                alt="mask"
+                class="mask-img"
+              >
+              <img
+                v-if="resultArr[currentIndex]?.data.mask_hole && !holeShow"
+                :src="resultArr[currentIndex].data.mask_hole "
                 alt="mask"
                 class="mask-img"
               >
@@ -587,14 +589,41 @@
             <p class="handle-words">
               预测结果
             </p>
-            <el-image
-              v-if="onRenderResult"
-              :preview-src-list="[onRenderResult]"
-              :preview-teleported="true"
-              :src="onRenderResult"
-              fit="cover"
-              style="width: 100%"
-            />
+            <div style="position: relative">
+              <transition
+                enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__hinge"
+              >
+                <div v-if="!holeShow">
+                  <el-image
+                    v-if="onRenderResult && !holeShow"
+                    :preview-src-list="[onRenderResult]"
+                    :preview-teleported="true"
+                    :src="onRenderResult"
+                    fit="cover"
+                    style="width: 100%"
+                  />
+                </div>
+              </transition>
+              <transition
+                enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__hinge"
+              >
+                <div
+                  v-if="holeShow"
+                  style="position: absolute;top: 0;right: 0;"
+                >
+                  <el-image
+                    v-if="onRenderResult && holeShow"
+                    :preview-src-list="[onRenderResult]"
+                    :preview-teleported="true"
+                    :src="onRenderResult"
+                    fit="cover"
+                    style="width: 100%"
+                  />
+                </div>
+              </transition>
+            </div>
             <el-image
               v-if="!onRenderResult"
               :preview-src-list="[onRenderExample]"
@@ -605,7 +634,7 @@
             />
           </div>
         </div>
-        
+
         <div class="render-select-box">
           <div
             v-show="preMode===2"
@@ -621,27 +650,27 @@
                 <div
                   class="style-words normal"
                   :class="{ 'active-normal': renderstyle === '原图' }"
-                  @click="setOneWay('原图',resultArr.length===0)"
+                  @click="setOneWay('原图',resultArr.length===0,holeShow)"
                 >原图</div>
                 <div
                   class="style-words woods"
                   :class="{ 'active-woods': renderstyle === '森林' }"
-                  @click="setOneWay('森林',resultArr.length===0)"
+                  @click="setOneWay('森林',resultArr.length===0,holeShow)"
                 >森林</div>
                 <div
                   class="style-words neon"
                   :class="{ 'active-neon': renderstyle === '霓虹' }"
-                  @click="setOneWay('霓虹',resultArr.length===0)"
+                  @click="setOneWay('霓虹',resultArr.length===0,holeShow)"
                 >霓虹</div>
                 <div
                   class="style-words flash"
                   :class="{ 'active-flash': renderstyle === '闪电' }"
-                  @click="setOneWay('闪电',resultArr.length===0)"
+                  @click="setOneWay('闪电',resultArr.length===0,holeShow)"
                 >闪电</div>
                 <div
                   class="style-words aurora"
                   :class="{ 'active-aurora': renderstyle === '极光' }"
-                  @click="setOneWay('极光',resultArr.length===0)"
+                  @click="setOneWay('极光',resultArr.length===0,holeShow)"
                 >极光</div>
               </div>
             </label>
@@ -679,7 +708,7 @@
                   downloadimgWithWords(
                     resultArr[currentIndex].id,
                     onRenderResult,
-                    `变化检测${renderstyle}渲染结果图.png`
+                    `变化检测${renderstyle}渲染结果图${holeShow ? '(已孔洞处理)' : '(未孔洞处理)'}.png`
                   )
                 "
               >
@@ -699,13 +728,15 @@
             v-else
             :image-size="100"
           />
+ 
           <div
             v-show="dragShow && resultArr.length!==0"
-            class="drag-item"
           >
             <DraggableItem @child-vannish="vanishDrag">
               <template #left-1>
-                绘制框个数：{{ resultArr[currentIndex]?.data.count }}
+                变化建筑物个数：<span v-show="!holeShow">{{ resultArr[currentIndex]?.data.count }}</span><span v-show="holeShow">
+                  {{ resultArr[currentIndex]?.data.count_hole }}
+                </span>
               </template>
               <template #rightIcon-1>
                 <i
@@ -720,7 +751,7 @@
                 />
               </template>
               <template #left-2>
-                两时期变化百分比：{{ resultArr[currentIndex]?.data.fractional_variation.toFixed(2) }}%
+                两时期变化百分比：<span v-show="!holeShow">{{ resultArr[currentIndex]?.data.fractional_variation.toFixed(2) }}%</span><span v-show="holeShow">{{ resultArr[currentIndex]?.data.fractional_variation_hole.toFixed(2) }}%</span>
               </template>
             </DraggableItem>
           </div>
@@ -735,7 +766,7 @@
         >
           <el-image
             v-if="resultArr[currentQroup+index]?.after_img"
-            :src="resultArr[currentQroup+index]?.after_img"
+            :src="holeShow ? resultArr[currentQroup+index]?.data.hole : resultArr[currentQroup+index]?.after_img"
             :class="{'render-border':onRender===index}"
             @click="goRenderThis(index)"
           />
@@ -761,7 +792,6 @@
 import {
   createSrc,
   imgUpload,
-  holeHandle,
   histogramUpload,
   getCustomModel
 } from "@/api/upload";
@@ -789,6 +819,7 @@ export default {
   },
   data() {
     return {
+      holeShow:true,
       isSliderLocked: false,
       preMode: 1,
       pairs: [],
@@ -813,6 +844,8 @@ export default {
       uploadSrc2: [],
       uploadSrc: [],
       upload: {
+        window_size:256,
+        stride:128,
         list: [
           {
             first: "",
@@ -886,12 +919,13 @@ export default {
       }],
       onRenderExample:require('@/assets/image/example/normal.png'),
       isHiddenMask:false,
-      dragShow:true
+      dragShow:true,
+      sizeValue:[0,200]
     };
   },
   created() {
     this.getMore();
-    this.getCustomModel('change_detector').then((res)=>{
+    this.getCustomModel('change_detection').then((res)=>{
       this.modelPathArr = res.data.data
       this.upload.model_path = this.modelPathArr[0]?.model_path
     }).catch((rej)=>{})
@@ -905,7 +939,6 @@ export default {
     createSrc,
     getImgArrayBuffer,
     atchDownload,
-    holeHandle,
     histogramUpload,
     clearQueue() {
       this.fileList1 = [];
@@ -923,7 +956,7 @@ export default {
       this.currentIndex = 5 * index;
       this.goRenderThis(0);
     },
-    setOneWay(style,isShowExample) {
+    setOneWay(style,isShowExample,holeStyle) {
       this.renderstyle = style;
       if(isShowExample){
         switch (style){
@@ -935,16 +968,31 @@ export default {
         }
         return
       }
-      switch (style){
-        case '原图': this.onRenderResult = this.resultArr[this.currentIndex].after_img;break
-        case '森林': this.onRenderResult = this.resultArr[this.currentIndex].data[2];break
-        case '霓虹': this.onRenderResult = this.resultArr[this.currentIndex].data[3];break
-        case '闪电': this.onRenderResult = this.resultArr[this.currentIndex].data[0];break
-        case '极光': this.onRenderResult = this.resultArr[this.currentIndex].data[1];break
+      if(!holeStyle){
+        switch (style){
+          case '原图': this.onRenderResult = this.resultArr[this.currentIndex].after_img;break
+          case '森林': this.onRenderResult = this.resultArr[this.currentIndex].data[2];break
+          case '霓虹': this.onRenderResult = this.resultArr[this.currentIndex].data[3];break
+          case '闪电': this.onRenderResult = this.resultArr[this.currentIndex].data[0];break
+          case '极光': this.onRenderResult = this.resultArr[this.currentIndex].data[1];break
+        }
+      }else{
+        switch (style){
+          case '原图': this.onRenderResult = this.resultArr[this.currentIndex].data.hole;break
+          case '森林': this.onRenderResult = this.resultArr[this.currentIndex].data.hole_style[2];break
+          case '霓虹': this.onRenderResult = this.resultArr[this.currentIndex].data.hole_style[3];break
+          case '闪电': this.onRenderResult = this.resultArr[this.currentIndex].data.hole_style[0];break
+          case '极光': this.onRenderResult = this.resultArr[this.currentIndex].data.hole_style[1];break
+        }
       }
+
     },
     uploadfile() {
       this.uploadSrc = [];
+      if(this.upload.window_size===this.upload.stride){
+        this.$message.error('窗口大小不能等于步长')
+        return
+      }
       if (
           this.fileList1.length !== this.fileList2.length ||
           this.fileList1.length === 0
@@ -1072,11 +1120,17 @@ export default {
               item['before_img1']=global.BASEURL+item.before_img1
               item['before_img'] = global.BASEURL+item.before_img
               item['after_img'] = global.BASEURL+item.after_img
+              item.data['hole'] = global.BASEURL + item.data['hole']
+              item.data['hole_style'][0] =  global.BASEURL + item.data['hole_style'][0]
+              item.data['hole_style'][1] =  global.BASEURL + item.data['hole_style'][1]
+              item.data['hole_style'][2] =  global.BASEURL + item.data['hole_style'][2]
+              item.data['hole_style'][3] =  global.BASEURL + item.data['hole_style'][3]
               item.data[0] = global.BASEURL + item.data[0]
               item.data[1] = global.BASEURL + item.data[1]
               item.data[2] = global.BASEURL + item.data[2]
               item.data[3] = global.BASEURL + item.data[3]
               item.data['mask'] = global.BASEURL +item.data.mask
+              item.data['mask_hole'] = global.BASEURL + item.data.mask_hole
             })
             this.resultArr = res.data.data
             this.onRenderResult = this.resultArr[this.currentIndex].after_img
@@ -1304,21 +1358,10 @@ export default {
         this.upload.denoise = 3;
       }
     },
-    dealAfterImg() {
-      if (this.resultArr[this.currentIndex].is_hole) {
-        this.$refs.hole.checked = true;
-        this.$message.success("该图已经过处理");
-      } else {
-        this.$message.success("连通域滤波并填充孔洞处理");
-        this.hole.id = this.resultArr[this.currentIndex].id;
-        this.holeHandle(this.hole).then((res) => {
-          this.getMore();
-        }).catch((rej)=>{})
-      }
-    },
-    dealExample() {
-      this.$refs.hole1.checked = true;
-      this.$message.success("该图已经过处理");
+    toggleHoleStatus() {
+      this.resultArr[this.currentIndex].is_hole = !this.resultArr[this.currentIndex].is_hole
+      this.holeShow = !this.holeShow
+      this.setOneWay(this.renderstyle,this.resultArr.length===0,this.holeShow)
     },
     uploadFirst() {
       this.checkFile1(...this.$refs.refFileA.files);
@@ -1728,6 +1771,16 @@ export default {
     &:hover{
       background-color: rgb(228, 235, 240);
     }
+  }
+}
+.slider-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .slider-item{
+    margin: 10px;
+    width: 450px;
   }
 }
 

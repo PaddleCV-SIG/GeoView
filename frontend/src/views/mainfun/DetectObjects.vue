@@ -15,7 +15,7 @@
     <p>
       请上传包含<span class="go-bold">图片的文件夹</span><i class="iconfont icon-wenjianjia" />或者<span
         class="go-bold"
-      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">object_detector文件夹</span>
+      >图片</span><i class="iconfont icon-tupiantianjia" />，<i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">object_detection文件夹</span>
     </p>
     <el-row
       type="flex"
@@ -413,7 +413,7 @@ export default {
   },
   created() {
     this.getUploadImg("目标检测");
-    this.getCustomModel('object_detector').then((res)=>{
+    this.getCustomModel('object_detection').then((res)=>{
       this.modelPathArr = res.data.data
       this.uploadSrc.model_path = this.modelPathArr[0]?.model_path
     }).catch((rej)=>{})
