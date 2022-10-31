@@ -28,7 +28,7 @@
         class="iconfont icon-zhuyi"
       />注意，请将属于<span class="go-bold">同一组</span>的图片设置<span class="go-bold">相同</span>的命名，这将成为我们处理一组图片的依据
     </p><p>
-      <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detector文件夹</span>
+      <i class="iconfont icon-zidingyi" />自定义模型文件请上传至<span class="go-bold">backend/model文件夹</span><i class="iconfont icon-wenjianjia" />下的<span class="go-bold">change_detection文件夹</span>
     </p>
     <el-card style="border: 4px dashed var(--el-border-color);position: relative">
       <div
@@ -131,7 +131,7 @@
           <el-slider
             v-model="upload.stride"
             show-input
-            :max="512"
+            :max="upload.window_size"
           />
         </div>
       </div>
@@ -734,7 +734,7 @@
           >
             <DraggableItem @child-vannish="vanishDrag">
               <template #left-1>
-                绘制框个数：<span v-show="!holeShow">{{ resultArr[currentIndex]?.data.count }}</span><span v-show="holeShow">
+                变化建筑物个数：<span v-show="!holeShow">{{ resultArr[currentIndex]?.data.count }}</span><span v-show="holeShow">
                   {{ resultArr[currentIndex]?.data.count_hole }}
                 </span>
               </template>
@@ -925,7 +925,7 @@ export default {
   },
   created() {
     this.getMore();
-    this.getCustomModel('change_detector').then((res)=>{
+    this.getCustomModel('change_detection').then((res)=>{
       this.modelPathArr = res.data.data
       this.upload.model_path = this.modelPathArr[0]?.model_path
     }).catch((rej)=>{})
@@ -989,6 +989,10 @@ export default {
     },
     uploadfile() {
       this.uploadSrc = [];
+      if(this.upload.window_size===this.upload.stride){
+        this.$message.error('窗口大小不能等于步长')
+        return
+      }
       if (
           this.fileList1.length !== this.fileList2.length ||
           this.fileList1.length === 0

@@ -152,7 +152,7 @@ export default {
     this.getCustomModel('classification').then((res)=>{
       this.classificationModelArr = res.data.data
     })
-    this.getCustomModel('object_detector').then((res)=>{
+    this.getCustomModel('object_detection').then((res)=>{
       this.detectObjectsModelArr = res.data.data
       this.onSelectModelArr = this.detectObjectsModelArr
       this.uploadSrc.model_path = this.onSelectModelArr[0]?.model_path
