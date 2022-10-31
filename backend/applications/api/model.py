@@ -11,10 +11,10 @@ model_api = Blueprint('model_api', __name__, url_prefix='/api/model')
 @model_api.get('/list/<string:model_type>')
 def get_model_list(model_type):
     types_list = {
-        "change_detector": "change_detector",
+        "change_detection": "change_detector",
         "classification": "classifier",
         "image_restoration": "restorer",
-        "object_detector": "detector",
+        "object_detection": "detector",
         "semantic_segmentation": "segmenter"
     }
     if model_type not in types_list:
