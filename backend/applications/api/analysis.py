@@ -57,7 +57,7 @@ def change_detection_api():
     if window_size <= 0 or stride <= 0:
         return fail_api("步长和窗口大小必须大于0")
     if window_size < stride:
-        return fail_api("步长必须大于窗口大小")
+        return fail_api("步长必须小于等于窗口大小")
     try:
         model_info = get_model_info(model_path)
         if model_info["_Attributes"]["model_type"] != "change_detector":
