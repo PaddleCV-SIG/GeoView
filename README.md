@@ -1,6 +1,6 @@
 <div align="center">
     <p align="center">
-        <img src="https://user-images.githubusercontent.com/78073130/198640332-3edba236-db03-4eb0-b803-90a1053e87f3.png" alt="logo" width = "500" />
+        <img src="https://user-images.githubusercontent.com/78073130/198640332-3edba236-db03-4eb0-b803-90a1053e87f3.png" alt="logo" width="500" />
     </p>
 
 [![build status](https://github.com/PaddleCV-SIG/PP-GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/PP-GeoView/actions)
@@ -10,6 +10,31 @@
 ![python version](https://img.shields.io/badge/python-3.7+-orange.svg)
 ![node.js version](https://img.shields.io/badge/nodejs-16+-orange.svg)
 
+</div>
+
+<div align="center">
+<table>
+    <tr>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176961-97466391-6cea-4a11-999a-78b8b0e0d602.gif", width="250"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176518-c3e63a6d-f96b-4c8d-bc2e-932d7fb9c324.gif", width="250"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176786-0cc5156d-b0e9-4922-a555-737af5555a49.gif", width="250"></td>
+    <tr>
+    <tr>
+        <td align="center">变化检测</td>
+        <td align="center">场景分类</td>
+        <td align="center">目标检测</td>
+    <tr>
+    <tr>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176761-ac67b553-309c-4d3a-90cc-31ffe3c8522a.gif", width="250"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199175092-cf640078-868e-4633-aca0-e5b69971bc75.gif", width="250"></td>
+        <td><img src="https://user-images.githubusercontent.com/90198481/198829346-67e8945d-d587-4feb-a9cb-dc787e267114.png", width="250"></td>
+    <tr>
+    <tr>
+        <td align="center">图像复原</td>
+        <td align="center">地物分类</td>
+        <td align="center">在线地图</td>
+    <tr>
+</table>
 </div>
 
 ## 简介
@@ -26,11 +51,13 @@ PP-GeoView支持5大遥感影像解译任务：
 - 图像复原
 - 地物分类
 
-此外，PP-GeoView提供以下辅助功能：
+除基本解译功能外，PP-GeoView提供以下辅助功能：
 
 - 遥感影像预处理
 - 解译结果后处理
+- 图像在线编辑
 - 解译结果导出
+- 历史记录查询
 - 在线地图解译
 
 ## 安装说明
@@ -83,6 +110,7 @@ npm install
 
 - 若您的需求是使用PP-GeoView部署和发布模型，请阅读[开发者文档](./docs/dev.md)。
 - 若您希望了解基于PP-GeoView发布的产品的使用方式，请阅读[用户文档](./docs/user.md)。
+- 完整使用PP-GeoView的所有功能，请首先根据[开发者文档](./docs/dev.md)配置环境并启动服务，然后阅读[用户文档](./docs/user.md)了解使用细节。
 
 ## 代码结构
 
