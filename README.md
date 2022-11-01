@@ -12,6 +12,25 @@
 
 </div>
 
+<div align="center">
+<table>
+    <tr>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176961-97466391-6cea-4a11-999a-78b8b0e0d602.gif"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176518-c3e63a6d-f96b-4c8d-bc2e-932d7fb9c324.gif"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176786-0cc5156d-b0e9-4922-a555-737af5555a49.gif"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199176761-ac67b553-309c-4d3a-90cc-31ffe3c8522a.gif"></td>
+        <td><img src="https://user-images.githubusercontent.com/21275753/199175092-cf640078-868e-4633-aca0-e5b69971bc75.gif"></td>
+    <tr>
+    <tr>
+        <td align="center">变化检测</td>
+        <td align="center">场景分类</td>
+        <td align="center">目标检测</td>
+        <td align="center">图像复原</td>
+        <td align="center">地物分类</td>
+    <tr>
+</table>
+</div>
+
 ## 简介
 
 PP-GeoView是一款开源、轻量、功能丰富的**遥感影像智能解译工具**，致力于实现遥感领域深度学习模型在Web平台的快速部署。
