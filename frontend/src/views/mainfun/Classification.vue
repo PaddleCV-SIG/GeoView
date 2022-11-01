@@ -265,7 +265,7 @@ export default {
       const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1)
       const whiteList = ['jpg','jpeg','png','JPG','JPEG']
       if (whiteList.indexOf(fileSuffix) === -1) {
-        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+        this.$message.error("只允许上传jpg, jpeg, png, JPG, 或JPEG格式,请重新上传");
         this.fileList= []
         this.canUpload = false
         this.cutVisible = false;
