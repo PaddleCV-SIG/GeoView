@@ -23,7 +23,8 @@ def execute(model_path, data_path, out_dir, names, window_size=256, stride=128):
             save_dir=out_dir,
             transforms=None,
             block_size=window_size,  #注意block_size的值不能等于overlap的值
-            overlap=window_size - stride)
+            overlap=window_size - stride,
+            merge_strategy='accum')
     for name in names:
         raw_name = os.path.splitext(name["first"])[0] + ".tif"
         img = decode_image(osp.join(out_dir, raw_name))
