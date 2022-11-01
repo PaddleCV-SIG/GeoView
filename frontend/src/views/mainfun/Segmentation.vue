@@ -90,7 +90,7 @@
             <i
               class="iconfont icon-tuxingtuxiangchuli"
             />
-            <p>图像预处理：</p>
+            <p>图像增强：</p>
             <p>
               <label class="prehandle-label container">
                 <input

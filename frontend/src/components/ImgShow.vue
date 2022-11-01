@@ -56,7 +56,7 @@
             v-else
             class="img-index"
           >
-            <span class="index-number ">{{ Object.keys(item.data)[0] }}:{{ item.data[Object.keys(item.data)] }}</span>
+            <span class="index-number ">{{ Object.keys(item.data)[0] }}: {{ item.data[Object.keys(item.data)] }}</span>
           </div>
         </div>
       </div>
