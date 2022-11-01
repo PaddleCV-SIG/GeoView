@@ -491,13 +491,13 @@
           >
             <div v-show="!isHiddenMask">
               <img
-                v-if="resultArr[currentIndex]?.data.mask && holeShow"
+                v-if="resultArr[currentIndex]?.data.mask && !holeShow"
                 :src="resultArr[currentIndex].data.mask "
                 alt="mask"
                 class="mask-img"
               >
               <img
-                v-if="resultArr[currentIndex]?.data.mask_hole && !holeShow"
+                v-if="resultArr[currentIndex]?.data.mask_hole && holeShow"
                 :src="resultArr[currentIndex].data.mask_hole "
                 alt="mask"
                 class="mask-img"
@@ -1393,7 +1393,7 @@ export default {
       const whiteList = ["jpg", "jpeg", "png", "JPG", "JPEG"];
       const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
       if (whiteList.indexOf(fileSuffix) === -1) {
-        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+        this.$message.error("只允许上传jpg, jpeg, png, JPG, 或JPEG格式,请重新上传");
         this.fileList1 = [];
         this.canUpload = false;
       } else {
@@ -1404,7 +1404,7 @@ export default {
       const whiteList = ["jpg", "jpeg", "png", "JPG", "JPEG"];
       const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
       if (whiteList.indexOf(fileSuffix) === -1) {
-        this.$message.error("上传只能是 jpg,jpeg,png,JPG,JPEG格式,请重新上传");
+        this.$message.error("只允许上传jpg, jpeg, png, JPG, 或JPEG格式,请重新上传");
         this.fileList2 = [];
         this.canUpload = false;
       } else {
