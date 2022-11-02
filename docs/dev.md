@@ -4,9 +4,9 @@
 
 ## 模型准备
 
-PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像解译。您可以选择下载PP-GeoView提供的预训练模型或使用自定义模型。
+PP-GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译。您可以选择下载PP-GeoView提供的预测模型，或者使用自己训练的模型（简称自训练模型）。
 
-下表包含PP-GeoView提供的预训练模型信息：
+下表包含PP-GeoView提供的预测模型信息：
 
 |模型名称|任务|下载链接|输入波段数|推荐输入尺寸（高*宽）|推荐空间分辨率|适用场景|预训练数据集|
 |-|-|-|-|-|-|-|-|
@@ -15,9 +15,9 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 |PP-YOLO|目标检测|[链接](https://paddlers.bj.bcebos.com/geoview/pretrained/det//ppyolo_rsod_static.zip)|3|608*608|0.3-3 m/像素|飞机、操场、立交桥、油桶等目标检测|[RSOD](https://github.com/RSIA-LIESMARS-WHU/RSOD-Dataset-)|
 |DeepLab V3+|地物分类|[链接](https://paddlers.bj.bcebos.com/geoview/pretrained/seg/deeplabv3p_rsseg_rgb_static.zip)|3|512*512|-|云、阴影、雪、水体、土地等区域识别|未公开数据集|
 
-**请注意**：每个预训练模型均有对应的输入波段数要求和适用场景，且仅在处理推荐的输入尺寸和空间分辨率范围内的图像时才能取得较好的效果。
+**请注意**：每个预测模型均有对应的输入波段数要求和适用场景，且仅在处理推荐的输入尺寸和空间分辨率范围内的图像时才能取得较好的效果。
 
-若您需要使用自定义模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)。在准备自定义模型时请注意，**目前PP-GeoView仅支持对三波段影像的处理**。
+若您需要使用自训练模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)。在准备自训练模型时请注意，**目前PP-GeoView仅支持对三波段影像的处理**。
 
 ### （可选）使用 PaddleRS 训练和导出模型
 
@@ -28,7 +28,7 @@ PP-GeoView基于PaddleRS导出的推理格式（静态图）模型进行图像�
 请遵循如下步骤导入模型：
 
 1. 在`backend`目录下新建`model`目录。
-2. 将解压后的预训练模型或导出的自定义模型拷贝到任务对应的目录中（如目录不存在需要新建），各任务与目录的对应关系如下：
+2. 将解压后的预测模型或导出的自训练模型拷贝到任务对应的目录中（如目录不存在需要新建），各任务与目录的对应关系如下：
     - 变化检测：`backend/model/change_detection`
     - 场景分类：`backend/model/classification`
     - 目标检测：`backend/model/object_detection`
