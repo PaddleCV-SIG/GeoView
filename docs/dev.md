@@ -2,7 +2,7 @@
 
 > 阅读如下教程前，请确保您已参照[文档](../README.md)正确安装PP-GeoView。
 
-## 模型准备
+## 1 模型准备
 
 PP-GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译。您可以选择下载PP-GeoView提供的预测模型，或者使用自己训练的模型（简称自训练模型）。
 
@@ -45,7 +45,7 @@ PP-GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译�
 <img src="https://user-images.githubusercontent.com/78073130/199014099-33d754a0-e89c-496a-a9fb-a38660f10ed1.png" align="middle" width = "600" />
 </p>
 
-## Web 前后端配置
+## 2 Web 前后端配置
 
 ### 修改 Web 后端配置文件
 
@@ -82,7 +82,7 @@ baidu_map:
   access_key: <ACCESS_KEY>
 ```
 
-## Web 前后端启动
+## 3 Web 前后端启动
 
 ### 启动 Web 后端
 
