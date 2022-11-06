@@ -1,6 +1,6 @@
 <div align="center">
     <p align="center">
-        <img src="https://user-images.githubusercontent.com/78073130/198640332-3edba236-db03-4eb0-b803-90a1053e87f3.png" alt="logo" width="500" />
+        <img src="https://user-images.githubusercontent.com/78073130/200159343-c2bab155-f66d-4548-81ef-7c23c11d9dc1.png" alt="logo" width="500" />
     </p>
 
 [![build status](https://github.com/PaddleCV-SIG/GeoView/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PaddleCV-SIG/GeoView/actions)
