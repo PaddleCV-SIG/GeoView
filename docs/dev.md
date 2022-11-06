@@ -1,12 +1,12 @@
-# PP-GeoView 开发者文档
+# GeoView 开发者文档
 
-> 阅读如下教程前，请确保您已参照[文档](../README.md)正确安装PP-GeoView。
+> 阅读如下教程前，请确保您已参照[文档](../README.md)正确安装GeoView。
 
 ## 1 模型准备
 
-PP-GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译。您可以选择下载PP-GeoView提供的预测模型，或者使用自己训练的模型（简称自训练模型）。
+GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译。您可以选择下载GeoView提供的预测模型，或者使用自己训练的模型（简称自训练模型）。
 
-下表包含PP-GeoView提供的预测模型信息：
+下表包含GeoView提供的预训练模型信息：
 
 |模型名称|任务|下载链接|输入波段数|推荐输入尺寸（高*宽）|推荐空间分辨率|适用场景|预训练数据集|
 |-|-|-|-|-|-|-|-|
@@ -17,13 +17,13 @@ PP-GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译�
 
 **请注意**：每个预测模型均有对应的输入波段数要求和适用场景，且仅在处理推荐的输入尺寸和空间分辨率范围内的图像时才能取得较好的效果。
 
-若您需要使用自训练模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)。在准备自训练模型时请注意，**目前PP-GeoView仅支持对三波段影像的处理**。
+若您需要使用自训练模型，请参考[使用PaddleRS训练和导出模型](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)。在准备自训练模型时请注意，**目前GeoView仅支持对三波段影像的处理**。
 
 ### （可选）使用 PaddleRS 训练和导出模型
 
 请参考PaddleRS[模型训练文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/tutorials/train/README.md)与[模型导出文档](https://github.com/PaddlePaddle/PaddleRS/blob/develop/deploy/export/README.md)。
 
-### 将模型导入到 PP-GeoView
+### 将模型导入到 GeoView
 
 请遵循如下步骤导入模型：
 
@@ -104,6 +104,6 @@ cd frontend
 npm run serve
 ```
 
-前端和后端均启动后，在浏览器中可通过IP地址+端口号访问PP-GeoView工具。例如，在默认的IP与端口配置下，可通过`http://127.0.0.1:3000`访问。
+前端和后端均启动后，在浏览器中可通过IP地址+端口号访问GeoView工具。例如，在默认的IP与端口配置下，可通过`http://127.0.0.1:3000`访问。
 
-关于PP-GeoView各项功能的具体使用方式，请参考[用户文档](./user.md)。
+关于GeoView各项功能的具体使用方式，请参考[用户文档](./user.md)。
