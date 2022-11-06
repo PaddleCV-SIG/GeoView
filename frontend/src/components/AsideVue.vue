@@ -21,7 +21,7 @@
         <a
           class="platform-title"
           @click="goShow"
-        >PP-GeoView遥感解译</a>
+        >GeoView遥感解译</a>
       </div>
     </div>
     <el-divider content-position="center">

@@ -1,4 +1,4 @@
-# PP-GeoView
+# GeoView
 
 ## Project setup
 ```
