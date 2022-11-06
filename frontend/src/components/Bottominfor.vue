@@ -32,7 +32,7 @@ export default {
   name: "Bottominfor",
   methods:{
     goGithub(){
-      window.open('https://github.com/PaddleCV-SIG/PP-GeoView');
+      window.open('https://github.com/PaddleCV-SIG/GeoView');
     }
 
   }
