@@ -37,6 +37,10 @@
 </table>
 </div>
 
+## 最新动态
+
+- [2022-11-09] 🔥 GeoView发布0.1版本，支持5大遥感解译任务，提供影像预处理、后处理、图像在线编辑、历史记录查询等辅助功能。详细发版信息请参考[Release Note](https://github.com/PaddleCV-SIG/GeoView/releases)。
+
 ## 简介
 
 GeoView是一款开源、轻量、功能丰富的**遥感影像智能解译工具**，致力于实现遥感领域深度学习模型在Web平台的快速部署。
