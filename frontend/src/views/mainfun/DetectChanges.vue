@@ -564,7 +564,7 @@
               fit="cover"
             />
           </div>
-    
+
           <div class="render-img modeB-item">
             <p class="handle-words">
               第二时期
@@ -728,7 +728,7 @@
             v-else
             :image-size="100"
           />
- 
+
           <div
             v-show="dragShow && resultArr.length!==0"
           >
@@ -773,7 +773,7 @@
         </div>
       </div>
 
-      <div 
+      <div
         v-show="!dragShow"
         class="drag-control hidden-md-and-down"
         @click="dragShow=true"
@@ -1463,7 +1463,7 @@ export default {
       if (!this.isSliderLocked) this.isSliderLocked = true;
     },
     sliderMouseLeave() {
-      if (this.isSliderLocked) this.isSliderLocked = true;
+      if (this.isSliderLocked) this.isSliderLocked = false;
     },
     vanishDrag(){
       this.dragShow = false
