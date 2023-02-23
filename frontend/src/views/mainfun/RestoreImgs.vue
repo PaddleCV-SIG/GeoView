@@ -432,7 +432,7 @@ export default {
       if (!this.isSliderLocked) this.isSliderLocked = true;
     },
     sliderMouseLeave() {
-      if (this.isSliderLocked) this.isSliderLocked = true;
+      if (this.isSliderLocked) this.isSliderLocked = false;
     },
   },
 }
