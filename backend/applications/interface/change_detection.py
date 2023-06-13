@@ -29,6 +29,7 @@ def execute(model_path, data_path, out_dir, names, window_size=256, stride=128):
         raw_name = os.path.splitext(name["first"])[0] + ".tif"
         img = decode_image(osp.join(out_dir, raw_name))
         save_img = np.where(img == 0, img, 255)
+        save_img = np.concatenate((save_img, save_img, save_img), axis=-1)
         imsave(osp.join(out_dir, name["first"]), save_img)
         temps.append(generate_url + name["first"])
         temps1.append(name["first"])
