@@ -1327,7 +1327,7 @@ export default {
                 this.sharpenImg2 = res.data.data.map((item) => {
                   return global.BASEURL + item.second;
                 });
-              });
+              }).catch(()=>{})
             }
           }).catch((rej)=>{})
         }

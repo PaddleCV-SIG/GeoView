@@ -33,16 +33,16 @@ function selectSharpen(type) {
           return global.BASEURL+item.src;
         });
         this.before = this.uploadSrc.list.splice(0,3)
-   
+
         this.prePhoto.list = this.before;
         this.prePhoto.prehandle = 4;
-    
+
         prePhotoHandle(this.prePhoto).then((res)=>{
-        
+
           this.sharpenImg = res.data.data.map((item)=>{
             return global.BASEURL + item
           })
-        })
+        }).catch(()=>{})
       }).catch((rej)=>{})
     }
   }
@@ -78,12 +78,12 @@ function selectSharpen(type) {
             return global.BASEURL+item.src;
           });
           this.before = this.uploadSrc.list.splice(0,3)
-      
+
           this.prePhoto.list = this.before
           this.prePhoto.prehandle = 2
-       
+
           prePhotoHandle(this.prePhoto).then((res)=>{
-       
+
             this.claheImg = res.data.data.map((item)=>{
               return global.BASEURL + item
             })
