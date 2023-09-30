@@ -1,5 +1,6 @@
 import logging
 import os
+from urllib.parse import quote_plus
 
 
 class BaseConfig:
@@ -27,7 +28,7 @@ class BaseConfig:
     MYSQL_DATABASE = os.getenv('MYSQL_DATABASE') or "AdminFlask"
 
     # mysql 数据库的配置信息
-    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{MYSQL_USERNAME}:{quote_plus(MYSQL_PASSWORD)}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4"
     # 默认日志等级
     LOG_LEVEL = logging.WARN
     #

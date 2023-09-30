@@ -1,3 +1,4 @@
+import traceback
 from datetime import timedelta
 
 from flask import session
@@ -7,6 +8,7 @@ from applications import create_app
 from applications.common.utils.http import fail_api
 from applications.extensions import db
 
+debug_mode = False
 app = create_app()
 
 
@@ -18,6 +20,8 @@ def before():
 
 @app.errorhandler(Exception)
 def error_handler(e):
+    if debug_mode:
+        traceback.print_exc()
     return fail_api("后端出现异常：{}".format(str(e)))
 
 
@@ -27,6 +31,7 @@ if __name__ == '__main__':
     import yaml
     with open('../config.yaml') as file:
         config = yaml.load(file.read(), Loader=yaml.FullLoader)
+    debug_mode = bool(config.get("debug", False))
     with open("../frontend/.env", 'w') as file:
         file.write(
             "VUE_APP_BACKEND_PORT = {}\nVUE_APP_BACKEND_IP = {}\nVUE_APP_BAIDU_MAP_ACCESS_KEY = {}".
