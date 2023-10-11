@@ -72,7 +72,7 @@ GeoView支持5大遥感影像解译任务：
 
 - MySQL >= 5.7
 - Node.js >= 16.0
-- PaddlePaddle >= 2.2.0
+- PaddlePaddle >= 2.2.0 && < 2.5.0
 
 其中，PaddlePaddle安装可以参考[PaddlePaddle官网](https://www.paddlepaddle.org.cn/)。这里给出安装CPU版本的例子：
 
