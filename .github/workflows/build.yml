@@ -58,6 +58,7 @@ jobs:
       - name: Install PaddleRS
         run: |
           python -m pip install -r PaddleRS/requirements.txt
+          python -m pip install "numpy<=1.23.5"
           python -m pip install -e PaddleRS
       - name: Install GDAL
         run: python -m pip install ${{ matrix.gdal-whl-url }}
