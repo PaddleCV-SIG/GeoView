@@ -23,7 +23,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.7", "3.8"]
-        node-version: ["16", "17", "18"]
+        node-version: ["16", "17"]
         include:
           - python-version: "3.7"
             os: windows-latest
@@ -52,12 +52,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Upgrade pip
-        run: python -m pip install pip --upgrade --user
+        run: python -m pip install pip==22.0.3 --upgrade --user
       - name: Install PaddlePaddle
         run: python -m pip install paddlepaddle==2.4.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
       - name: Install PaddleRS
         run: |
           python -m pip install -r PaddleRS/requirements.txt
+          python -m pip install "numpy<=1.23.5"
           python -m pip install -e PaddleRS
       - name: Install GDAL
         run: python -m pip install ${{ matrix.gdal-whl-url }}

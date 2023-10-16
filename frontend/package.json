@@ -16,7 +16,7 @@
     "eslint-plugin-vue": "^9.5.1",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
-    "jszip": "^3.9.1",
+    "jszip": "^3.10.1",
     "vue": "^3.2.13",
     "vue-cropper": "^1.0.3",
     "vue-keep-scroll-position": "^0.1.2",
