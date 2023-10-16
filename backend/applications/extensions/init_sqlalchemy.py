@@ -2,7 +2,11 @@ import datetime
 
 from flask import Flask, request
 from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy, BaseQuery
+from flask_sqlalchemy import SQLAlchemy
+try:
+    from flask_sqlalchemy import BaseQuery
+except ImportError:
+    from flask_sqlalchemy.query import Query as BaseQuery
 from marshmallow import fields
 from marshmallow.validate import (URL, Email, Range, Length, Equal, Regexp,
                                   Predicate, NoneOf, OneOf, ContainsOnly)
