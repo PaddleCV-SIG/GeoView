@@ -172,4 +172,8 @@ cython_debug/
 
 # DL Model
 
-model/
+model/change_detection/
+model/classification/
+model/image_restoration/
+model/object_detection/
+model/semantic_segmentation/
