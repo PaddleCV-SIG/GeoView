@@ -94,7 +94,7 @@ git checkout feature/docker-deploy
 docker compose up -d
 ```
 
-容器启动成功后，可通过http://127.0.0.1:3000访问GeoView。
+容器启动成功后，可通过`http://127.0.0.1:3000`访问GeoView。
 
 ### 手动安装
 
