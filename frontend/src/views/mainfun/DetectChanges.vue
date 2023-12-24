@@ -1117,20 +1117,20 @@ export default {
       this.historyGetPage(1, 20, "变化检测")
           .then((res) => {
             res.data.data.forEach((item)=>{
-              item['before_img1']=global.BASEURL+item.before_img1
-              item['before_img'] = global.BASEURL+item.before_img
-              item['after_img'] = global.BASEURL+item.after_img
-              item.data['hole'] = global.BASEURL + item.data['hole']
-              item.data['hole_style'][0] =  global.BASEURL + item.data['hole_style'][0]
-              item.data['hole_style'][1] =  global.BASEURL + item.data['hole_style'][1]
-              item.data['hole_style'][2] =  global.BASEURL + item.data['hole_style'][2]
-              item.data['hole_style'][3] =  global.BASEURL + item.data['hole_style'][3]
-              item.data[0] = global.BASEURL + item.data[0]
-              item.data[1] = global.BASEURL + item.data[1]
-              item.data[2] = global.BASEURL + item.data[2]
-              item.data[3] = global.BASEURL + item.data[3]
-              item.data['mask'] = global.BASEURL +item.data.mask
-              item.data['mask_hole'] = global.BASEURL + item.data.mask_hole
+              item['before_img1']=global.BASE_IMAGE_URL+item.before_img1
+              item['before_img'] = global.BASE_IMAGE_URL+item.before_img
+              item['after_img'] = global.BASE_IMAGE_URL+item.after_img
+              item.data['hole'] = global.BASE_IMAGE_URL + item.data['hole']
+              item.data['hole_style'][0] =  global.BASE_IMAGE_URL + item.data['hole_style'][0]
+              item.data['hole_style'][1] =  global.BASE_IMAGE_URL + item.data['hole_style'][1]
+              item.data['hole_style'][2] =  global.BASE_IMAGE_URL + item.data['hole_style'][2]
+              item.data['hole_style'][3] =  global.BASE_IMAGE_URL + item.data['hole_style'][3]
+              item.data[0] = global.BASE_IMAGE_URL + item.data[0]
+              item.data[1] = global.BASE_IMAGE_URL + item.data[1]
+              item.data[2] = global.BASE_IMAGE_URL + item.data[2]
+              item.data[3] = global.BASE_IMAGE_URL + item.data[3]
+              item.data['mask'] = global.BASE_IMAGE_URL +item.data.mask
+              item.data['mask_hole'] = global.BASE_IMAGE_URL + item.data.mask_hole
             })
             this.resultArr = res.data.data
             this.onRenderResult = this.resultArr[this.currentIndex].after_img
@@ -1175,7 +1175,7 @@ export default {
             this.createSrc(formData1).then((res) => {
               this.uploadSrc3 = res.data.data.splice(0, 3);
               this.Img1 = this.uploadSrc3.map((item) => {
-                return global.BASEURL + item.src;
+                return global.BASE_IMAGE_URL + item.src;
               });
               resolve();
             }).catch((rej)=>{})
@@ -1184,7 +1184,7 @@ export default {
             this.createSrc(formData2).then((res) => {
               this.uploadSrc4 = res.data.data.splice(0, 3);
               this.Img3 = this.uploadSrc4.map((item) => {
-                return global.BASEURL + item.src;
+                return global.BASE_IMAGE_URL + item.src;
               });
               resolve();
             }).catch((rej)=>{})
@@ -1221,7 +1221,7 @@ export default {
               this.myhistogram.list = this.getList(this.histogramSrc);
               this.histogramUpload(this.myhistogram).then((res) => {
                 this.Img2 = res.data.data.map((item) => {
-                  return global.BASEURL + item;
+                  return global.BASE_IMAGE_URL + item;
                 });
                 this.Img2 = this.Img2.splice(0, 3);
               }).catch((rej)=>{})
@@ -1277,7 +1277,7 @@ export default {
             this.createSrc(formData1).then((res) => {
               this.sharpenSrc1 = res.data.data.splice(0, 3);
               this.Img1 = this.sharpenSrc1.map((item) => {
-                return global.BASEURL + item.src;
+                return global.BASE_IMAGE_URL + item.src;
               });
               resolve();
             }).catch((rej)=>{})
@@ -1286,7 +1286,7 @@ export default {
             this.createSrc(formData2).then((res) => {
               this.sharpenSrc2 = res.data.data.splice(0, 3);
               this.Img3 = this.sharpenSrc2.map((item) => {
-                return global.BASEURL + item.src;
+                return global.BASE_IMAGE_URL + item.src;
               });
               resolve();
             }).catch((rej)=>{})
@@ -1321,11 +1321,11 @@ export default {
               this.mysharpen.list =  this.getList(this.sharpenSrc);
               this.histogramUpload(this.mysharpen).then((res) => {
                 this.sharpenImg1 = res.data.data.map((item) => {
-                  return global.BASEURL + item.first;
+                  return global.BASE_IMAGE_URL + item.first;
                 });
 
                 this.sharpenImg2 = res.data.data.map((item) => {
-                  return global.BASEURL + item.second;
+                  return global.BASE_IMAGE_URL + item.second;
                 });
               }).catch(()=>{})
             }

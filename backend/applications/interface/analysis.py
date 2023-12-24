@@ -116,7 +116,7 @@ def change_detection(model_path,
         cv2.imwrite(
             os.path.join(out_dir,
                          os.path.splitext(filenames[i])[0] + "_mask.png"), mask)
-        res[i]["mask"] = out_dir + os.path.splitext(filenames[i])[
+        res[i]["mask"] = generate_url + os.path.splitext(filenames[i])[
             0] + "_mask.png"
         res[i]["count"] = count
         res[i]["fractional_variation"] = compute_variation(
@@ -135,11 +135,11 @@ def change_detection(model_path,
                 out_dir + "hole/",
                 os.path.splitext(os.path.basename(after_img))[0] + "_mask.png"),
             mask)
-        res[i]["mask_hole"] = out_dir + "hole/" + os.path.splitext(
+        res[i]["mask_hole"] = generate_url + "hole/" + os.path.splitext(
             os.path.basename(after_img))[0] + "_mask.png"
         res[i]["count_hole"] = count
         res[i]["fractional_variation_hole"] = compute_variation(
-            os.path.join(generate_dir + "hole/", os.path.basename(after_img)))
+            os.path.join(out_dir + "hole/", os.path.basename(after_img)))
         data = json.dumps(res[i])
         save_analysis(
             type_,

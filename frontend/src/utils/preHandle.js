@@ -30,7 +30,7 @@ function selectSharpen(type) {
       }
       createSrc(formData).then((res) => {
         this.uploadSrc.list = res.data.data.map((item) => {
-          return global.BASEURL+item.src;
+          return global.BASE_IMAGE_URL+item.src;
         });
         this.before = this.uploadSrc.list.splice(0,3)
 
@@ -40,7 +40,7 @@ function selectSharpen(type) {
         prePhotoHandle(this.prePhoto).then((res)=>{
 
           this.sharpenImg = res.data.data.map((item)=>{
-            return global.BASEURL + item
+            return global.BASE_IMAGE_URL + item
           })
         }).catch(()=>{})
       }).catch((rej)=>{})
@@ -75,7 +75,7 @@ function selectSharpen(type) {
         }
         createSrc(formData).then((res) => {
           this.uploadSrc.list = res.data.data.map((item) => {
-            return global.BASEURL+item.src;
+            return global.BASE_IMAGE_URL+item.src;
           });
           this.before = this.uploadSrc.list.splice(0,3)
 
@@ -85,7 +85,7 @@ function selectSharpen(type) {
           prePhotoHandle(this.prePhoto).then((res)=>{
 
             this.claheImg = res.data.data.map((item)=>{
-              return global.BASEURL + item
+              return global.BASE_IMAGE_URL + item
             })
           }).catch((rej)=>{})
         }).catch((rej)=>{})

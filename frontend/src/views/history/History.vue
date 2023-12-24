@@ -41,7 +41,7 @@
       <el-table-column label="原图">
         <template #default="scope">
           <img
-            :src="global.BASEURL + scope.row.before_img"
+            :src="global.BASE_IMAGE_URL + scope.row.before_img"
             min-width="70"
             height="70"
             alt="原图"
@@ -50,7 +50,7 @@
 
           <img
             v-if="scope.row.type === '变化检测'"
-            :src="global.BASEURL + scope.row.before_img1"
+            :src="global.BASE_IMAGE_URL + scope.row.before_img1"
             min-width="70"
             height="70"
             style="margin-left: 20px"
@@ -63,7 +63,7 @@
         <template #default="scope">
           <img
             v-show="scope.row.type !== '场景分类'"
-            :src="global.BASEURL + scope.row.after_img"
+            :src="global.BASE_IMAGE_URL + scope.row.after_img"
             min-width="70"
             height="70"
             alt="结果图"
@@ -122,7 +122,7 @@
             @click="
               downloadimgWithWords(
                 scope.row.id,
-                global.BASEURL + scope.row.after_img,
+                global.BASE_IMAGE_URL + scope.row.after_img,
                 `${scope.row.type}结果图.png`
               )
             "
@@ -362,6 +362,7 @@ export default {
       tableData: [],
       global: {
         BASEURL: global.BASEURL,
+        BASE_IMAGE_URL:global.BASE_IMAGE_URL
       },
     };
   },
@@ -441,7 +442,7 @@ export default {
         for (let item of this.multipleSelection) {
           this.downloadimgWithWords(
             item.id,
-            global.BASEURL + item.after_img,
+            global.BASE_IMAGE_URL + item.after_img,
 
             `${item.type}结果图.png`
           );

@@ -1,7 +1,9 @@
 <script>
-const BASEURL = "http://"+process.env.VUE_APP_BACKEND_IP+":"+process.env.VUE_APP_BACKEND_PORT+"/"
+const BASEURL = "/"
+const BASE_IMAGE_URL = window.location.protocol+"//"+window.location.host+BASEURL
 export default {
   BASEURL, 
+  BASE_IMAGE_URL
 };
 </script>
 

@@ -5,8 +5,8 @@ import {showFullScreenLoading} from "@/utils/loading";
 function getUploadImg(type) {
   historyGetPage(1, 20, type).then((res) => {
     this.imgArr = res.data.data.forEach((item)=>{
-      item['before_img'] = global.BASEURL+item.before_img
-      item['after_img'] = global.BASEURL+item.after_img
+      item['before_img'] = global.BASE_IMAGE_URL+item.before_img
+      item['after_img'] = global.BASE_IMAGE_URL+item.after_img
     })
     this.imgArr = res.data.data
     this.isUpload = this.imgArr.length !== 0;

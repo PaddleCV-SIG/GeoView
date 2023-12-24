@@ -29,7 +29,7 @@ migrate = Migrate(app, db)
 
 if __name__ == '__main__':
     import yaml
-    with open('./config.yaml') as file:
+    with open('../config.yaml') as file:
         config = yaml.load(file.read(), Loader=yaml.FullLoader)
     debug_mode = bool(config.get("debug", False))
     app.run(host=config["host"]["backend"], port=config["port"]["backend"])

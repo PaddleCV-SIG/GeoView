@@ -66,7 +66,7 @@
 
 <script>
 import { downloadimgWithWords } from "@/utils/download.js";
-
+import global from "@/global.vue";
 export default {
   name: "Imgshow",
   props: {
@@ -80,7 +80,11 @@ export default {
   data() {
     return {
       fit: "fill",
-      childImgArr:[]
+      childImgArr:[],
+      global: {
+        BASEURL: global.BASEURL,
+        BASE_IMAGE_URL:global.BASE_IMAGE_URL
+      },
     };
   },
   mounted() {

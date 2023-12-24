@@ -271,8 +271,8 @@ export default {
             this.choose = false;
             this.historyGetPage(1, 1, "目标检测").then((res) => {
               this.imgArr = res.data.data.forEach((item)=>{
-                item['before_img'] = global.BASEURL+item.before_img
-                item['after_img'] = global.BASEURL+item.after_img
+                item['before_img'] = global.BASE_IMAGE_URL+item.before_img
+                item['after_img'] = global.BASE_IMAGE_URL+item.after_img
               })
               this.imgArr = res.data.data
               this.isShow = true;
@@ -287,8 +287,8 @@ export default {
             this.choose = false;
             this.historyGetPage(1, 1, "地物分类").then((res) => {
               this.imgArr = res.data.data.forEach((item)=>{
-                item['before_img'] = global.BASEURL+item.before_img
-                item['after_img'] = global.BASEURL+item.after_img
+                item['before_img'] = global.BASE_IMAGE_URL+item.before_img
+                item['after_img'] = global.BASE_IMAGE_URL+item.after_img
               })
               this.imgArr = res.data.data
               this.isShow = true;
@@ -303,7 +303,7 @@ export default {
             this.choose = false;
             this.historyGetPage(1, 1, "场景分类").then((res) => {
               this.imgArr = res.data.data.forEach((item)=>{
-                item['before_img'] = global.BASEURL+item.before_img
+                item['before_img'] = global.BASE_IMAGE_URL+item.before_img
               })
               this.imgArr = res.data.data
               this.isShow = true;
@@ -318,8 +318,8 @@ export default {
             this.choose = false;
             this.historyGetPage(1, 1, "图像复原").then((res) => {
               this.imgArr = res.data.data.forEach((item)=>{
-                item['before_img'] = global.BASEURL+item.before_img
-                item['after_img'] = global.BASEURL+item.after_img
+                item['before_img'] = global.BASE_IMAGE_URL+item.before_img
+                item['after_img'] = global.BASE_IMAGE_URL+item.after_img
               })
               this.imgArr = res.data.data
               this.isShow = true;

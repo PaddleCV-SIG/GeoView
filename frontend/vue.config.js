@@ -9,6 +9,22 @@ module.exports = defineConfig({
   devServer: {
     host: config["host"]["frontend"],
     port: config["port"]["frontend"], // 端口
+    proxy: {
+      '/api': {
+      target: config["docker"] ? "http://backend:5008" : "http://127.0.0.1:5008",
+      changeOrigin: true,
+      pathRequiresRewrite: {
+        "^/api":""
+      }
+    },
+    '/_uploads': {
+      target: config["docker"] ? "http://backend:5008" : "http://127.0.0.1:5008",
+      changeOrigin: true,
+      pathRequiresRewrite: {
+        "^/_uploads":""
+      }
+    }
+  }
   },
   
   // transpileDependencies: ['@arcgis']
