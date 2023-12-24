@@ -66,7 +66,39 @@ GeoView支持5大遥感影像解译任务：
 
 ## 安装说明
 
-### 前置依赖安装
+### Docker部署（推荐）
+
+#### 运行环境安装
+
+在执行后续步骤之前，请确保您安装了Docker和Docker compose。
+
+#### 项目下载
+
+上述环境安装完毕后，首先从GitHub将GeoView项目克隆到本地：
+
+```shell
+git clone --recursive https://github.com/PaddleCV-SIG/GeoView.git
+```
+
+由于目前docker部署尚未合并到主分支，需要手动切换到对应分支：
+
+```shell
+git checkout feature/docker-deploy
+```
+
+#### 项目部署
+
+使用Docker compose编排容器并启动各容器：
+
+```shell
+docker compose up -d
+```
+
+容器启动成功后，可通过http://127.0.0.1:3000访问GeoView。
+
+### 手动安装
+
+#### 前置依赖安装
 
 在执行后续步骤之前，请确保您安装了如下依赖库：
 
@@ -80,7 +112,7 @@ GeoView支持5大遥感影像解译任务：
 pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
-### 项目下载与安装
+#### 项目下载与安装
 
 上述依赖安装完毕后，首先从GitHub将GeoView项目克隆到本地：
 
