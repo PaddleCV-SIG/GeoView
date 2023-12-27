@@ -6,7 +6,7 @@
 instance/*
 !instance/.gitignore
 .webassets-cache
-.flaskenv
+#.flaskenv
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -169,3 +169,11 @@ cython_debug/
 .idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/flask
+
+# DL Model
+
+model/change_detection/
+model/classification/
+model/image_restoration/
+model/object_detection/
+model/semantic_segmentation/

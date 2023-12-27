@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:5.7.44
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: GeoView2023
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - GeoView
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - $PWD/config.yaml:/app/config.yaml
+      - $PWD/backend/.flaskenv:/app/backend/.flaskenv
+      - $PWD/backend/model:/app/backend/model
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    networks:
+      - GeoView
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - $PWD/config.yaml:/app/config.yaml
+      - $PWD/frontend/.env:/app/frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - GeoView
+networks:
+  GeoView:
+    ipam:
+      config:
+      - subnet: 172.19.0.0/24

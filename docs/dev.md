@@ -49,7 +49,7 @@ GeoView基于PaddleRS导出的预测模型（静态图）进行图像解译。�
 
 ### 修改 Web 后端配置文件
 
-首先切换到`backend/`目录。将`.flaskenv_template`文件重命名为`.flaskenv`。在`.flaskenv`中，修改MySQL配置信息，各配置项含义如下：
+首先切换到`backend/`目录。在`.flaskenv`中，修改MySQL配置信息，各配置项含义如下：
 
 ```plain
 # MySQL配置信息
@@ -75,11 +75,10 @@ host:
 
 ### 百度地图 Access Key 设置
 
-在项目根目录下的`config.yaml`文件中将`<ACCESS_KEY>`替换为百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
+在frontend目录下的`.env`文件中将`<ACCESS_KEY>`替换为百度地图的Access Key。百度地图的Access Key可在[百度地图开放平台](http://lbsyun.baidu.com/apiconsole/key?application=key)申请。
 
-``` yaml
-baidu_map:
-  access_key: <ACCESS_KEY>
+``` ini
+VUE_APP_BAIDU_MAP_ACCESS_KEY = <ACCESS_KEY>
 ```
 
 ## 3 Web 前后端启动
