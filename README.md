@@ -18,22 +18,22 @@
         <td><img src="https://user-images.githubusercontent.com/21275753/199176961-97466391-6cea-4a11-999a-78b8b0e0d602.gif", width="250"></td>
         <td><img src="https://user-images.githubusercontent.com/21275753/199176518-c3e63a6d-f96b-4c8d-bc2e-932d7fb9c324.gif", width="250"></td>
         <td><img src="https://user-images.githubusercontent.com/21275753/199176786-0cc5156d-b0e9-4922-a555-737af5555a49.gif", width="250"></td>
-    <tr>
+    </tr>
     <tr>
         <td align="center">变化检测</td>
         <td align="center">场景分类</td>
         <td align="center">目标检测</td>
-    <tr>
+    </tr>
     <tr>
         <td><img src="https://user-images.githubusercontent.com/21275753/199176761-ac67b553-309c-4d3a-90cc-31ffe3c8522a.gif", width="250"></td>
         <td><img src="https://user-images.githubusercontent.com/21275753/199175092-cf640078-868e-4633-aca0-e5b69971bc75.gif", width="250"></td>
         <td><img src="https://user-images.githubusercontent.com/90198481/198829346-67e8945d-d587-4feb-a9cb-dc787e267114.png", width="250"></td>
-    <tr>
+    </tr>
     <tr>
         <td align="center">图像复原</td>
         <td align="center">地物分类</td>
         <td align="center">在线地图</td>
-    <tr>
+    </tr>
 </table>
 </div>
 
